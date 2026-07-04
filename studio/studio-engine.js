@@ -20,7 +20,12 @@ class TechnicalNotesStudio {
         // Splitter DOM nodes properties mapping
         this.workspace = document.getElementById('workspace');
         this.editorPane = document.getElementById('editor-pane');
+        this.previewPane = document.getElementById('preview-pane'); 
         this.splitter = document.getElementById('splitter');
+        
+        // Double-Click Header Handle Bindings
+        this.editorHeader = document.getElementById('editor-header');
+        this.previewHeader = document.getElementById('preview-header');
         
         this.rawTemplateText = '';
         this.isResizing = false;
@@ -63,6 +68,10 @@ class TechnicalNotesStudio {
             this.editor.value = storedDraft;
             setTimeout(() => this.updatePreview(), 250);
         }
+
+        // double quick to expand panel to full screen
+        this.editorHeader.addEventListener('dblclick', () => this.togglePaneFocus('editor'));
+        this.previewHeader.addEventListener('dblclick', () => this.togglePaneFocus('preview'));
 
         console.log("✔ ES6 Technical Notes Studio engine initialized via explicit save framework.");
     }
@@ -297,6 +306,42 @@ class TechnicalNotesStudio {
         this.editor.focus();
     }
 
+
+    /**
+     * Toggles workspace layouts cleanly back-and-forth from Fullscreen Focus to Split View
+     * @param {string} target - Identified panel map identifier ('editor' or 'preview')
+     */
+    togglePaneFocus(target) {
+        const currentEditorWidth = this.editorPane.style.width || '50%';
+        const isCurrentlyMaximized = currentEditorWidth === '100%' || currentEditorWidth === '0%';
+
+        if (isCurrentlyMaximized) {
+            // SNAP BACK: If already full size, expand both panes fluidly back to 50/50 comparison grid
+            this.editorPane.style.width = '50%';
+            this.previewPane.style.width = '50%';
+            this.editorPane.style.display = 'flex';
+            this.previewPane.style.display = 'flex';
+            this.splitter.style.display = 'block';
+            
+            this.editorHeader.textContent = "📝 SOURCE EDITOR (Double-click to toggle full view)";
+            this.previewHeader.textContent = "📖 TYPOGRAPHY PREVIEW (Double-click to toggle full view)";
+        } else {
+            // EXPAND FOCUS: Scale target container cleanly up to full widescreen viewports
+            if (target === 'editor') {
+                this.editorPane.style.width = '100%';
+                this.previewPane.style.width = '0%';
+                this.splitter.style.display = 'none';
+                this.editorHeader.textContent = "📝 SOURCE EDITOR ➔ FULLSCREEN MODE ACTIVE (Double-click to return)";
+            } else {
+                this.editorPane.style.width = '0%';
+                this.previewPane.style.width = '100%';
+                this.splitter.style.display = 'none';
+                this.previewHeader.textContent = "📖 TYPOGRAPHY PREVIEW ➔ FULLPAGE VIEW ACTIVE (Double-click to return)";
+            }
+        }
+        
+        this.editor.focus();
+    }
 
 
 }
