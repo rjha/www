@@ -128,15 +128,19 @@ class TechnicalNotesStudio {
      * Iterates parsing runs to build structured responsive typography preview updates
      */
     updatePreview() {
-        if (typeof marked === 'undefined' || typeof Prism === 'undefined') {
-            console.warn("⚠ Core script engines are not fully loaded yet.");
-            return;
-        }
+        if (typeof marked === 'undefined' || typeof Prism === 'undefined') return;
 
-        const rawMarkdownText = this.editor.value;
+        let rawMarkdownText = this.editor.value;
         sessionStorage.setItem('notes_studio_draft', rawMarkdownText);
 
-        // Fail-safe handling for variations in different custom marked library bundles
+        // THE RAW HTML FREEDOM FIX: 
+        // Cleans up tracking whitespace/newlines around raw <pre> codes before Marked parses it.
+        // This stops the markdown engine from mistaking your indented code for markdown text blocks.
+        rawMarkdownText = rawMarkdownText.replace(/<pre>\s*[\r\n]\s*<code([^>]*)>/g, (match, attributes) => {
+            return `<pre><code${attributes}>`;
+        });
+
+        // 1. Process Normalized Markdown and HTML elements
         let compiledHtml = "";
         if (typeof marked.parse === 'function') {
             compiledHtml = marked.parse(rawMarkdownText);
@@ -146,19 +150,20 @@ class TechnicalNotesStudio {
             compiledHtml = window.marked.parse(rawMarkdownText);
         }
 
-        // Output markdown HTML straight into your high-specificity layout container
+        // Output clean HTML straight into your preview viewport container
         this.previewContent.innerHTML = compiledHtml;
-        
-        // Execute Prism highlights
+
+        // 2. Trigger your custom build of Prism
         Prism.highlightAllUnder(this.previewContent);
 
-        // Execute AsciiMath calculations
+        // 3. Trigger AsciiMath calculations
         if (typeof AMprocessNode === 'function') {
             AMprocessNode(this.previewContent, false);
         }
         
         console.log("✔ Layout explicitly compiled successfully.");
     }
+
 
     /**
      * Flashes active workspace contents into session history right before forcing layout refreshes

@@ -96,26 +96,14 @@ body {
     margin: 1.5em 0;
     font-size: 0.95rem;
 }
+
 #preview th, #preview td {
     padding: 12px;
     border: 1px solid #e0e0e0;
     text-align: left;
 }
+
 #preview th { background-color: #f5f5f5; font-weight: 600; }
-
-/* Technical Code Blocks */
-
-#preview pre {
-    background: #1e1e1e;
-    color: #f8f8f2;
-    padding: 16px;
-    border-radius: 6px;
-    overflow-x: auto;
-    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
-    font-size: 0.9rem;
-    line-height: 1.45;
-    margin: 1.5em 0;
-} 
 
 
 /* Dividers */
