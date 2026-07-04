@@ -9,8 +9,8 @@ class TechnicalNotesStudio {
         this.previewContent = document.getElementById('preview-content');
         this.saveBtn = document.getElementById('save-btn');
         this.reloadBtn = document.getElementById('reload-btn');
-        this.exportBtn = document.getElementById('export-btn');
-        this.saveNoteBtn = document.getElementById('save-note-btn');
+        this.exportHtmlBtn = document.getElementById('export-html-btn');
+        this.exportNoteBtn = document.getElementById('export-note-btn');
         this.statusBadge = document.getElementById('status-badge');
         
         // Splitter DOM nodes properties mapping
@@ -35,8 +35,8 @@ class TechnicalNotesStudio {
         // Step 3: Establish pure modern event execution loops
         this.saveBtn.addEventListener('click', () => this.updatePreview());
         this.reloadBtn.addEventListener('click', () => this.hotReload());
-        this.exportBtn.addEventListener('click', () => this.exportHTML());
-        this.saveNoteBtn.addEventListener('click', () => this.saveRawNoteToDisk());
+        this.exportHtmlBtn.addEventListener('click', () => this.exportHTML());
+        this.exportNoteBtn.addEventListener('click', () => this.exportNote());
 
         // Step 4: Map Keydown listeners for Command+S / Control+S explicit overrides
         this.editor.addEventListener('keydown', (e) => this.handleKeyboardShortcuts(e));
@@ -261,7 +261,7 @@ class TechnicalNotesStudio {
     /**
      * save editor panel content to studio-source.md file
      */
-    saveRawNoteToDisk() {
+    exportNote() {
         const rawNoteData = this.editor.value;
         const memoryBlob = new Blob([rawNoteData], { type: 'text/markdown;charset=utf-8' });
         
