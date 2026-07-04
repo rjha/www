@@ -4,7 +4,9 @@
  * Configured using strict Absolute Paths with Resizable Splitter and Status Metrics.
  */
 class TechnicalNotesStudio {
+
     constructor() {
+
         this.editor = document.getElementById('editor');
         this.previewContent = document.getElementById('preview-content');
         this.saveBtn = document.getElementById('save-btn');
@@ -13,6 +15,8 @@ class TechnicalNotesStudio {
         this.exportNoteBtn = document.getElementById('export-note-btn');
         this.statusBadge = document.getElementById('status-badge');
         
+        // theme selector
+        this.themeDropdown = document.getElementById('theme-dropdown');
         // Splitter DOM nodes properties mapping
         this.workspace = document.getElementById('workspace');
         this.editorPane = document.getElementById('editor-pane');
@@ -37,6 +41,10 @@ class TechnicalNotesStudio {
         this.reloadBtn.addEventListener('click', () => this.hotReload());
         this.exportHtmlBtn.addEventListener('click', () => this.exportHTML());
         this.exportNoteBtn.addEventListener('click', () => this.exportNote());
+
+        // Configure theme presets on initialization pass
+        this.themeDropdown.addEventListener('change', () => this.changeEditorTheme());
+        this.editor.classList.add('theme-light');
 
         // Step 4: Map Keydown listeners for Command+S / Control+S explicit overrides
         this.editor.addEventListener('keydown', (e) => this.handleKeyboardShortcuts(e));
@@ -271,6 +279,25 @@ class TechnicalNotesStudio {
         fileAnchor.click();
         console.log("✔ Raw markdown file exported to local system disk space.");
     }
+
+    /**
+     * set the theme
+     */
+    changeEditorTheme() {
+        const selectedTheme = this.themeDropdown.value;
+        
+        // Strip any previously applied theme helper tags out of the tracking list
+        this.editor.classList.remove('theme-light', 'theme-slate', 'theme-dark');
+        
+        // Inject the newly designated theme helper class onto your editor node
+        this.editor.classList.add(selectedTheme);
+        
+        // Save your theme choice to localStorage so the canvas state persists across browser reloads
+        localStorage.setItem('notes_studio_theme_preset', selectedTheme);
+        this.editor.focus();
+    }
+
+
 
 }
 

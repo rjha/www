@@ -204,5 +204,48 @@ body {
 }
 
 
+/* ==========================================================================
+   Editor Panel Color Presets
+   ========================================================================== */
+
+/* 1. Theme Preset: Off-White (Your Preferred Default) */
+#editor.theme-light {
+    background: #f7f9fa !important;
+    color: #1a202c !important;
+    border-right: 1px solid #e2e8f0;
+}
+
+/* 2. Theme Preset: Slate Gray (Softer Contrast) */
+#editor.theme-slate {
+    background: #2d3748 !important;
+    color: #edf2f7 !important;
+    border-right: 1px solid #4a5568;
+}
+
+/* 3. Theme Preset: Terminal Black (High Contrast Dark) */
+#editor.theme-dark {
+    background: #0f141c !important;
+    color: #f5f5f7 !important;
+    border-right: 1px solid #1a202c;
+}
+
+/* Style for the dropdown menu element inside the control strip */
+.theme-selector {
+    background: #2d3139;
+    color: #e2e8f0;
+    border: 1px solid #4a5568;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    outline: none;
+    margin-left: 20px; /* Separates it visually from button groups */
+}
+.theme-selector:hover {
+    border-color: #cbd5e0;
+}
+
+
 
 
