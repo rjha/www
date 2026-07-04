@@ -1,0 +1,171 @@
+
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+}
+
+body { 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+    height: 100vh; 
+    display: flex; 
+    flex-direction: column; 
+    background: #1e1e24; 
+    color: #fff; 
+}
+
+#dev-controls { 
+    background: #111216; 
+    padding: 8px 16px; 
+    border-bottom: 1px solid #2d3139; 
+    display: flex; 
+    gap: 10px; 
+    align-items: center; 
+}
+
+.dev-btn { 
+    background: #2b6cb0; 
+    color: #fff; 
+    border: none; 
+    padding: 6px 14px; 
+    border-radius: 4px; 
+    font-size: 0.82rem; 
+    font-weight: 600; 
+    cursor: pointer; 
+}
+
+.dev-btn:hover { background: #3182ce; }
+.dev-btn.secondary { background: #2d3139; color: #e2e8f0; }
+.dev-btn.secondary:hover { background: #4a5568; }
+.dev-badge { font-size: 0.75rem; color: #a0aec0; margin-left: auto; font-family: monospace; }
+
+#workspace { display: flex; flex: 1; overflow: hidden; }
+.pane { width: 50%; height: 100%; display: flex; flex-direction: column; }
+#editor { flex: 1; background: #18181c; color: #f5f5f7; border: none; padding: 20px; font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; font-size: 0.95rem; line-height: 1.5; resize: none; outline: none; }
+
+
+#preview { 
+    flex: 1; 
+    background: #fafafa !important; 
+    color: #2c3e50 !important; 
+    padding: 40px; 
+    overflow-y: auto; 
+}
+
+#preview-content { 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 18px;
+    line-height: 1.62;
+    color: #2c3e50;
+    max-width: 68ch; /* Crucial: Prevents eyes from straining on wide screens */
+    margin: 60px auto;
+    padding: 0 24px;
+    background-color: #fafafa;
+}
+
+#preview h1, #preview h2, #preview h3 { 
+    color: #1a1a1a !important; 
+    font-weight: 700 !important; 
+    margin-top: 1.5em !important; 
+    margin-bottom: 0.5em !important; 
+    line-height: 1.25 !important; 
+}
+
+
+ #preview h1, #preview h2, #preview h3, #preview h4 {
+    color: #1a1a1a;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-top: 1.8em;
+    margin-bottom: 0.6em;
+}
+#preview h1 { font-size: 2.25rem; border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+#preview h2 { font-size: 1.65rem; border-bottom: 1px solid #f0f0f0; padding-bottom: 0.2em; }
+#preview h3 { font-size: 1.35rem; }
+
+#preview p { margin-top: 0; margin-bottom: 1.2em; text-align: justify; text-justify: inter-word; }
+
+/* Functional Lists */
+#preview ul, #preview ol { padding-left: 2em; margin-bottom: 1.2em; }
+#preview li { margin-bottom: 0.4em; }
+
+/* Tables built for data scanning */
+#preview table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5em 0;
+    font-size: 0.95rem;
+}
+#preview th, #preview td {
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    text-align: left;
+}
+#preview th { background-color: #f5f5f5; font-weight: 600; }
+
+/* Technical Code Blocks */
+
+#preview pre {
+    background: #1e1e1e;
+    color: #f8f8f2;
+    padding: 16px;
+    border-radius: 6px;
+    overflow-x: auto;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.9rem;
+    line-height: 1.45;
+    margin: 1.5em 0;
+} 
+
+
+/* Dividers */
+#preview hr { height: 1px; border: none; background-color: #eaecef; margin: 2.5em 0; }
+
+/* Typography and Spacing for Embedded Photos */
+/* HTML5 Semantic Layout Elements */
+#preview figure {
+    margin: 2.5em 0;
+    padding: 0;
+    text-align: center; /* Centers both the image element and text layers */
+}
+
+#preview figure img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto 0.8em auto; /* Centered, leaving a small gap for the caption */
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* Captions and Subtext Formatting */
+#preview figcaption {
+    font-size: 0.85rem;      /* Lean font scale for meta descriptions */
+    line-height: 1.45;
+    color: #57606a;          /* Editorial gray, distinct from your main body color */
+    font-style: italic;      /* Classical presentation for technical notes */
+    max-width: 50ch;         /* Constraints caption width so lines track comfortably */
+    margin: 0 auto;          /* Multi-line captions remain centered */
+}
+
+/* Responsive Aspect Ratio Wrapper for Embedded iFrames */
+#preview .video-container {
+    position: relative;
+    width: 100%;
+    /* Modern aspect-ratio property handles responsive sizing instantly */
+    aspect-ratio: 16 / 9; 
+    margin: 2.5em auto;
+    border-radius: 6px;
+    overflow: hidden; /* Cleans up iframe edges to match your layout style */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* Enforce fluid canvas rules onto the nested element */
+#preview .video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}

@@ -1,11 +1,13 @@
 /**
  * Modern Technical Notes Studio Pipeline Module
  * Built using pure ES6 Class definitions and standard Object scopes.
+ * Configured using strict Absolute Paths.
  */
 class TechnicalNotesStudio {
     constructor() {
         this.editor = document.getElementById('editor');
         this.previewContent = document.getElementById('preview-content');
+        this.saveBtn = document.getElementById('save-btn');
         this.reloadBtn = document.getElementById('reload-btn');
         this.exportBtn = document.getElementById('export-btn');
         
@@ -24,18 +26,48 @@ class TechnicalNotesStudio {
         await this.loadExternalTemplateFile();
 
         // Step 3: Establish pure modern event execution loops
-        this.editor.addEventListener('input', () => this.updatePreview());
+        this.saveBtn.addEventListener('click', () => this.updatePreview());
         this.reloadBtn.addEventListener('click', () => this.hotReload());
         this.exportBtn.addEventListener('click', () => this.exportHTML());
 
-        // Step 4: Verify and pull previous draft properties out of session memory caches
+        // Step 4: Map Keydown listeners for Command+S / Control+S explicit overrides
+        this.editor.addEventListener('keydown', (event) => this.handleKeyboardShortcuts(event));
+
+        // Step 5: Verify and pull previous draft properties out of session memory caches
         const storedDraft = sessionStorage.getItem('notes_studio_draft');
         if (storedDraft) {
             this.editor.value = storedDraft;
-            this.updatePreview();
+            // Give scripts a small window delay to fully register
+            setTimeout(() => this.updatePreview(), 250);
+        } else {
+            // Drop a fallback layout directly into the preview to confirm it's alive visually
+            this.previewContent.innerHTML = "<p style='color:#a0aec0; font-style:italic;'>Type your notes on the left and press Cmd+S to compile...</p>";
         }
 
-        console.log("✔ ES6 Technical Notes Studio engine initialized via clean modules.");
+        console.log("✔ ES6 Technical Notes Studio engine initialized via explicit save framework.");
+    }
+
+    /**
+     * Catches keystroke actions and intercepts standard browser saving workflows
+     */
+    handleKeyboardShortcuts(event) {
+        const isSaveKey = event.key.toLowerCase() === 's';
+        const isMetaPressed = event.metaKey || event.ctrlKey;
+
+        if (isMetaPressed && isSaveKey) {
+            event.preventDefault();
+            this.updatePreview();
+            
+            const badge = document.querySelector('.dev-badge');
+            if (badge) {
+                badge.textContent = "✔ Draft Saved & Compiled";
+                badge.style.color = "#4af626";
+                setTimeout(() => {
+                    badge.textContent = "ES6 Explicit Save Active";
+                    badge.style.color = "#a0aec0";
+                }, 1500);
+            }
+        }
     }
 
     /**
@@ -43,10 +75,8 @@ class TechnicalNotesStudio {
      */
     async loadExternalTemplateFile() {
         try {
-            // Apply cache-busting token so edits to the template load immediately
             const timestamp = Date.now();
-            
-            const response = await fetch(`studio-panel.html?v=${timestamp}`);
+            const response = await fetch(`studio-preview.html?v=${timestamp}`);
             
             if (!response.ok) {
                 throw new Error(`HTTP network validation exception status: ${response.status}`);
@@ -56,7 +86,7 @@ class TechnicalNotesStudio {
             console.log("✔ External export layout template file fetched and loaded successfully.");
         } catch (error) {
             console.error("✘ Failed to compile external template asset file:", error);
-            this.rawTemplateText = '<html><body>\${bodyPayload}</body></html>';
+            this.rawTemplateText = '<html><body><!-- BODY_PAYLOAD_HOOK --></body></html>';
         }
     }
 
@@ -67,10 +97,17 @@ class TechnicalNotesStudio {
         return new Promise((resolve) => {
             const timestamp = Date.now();
             
-            // FIXED: Target the explicit head node by pulling index 0 out of the HTMLCollection
+            // CRUCIAL FIXED INDEX POINTER: Targets the element node directly out of the HTMLCollection
             const head = document.getElementsByTagName('head')[0];
+
+            // 1. DYNAMIC NO-CACHE PRISM CSS INJECTION
+            const cssNode = document.createElement('link');
+            cssNode.rel = 'stylesheet';
+            cssNode.href = `/assets/prism.css?v=${timestamp}`;
+            head.appendChild(cssNode);
             
-            const dependencies = ['marked.umd.js', 'prism.js', 'ASCIIMathML.js'];
+            // 2. ABSOLUTE PATH RESOLUTIONS: Look directly from the active server root folder
+            const dependencies = ['/assets/marked.umd.js', '/assets/prism.js', '/assets/ASCIIMathML.js'];
 
             const loadScriptSequence = (index) => {
                 if (index >= dependencies.length) {
@@ -91,15 +128,36 @@ class TechnicalNotesStudio {
      * Iterates parsing runs to build structured responsive typography preview updates
      */
     updatePreview() {
-        if (typeof marked === 'undefined' || typeof Prism === 'undefined') return;
+        if (typeof marked === 'undefined' || typeof Prism === 'undefined') {
+            console.warn("⚠ Core script engines are not fully loaded yet.");
+            return;
+        }
 
         const rawMarkdownText = this.editor.value;
-        this.previewContent.innerHTML = marked.parse(rawMarkdownText);
+        sessionStorage.setItem('notes_studio_draft', rawMarkdownText);
+
+        // Fail-safe handling for variations in different custom marked library bundles
+        let compiledHtml = "";
+        if (typeof marked.parse === 'function') {
+            compiledHtml = marked.parse(rawMarkdownText);
+        } else if (typeof marked === 'function') {
+            compiledHtml = marked(rawMarkdownText);
+        } else if (window.marked && typeof window.marked.parse === 'function') {
+            compiledHtml = window.marked.parse(rawMarkdownText);
+        }
+
+        // Output markdown HTML straight into your high-specificity layout container
+        this.previewContent.innerHTML = compiledHtml;
+        
+        // Execute Prism highlights
         Prism.highlightAllUnder(this.previewContent);
 
+        // Execute AsciiMath calculations
         if (typeof AMprocessNode === 'function') {
             AMprocessNode(this.previewContent, false);
         }
+        
+        console.log("✔ Layout explicitly compiled successfully.");
     }
 
     /**
@@ -111,13 +169,10 @@ class TechnicalNotesStudio {
     }
 
     /**
-     * Evaluates the loaded external file string natively as an ES6 template literal closure
-     * @param {string} bodyPayload - Parsed document interior content
-     * @returns {string} Single complete standalone markup text block
+     * Structural Exporter Token Swapping Logic Pass
      */
     buildProductionTemplate(bodyPayload) {
-        const runtimeEvaluator = new Function('bodyPayload', `return \`${this.rawTemplateText}\`;`);
-        return runtimeEvaluator(bodyPayload);
+        return this.rawTemplateText.replace('<!-- BODY_PAYLOAD_HOOK -->', bodyPayload);
     }
 
     /**
@@ -129,7 +184,7 @@ class TechnicalNotesStudio {
 
         const memoryBlob = new Blob([productionDocumentString], { type: 'text/html' });
         const temporaryLink = document.createElement('a');
-        temporaryLink.download = 'published-note.html';
+        temporaryLink.download = 'studio-output.html';
         temporaryLink.href = URL.createObjectURL(memoryBlob);
         temporaryLink.click();
     }

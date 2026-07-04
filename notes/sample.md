@@ -8,16 +8,18 @@
 
 ---
 
-<iframe 
-    width="560" 
-    height="315" 
-    src="https://www.youtube.com/embed/h5DqvAYUdTA?si=NIUyNXcJSDxqzzJs" 
-    title="YouTube video player" 
-    frameborder="0" 
-    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" 
-    allowfullscreen>
+<div class="video-container">
+    <iframe 
+        width="560" 
+        height="315" 
+        src="https://www.youtube.com/embed/h5DqvAYUdTA?si=NIUyNXcJSDxqzzJs" 
+        title="YouTube video player" 
+        frameborder="0" 
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" 
+        allowfullscreen>
 
-</iframe>
+    </iframe>
+</div>
 
 ## 1. Initial Migration: Gmail to Local Disk
 
@@ -41,7 +43,7 @@ If your primary drive is low on space, redirect your email client's local storag
 
 
 <figure>
-    <img src="photos/roads-that-honk01.jpg" alt="Rajeev uploading the firmware to pole">
+    <img src="/media/photos/roads-that-honk01.jpg" alt="Rajeev uploading the firmware to pole">
     <figcaption>Here I am, uploading the firmware to the pole</figcaption>
 </figure>
 

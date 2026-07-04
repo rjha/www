@@ -6,21 +6,22 @@
     <title>Technical Notes Studio</title>
     
     <!-- Unified CSS Architecture Target Link -->
-    <link rel="stylesheet" href="studio-engine.css" id="studio-css-target">
+    <link rel="stylesheet" href="/studio/studio-engine.css" id="studio-css-target">
 </head>
 <body>
 
     <!-- Development Action Controller Strip -->
     <div id="dev-controls">
-        <button class="dev-btn" id="reload-btn">🔄 Reload Studio</button>
+        <button class="dev-btn" id="save-btn">💾 Save & Preview</button>
+        <button class="dev-btn secondary" id="reload-btn">🔄 Reload Studio</button>
         <button class="dev-btn secondary" id="export-btn">💾 Export Production HTML</button>
-        <span class="dev-badge">ES6 Modular Engine</span>
+        <span class="dev-badge">ES6 Explicit Save Active</span>
     </div>
 
     <!-- Active Workspace Split Panel Grid -->
     <div id="workspace">
         <div class="pane" style="border-right: 1px solid #2d3139;">
-            <textarea id="editor" placeholder="Start typing your technical notes here in markdown..."></textarea>
+            <textarea id="editor" placeholder="Start typing your technical notes here in markdown... (Press Cmd+S or Ctrl+S to parse)"></textarea>
         </div>
         <div class="pane">
             <div id="preview">
@@ -30,8 +31,7 @@
     </div>
 
     <!-- Isolated JS Engine Component Module -->
-    <script type="module" src="studio-engine.js"></script>
+    <script type="module" src="/studio/studio-engine.js"></script>
 
 </body>
 </html>
-
