@@ -1,0 +1,90 @@
+
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+}
+
+body { 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+    height: 100vh; 
+    display: flex; 
+    flex-direction: column; 
+    background: #1e1e24; 
+    color: #fff; 
+}
+
+#dev-controls { 
+    background: #111216; 
+    padding: 8px 16px; 
+    border-bottom: 1px solid #2d3139; 
+    display: flex; 
+    gap: 10px; 
+    align-items: center; 
+}
+
+.dev-btn { 
+    background: #2b6cb0; 
+    color: #fff; 
+    border: none; 
+    padding: 6px 14px; 
+    border-radius: 4px; 
+    font-size: 0.82rem; 
+    font-weight: 600; 
+    cursor: pointer; 
+}
+
+.dev-btn:hover { background: #3182ce; }
+.dev-btn.secondary { background: #2d3139; color: #e2e8f0; }
+.dev-btn.secondary:hover { background: #4a5568; }
+.dev-badge { font-size: 0.75rem; color: #a0aec0; margin-left: auto; font-family: monospace; }
+
+#workspace { display: flex; flex: 1; overflow: hidden; }
+.pane { width: 50%; height: 100%; display: flex; flex-direction: column; }
+#editor { flex: 1; background: #18181c; color: #f5f5f7; border: none; padding: 20px; font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; font-size: 0.95rem; line-height: 1.5; resize: none; outline: none; }
+
+/* ==========================================================================
+   Section 2: High-Specificity Article Typography Scale (Overrides Prism resets)
+   ========================================================================== */
+#preview { 
+    flex: 1; 
+    background: #fafafa !important; 
+    color: #2c3e50 !important; 
+    padding: 40px; 
+    overflow-y: auto; 
+}
+
+#preview-content { 
+    max-width: 68ch !important; 
+    margin: 0 auto !important; 
+    font-size: 18px !important; 
+    line-height: 1.62 !important; 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important; 
+}
+
+#preview h1, #preview h2, #preview h3 { 
+    color: #1a1a1a !important; 
+    font-weight: 700 !important; 
+    margin-top: 1.5em !important; 
+    margin-bottom: 0.5em !important; 
+    line-height: 1.25 !important; 
+}
+
+#preview h1 { font-size: 2.25rem !important; border-bottom: 1px solid #eaecef !important; padding-bottom: 0.3em !important; }
+#preview h2 { font-size: 1.65rem !important; border-bottom: 1px solid #f0f0f0 !important; padding-bottom: 0.2em !important; }
+#preview p { margin-bottom: 1.2em !important; text-align: justify !important; text-justify: inter-word !important; color: #2c3e50 !important; font-size: 18px !important; line-height: 1.62 !important; }
+#preview ul, #preview ol { padding-left: 2em !important; margin-bottom: 1.2em !important; }
+#preview li { margin-bottom: 0.4em !important; color: #2c3e50 !important; }
+
+/* Code and Terminal Outputs Layouts */
+#preview pre { background: #1e1e1e !important; border-radius: 6px !important; padding: 16px !important; margin: 1.5em 0 !important; overflow-x: auto !important; }
+#preview code { font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace !important; font-size: 0.9em !important; background: none !important; color: inherit !important; padding: 0 !important; }
+#preview code.language-shell-session, #preview code.language-bash { display: block !important; color: #f1f1f1 !important; background-color: #181b20 !important; border-left: 4px solid #4a5568 !important; padding: 14px !important; white-space: pre !important; width: 100% !important; }
+
+/* Media & Context Blocks */
+#preview figure { margin: 2.5em 0 !important; text-align: center !important; }
+#preview figure img { max-width: 100% !important; height: auto !important; border-radius: 6px !important; box-shadow: 0 4px 12px rgba(0,0,0,0.06) !important; margin: 0 auto !important; }
+#preview figcaption { font-size: 0.85rem !important; color: #57606a !important; font-style: italic !important; margin-top: 0.5em !important; }
+.video-container { position: relative; width: 100%; aspect-ratio: 16 / 9; margin: 2.5em auto; border-radius: 6px; overflow: hidden; }
+.video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+
