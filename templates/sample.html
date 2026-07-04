@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ title }}</title>
+    <link href="/prism.css" rel="stylesheet" />
+    <style>
+        /* Modern Minimalist Typography System */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            font-size: 18px;
+            line-height: 1.62;
+            color: #2c3e50;
+            max-width: 68ch; /* Crucial: Prevents eyes from straining on wide screens */
+            margin: 60px auto;
+            padding: 0 24px;
+            background-color: #fafafa;
+        }
+
+        /* Reading Hierarchy */
+        h1, h2, h3, h4 {
+            color: #1a1a1a;
+            font-weight: 700;
+            line-height: 1.25;
+            margin-top: 1.8em;
+            margin-bottom: 0.6em;
+        }
+        h1 { font-size: 2.25rem; border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+        h2 { font-size: 1.65rem; border-bottom: 1px solid #f0f0f0; padding-bottom: 0.2em; }
+        h3 { font-size: 1.35rem; }
+
+        p { margin-top: 0; margin-bottom: 1.2em; text-align: justify; text-justify: inter-word; }
+        
+        /* Functional Lists */
+        ul, ol { padding-left: 2em; margin-bottom: 1.2em; }
+        li { margin-bottom: 0.4em; }
+
+        /* Tables built for data scanning */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1.5em 0;
+            font-size: 0.95rem;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #e0e0e0;
+            text-align: left;
+        }
+        th { background-color: #f5f5f5; font-weight: 600; }
+
+        /* Technical Code Blocks */
+        pre {
+            background: #1e1e1e;
+            color: #f8f8f2;
+            padding: 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            font-size: 0.9rem;
+            line-height: 1.45;
+            margin: 1.5em 0;
+        }
+        code {
+            font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+            background: #eef1f4;
+            color: #c7254e;
+            padding: 3px 6px;
+            border-radius: 4px;
+            font-size: 0.85em;
+        }
+
+        pre code { background: transparent; color: inherit; padding: 0; font-size: inherit; }
+
+        /* Dividers */
+        hr { height: 1px; border: none; background-color: #eaecef; margin: 2.5em 0; }
+
+        /* Typography and Spacing for Embedded Photos */
+       /* HTML5 Semantic Layout Elements */
+        figure {
+            margin: 2.5em 0;
+            padding: 0;
+            text-align: center; /* Centers both the image element and text layers */
+        }
+
+        figure img {
+            display: block;
+            max-width: 100%;
+            height: auto;
+            margin: 0 auto 0.8em auto; /* Centered, leaving a small gap for the caption */
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Captions and Subtext Formatting */
+        figcaption {
+            font-size: 0.85rem;      /* Lean font scale for meta descriptions */
+            line-height: 1.45;
+            color: #57606a;          /* Editorial gray, distinct from your main body color */
+            font-style: italic;      /* Classical presentation for technical notes */
+            max-width: 50ch;         /* Constraints caption width so lines track comfortably */
+            margin: 0 auto;          /* Multi-line captions remain centered */
+        }
+
+        /* Responsive Aspect Ratio Wrapper for Embedded iFrames */
+        .video-container {
+            position: relative;
+            width: 100%;
+            /* Modern aspect-ratio property handles responsive sizing instantly */
+            aspect-ratio: 16 / 9; 
+            margin: 2.5em auto;
+            border-radius: 6px;
+            overflow: hidden; /* Cleans up iframe edges to match your layout style */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Enforce fluid canvas rules onto the nested element */
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+    </style>
+   
+    <!-- Set your custom delimiter to a single dollar sign --> 
+   <script src="/ASCIIMathML.js"></script>
+</head>
+<body>
+    <main>
+        {{ content }}
+    </main>
+
+    <script src="/prism.js"></script>
+</body>
+</html>
+
