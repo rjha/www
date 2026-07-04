@@ -133,14 +133,16 @@ class TechnicalNotesStudio {
         let rawMarkdownText = this.editor.value;
         sessionStorage.setItem('notes_studio_draft', rawMarkdownText);
 
-        // THE RAW HTML FREEDOM FIX: 
-        // Cleans up tracking whitespace/newlines around raw <pre> codes before Marked parses it.
-        // This stops the markdown engine from mistaking your indented code for markdown text blocks.
-        rawMarkdownText = rawMarkdownText.replace(/<pre>\s*[\r\n]\s*<code([^>]*)>/g, (match, attributes) => {
-            return `<pre><code${attributes}>`;
+        // ISOLATE THE SOURCE CODE BLOCKS
+        const sourceCodePattern = /<div class="source-code">([\s\S]*?)<\/div>/g;
+        const savedCodeBlocks = [];
+
+        rawMarkdownText = rawMarkdownText.replace(sourceCodePattern, (match, interiorContent) => {
+            savedCodeBlocks.push(interiorContent);
+            return `<!--SOURCE_CODE_HOLDER_${savedCodeBlocks.length - 1}-->`;
         });
 
-        // 1. Process Normalized Markdown and HTML elements
+        // RUN THE MARKDOWN COMPILER
         let compiledHtml = "";
         if (typeof marked.parse === 'function') {
             compiledHtml = marked.parse(rawMarkdownText);
@@ -150,19 +152,25 @@ class TechnicalNotesStudio {
             compiledHtml = window.marked.parse(rawMarkdownText);
         }
 
-        // Output clean HTML straight into your preview viewport container
+        // RE-INJECT CODES INTO PREVIEW PANE
         this.previewContent.innerHTML = compiledHtml;
+        
+        savedCodeBlocks.forEach((codeMarkup, index) => {
+            const anchorToken = `<!--SOURCE_CODE_HOLDER_${index}-->`;
+            const replacementHtml = `<div class="source-code">${codeMarkup}</div>`;
+            this.previewContent.innerHTML = this.previewContent.innerHTML.replace(anchorToken, replacementHtml);
+        });
 
-        // 2. Trigger your custom build of Prism
+        // TRIGGER RE-HIGHLIGHTS AND FORMULAS
         Prism.highlightAllUnder(this.previewContent);
 
-        // 3. Trigger AsciiMath calculations
         if (typeof AMprocessNode === 'function') {
             AMprocessNode(this.previewContent, false);
         }
         
-        console.log("✔ Layout explicitly compiled successfully.");
+        console.log("✔ Layout explicitly compiled with raw code isolation.");
     }
+
 
 
     /**

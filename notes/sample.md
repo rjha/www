@@ -17,7 +17,6 @@
         frameborder="0" 
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" 
         allowfullscreen>
-
     </iframe>
 </div>
 
@@ -60,6 +59,7 @@ To ensure high availability and data durability, maintain three distinct copies 
 ## 2. Core Java Verification System
 We use a small verification engine routine to track the input paths.
 
+<div class="source-code">
 <pre> 
     <code class="language-java">
         public class NoteVerification {
@@ -74,8 +74,8 @@ We use a small verification engine routine to track the input paths.
             }
         }
     </code>
-
 </pre>
+</div class="source-code">
 
 
 
