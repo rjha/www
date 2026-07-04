@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Notes Studio</title>
+    
+    <!-- Local Offline Asset Dependencies -->
+    <link href="/prism.css" rel="stylesheet" />
+    <script src="/marked.umd.js"></script>
+    <script src="/prism.js"></script>
+    <script src="/ASCIIMathML.js"></script>
+
+    <style>
+        /* Modern Studio UI Split Framework */
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; height: 100vh; display: flex; flex-direction: column; background: #1e1e24; color: #fff; }
+        
+        /* Workspace Composition */
+        #workspace { display: flex; flex: 1; overflow: hidden; }
+        .pane { width: 50%; height: 100%; display: flex; flex-direction: column; }
+        
+        /* Writing Editor Workspace */
+        #editor { flex: 1; background: #18181c; color: #f5f5f7; border: none; padding: 20px; font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; font-size: 0.95rem; line-height: 1.5; resize: none; outline: none; }
+        
+        /* Typography-First Preview Layer */
+        #preview { flex: 1; background: #fafafa; color: #2c3e50; padding: 40px; overflow-y: auto; }
+        
+        /* Exact Typography Styles from Your Original Pipeline */
+        #preview-content { max-width: 68ch; margin: 0 auto; font-size: 18px; line-height: 1.62; }
+        #preview h1, #preview h2, #preview h3 { color: #1a1a1a; font-weight: 700; margin-top: 1.5em; margin-bottom: 0.5em; line-height: 1.25; }
+        #preview h1 { font-size: 2.25rem; border-bottom: 1px solid #eaecef; padding-bottom: 0.3em; }
+        #preview h2 { font-size: 1.65rem; border-bottom: 1px solid #f0f0f0; padding-bottom: 0.2em; }
+        #preview p { margin-bottom: 1.2em; text-align: justify; text-justify: inter-word; }
+        #preview ul, #preview ol { padding-left: 2em; margin-bottom: 1.2em; }
+        #preview li { margin-bottom: 0.4em; }
+        
+        /* Prism Code Spacing Fixes */
+        #preview pre { background: #1e1e1e; border-radius: 6px; padding: 16px; margin: 1.5em 0; overflow-x: auto; }
+        #preview code { font-family: "SFMono-Regular", monospace; font-size: 0.9em; }
+        
+        /* Custom Terminal Output Overrides */
+        #preview code.language-shell-session, #preview code.language-bash { display: block; color: #f1f1f1; background-color: #181b20; border-left: 4px solid #4a5568; padding: 14px; white-space: pre; }
+        
+        /* HTML5 Figure & Caption Typographic Settings */
+        #preview figure { margin: 2.5em 0; text-align: center; }
+        #preview figure img { max-width: 100%; height: auto; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+        #preview figcaption { font-size: 0.85rem; color: #57606a; font-style: italic; margin-top: 0.5em; }
+
+        /* Fluid Aspect Ratio Wrapper for Video iFrames */
+        .video-container { position: relative; width: 100%; aspect-ratio: 16 / 9; margin: 2.5em auto; border-radius: 6px; overflow: hidden; }
+        .video-container iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: 0; }
+    </style>
+</head>
+<body>
+
+    <!-- Dynamic Split-Screen Layout Only -->
+    <div id="workspace">
+        <div class="pane" style="border-right: 1px solid #2d3139;">
+            <textarea id="editor" placeholder="Start typing your technical notes here in markdown..." oninput="updatePreview()"></textarea>
+        </div>
+        <div class="pane">
+            <div id="preview">
+                <div id="preview-content"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Clean ES6 Class Engine Implementation -->
+    <script>
+        class TechnicalNotesStudio {
+            constructor() {
+                this.editor = document.getElementById('editor');
+                this.previewContent = document.getElementById('preview-content');
+            }
+
+            /**
+             * Initialize application listener frameworks
+             */
+            init() {
+                this.editor.addEventListener('input', () => this.updatePreview());
+                console.log("✔ ES6 Technical Notes Studio initialized successfully.");
+            }
+
+            /**
+             * Core Text Compilation Pipeline Pass
+             */
+            updatePreview() {
+                const markdownText = this.editor.value;
+
+                // 1. Process Markdown to HTML via marked.js
+                const renderedHtml = marked.parse(markdownText);
+                this.previewContent.innerHTML = renderedHtml;
+
+                // 2. Trigger your custom multi-language dev build of Prism
+                Prism.highlightAllUnder(this.previewContent);
+
+                // 3. Trigger your modified ASCIIMathML file for single dollar sign math tracking
+                if (typeof AMprocessNode === 'function') {
+                    AMprocessNode(this.previewContent, false);
+                }
+            }
+
+            /**
+             * Isolated template literal generation logic block
+             * @param {string} mainBodyContent - Parsed webpage content strings
+             * @returns {string} Standalone production file markup
+             */
+            buildProductionTemplate(mainBodyContent) {
+                const styleBlocks = document.getElementsByTagName('style');
+                const embeddedCSS = styleBlocks.length > 0 ? styleBlocks[0].innerHTML : '';
+
+                // Clean ES6 Template Literal with escaped closing script tags
+                return `<!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                        <meta charset="UTF-8">
+                        <title>Published Note</title>
+                        <style>
+                            ${embeddedCSS}
+                            body { background: #fafafa !important; color: #2c3e50 !important; padding: 40px 20px; }
+                        </style>
+                        <link href="/prism.css" rel="stylesheet" />
+                        <script defer src="/prism.js"><\/script>
+                        <script defer src="/ASCIIMathML.js"><\/script>
+                    </head>
+                    <body>
+                        <main style="max-width:68ch; margin:0 auto;">
+                            ${mainBodyContent}
+                        </main>
+                    </body>
+                    </html>`;
+            }
+
+            /**
+             * Export file trigger method
+             */
+            exportHTML() {
+                const currentContent = this.previewContent.innerHTML;
+                const completeOutputDocument = this.buildProductionTemplate(currentContent);
+
+                const blob = new Blob([completeOutputDocument], { type: 'text/html' });
+                const actionAnchor = document.createElement('a');
+                actionAnchor.download = 'published-note.html';
+                actionAnchor.href = URL.createObjectURL(blob);
+                actionAnchor.click();
+            }
+        }
+
+        // Initialize and bind instance properties onto active window thread
+        const StudioInstance = new TechnicalNotesStudio();
+        window.onload = () => StudioInstance.init();
+
+        // Global context proxy to keep compiled listener bindings hookable
+        function updatePreview() { StudioInstance.updatePreview(); }
+        function exportHTML() { StudioInstance.exportHTML(); }
+
+    </script>
+</body>
+</html>
