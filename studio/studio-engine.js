@@ -67,7 +67,7 @@ class TechnicalNotesStudio {
         document.addEventListener('click', () => {
             this.menuWrapper.classList.remove('active');
         });
-        
+
         this.menuToggleToolbar.addEventListener('click', () => {
             this.toolbar.classList.remove('collapsed'); // Explicit open pass
             this.menuWrapper.classList.remove('active');
@@ -410,22 +410,20 @@ class TechnicalNotesStudio {
             case 'h2': snippetText = "\n## Heading 2\n"; break;
             case 'bold': snippetText = "**bold text**"; break;
             case 'italic': snippetText = "*italic text*"; break;
-            case 'link': snippetText = "[Link Description](https://example.com)"; break;
+            case 'link': snippetText = "[Softmaxx Website](https://www.softmaxx.online)"; break;
             case 'list': snippetText = "\n* Item Description\n"; break;
             case 'math':
-                snippetText = "\n<div>\n$ text(Total Space Needed) = 50 text( GB) + 50 text( GB) = 100 text( GB) $\n</div>\n";
+                // space is needed around the $ DELIMS
+                snippetText = "\n<div>\n  $ frac{3}{4} = frac{300}{4} times frac{1}{100} = frac{300}{4}% = 75% $  \n</div>\n";
                 break;
-            case 'java':
-                snippetText = "\n<div class=\"source-code\">\n<pre>\n    <code class=\"language-java\">\npublic class NoteVerification {\n    public static void main(String[] args) {\n        System.out.println(\"Processing...\");\n    }\n}\n    </code>\n</pre>\n</div>\n";
+            case 'code':
+                snippetText = "\n<div class=\"source-code\">\n <pre>\n <code class=\"language-python\">\n\tlambda x: x if x<=1 else fib(x-1) + fib(x-2)\n </code>\n </pre>\n</div>\n";
                 break;
-            case 'terminal':
-                snippetText = "\n<pre><code class=\"language-shell-session\">\nrjha@vps:~$ ls -l /var/mail/vhosts/\ntotal 4\ndrwxr-xr-x 3 dms dms 4096 Jul  5 00:12 xdomain.com\n</code></pre>\n";
-                break;
-            case 'image':
-                snippetText = "\n<figure>\n    <img src=\"photos/image-name.png\" alt=\"Description Image\">\n    <figcaption>Figure 1: Typographic description goes here.</figcaption>\n</figure>\n";
+            case 'photo':
+                snippetText = "\n<figure>\n    <img src=\"/media/photos/elephant01.png\" alt=\"Elephant in grassland\">\n    <figcaption>Figure 1: Description of the photo.</figcaption>\n</figure>\n";
                 break;
             case 'video':
-                snippetText = "\n<div class=\"video-container\">\n<iframe width=\"560\" height=\"315\" src=\"https://youtube.com\" title=\"Video Player\" allowfullscreen></iframe>\n</div>\n";
+                snippetText = "\n<div class=\"video-container\">\n [paste the youtube embed code]\n</div>\n";
                 break;
         }
 

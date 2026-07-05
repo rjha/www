@@ -13,7 +13,7 @@
     <div id="dev-controls">
         <button class="dev-btn" id="save-btn">Save Edits</button>
         <button class="dev-btn secondary" id="reload-btn">Reload Studio</button>
-        <button class="dev-btn secondary" id="export-note-btn">Export Source</button>
+        <!-- <button class="dev-btn secondary" id="export-note-btn">Export Source</button> --> 
         <button class="dev-btn secondary" id="export-html-btn">🚀 Export HTML</button>
 
         <!-- Editor Toolbar Dropdown Container -->
@@ -33,6 +33,8 @@
                         <button data-theme="theme-dark">Linux Terminal</button>
                     </div>
                 </div>
+                <div class="menu-divider"></div>
+                    <button id="export-note-btn"">Export Source</button>
             </div>
         </div>
 
@@ -45,16 +47,18 @@
         <button data-action="h2">H2</button>
         <button data-action="bold"><b>B</b></button>
         <button data-action="italic"><i>I</i></button>
-        <button data-action="link">🔗 Link</button>
         <button data-action="list">• List</button>
         <div class="tb-divider"></div>
-        <button data-action="math">∑ Math</button>
-        <button data-action="java">☕ Java Block</button>
-        <button data-action="terminal">💻 Terminal</button>
-        <button data-action="image">📷 Photo</button>
+       
+        <button data-action="link">🔗 Link</button>
+        <button data-action="code">☕ Code Block</button>
+       
+        <button data-action="photo">📷 Photo</button>
         <button data-action="video">📺 Video</button>
+        <button data-action="math">∑ Math</button>
+        <div class="tb-divider"></div>
         <!-- NEW: Dedicated Close Button Float Anchor -->
-        <button class="tb-close-btn" id="close-toolbar-btn" title="Close Toolbar">[×]</button>
+        <button id="close-toolbar-btn" title="Close Toolbar">➜] Close</button>
     </div>
 
     <!-- Active Workspace Split Panel Grid -->
