@@ -203,7 +203,7 @@ class TechnicalNotesStudio {
     async loadExternalTemplateFile() {
         try {
             const timestamp = Date.now();
-            const response = await fetch(`studio-preview.html?v=${timestamp}`);
+            const response = await fetch(`preview.html?v=${timestamp}`);
             
             if (!response.ok) {
                 throw new Error(`HTTP network validation exception status: ${response.status}`);
@@ -287,7 +287,7 @@ class TechnicalNotesStudio {
         this.previewContent.innerHTML = compiledHtml;
         // --- STEP 4: TRIGGER RE-HIGHLIGHTS ---
         Prism.highlightAllUnder(this.previewContent);
-        
+
         // Reset status message back to confirmation layouts
         this.statusBadge.textContent = "✔ Saved & Compiled";
         this.statusBadge.style.color = "#4af626"; /* Emerald green lock accent */
@@ -319,7 +319,7 @@ class TechnicalNotesStudio {
 
         const memoryBlob = new Blob([productionDocumentString], { type: 'text/html' });
         const temporaryLink = document.createElement('a');
-        temporaryLink.download = 'xstudio-output.html';
+        temporaryLink.download = 'xstudio-out.html';
         temporaryLink.href = URL.createObjectURL(memoryBlob);
         temporaryLink.click();
     }

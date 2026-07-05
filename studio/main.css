@@ -1,0 +1,112 @@
+
+body {
+    max-width: 68ch !important;
+    margin: 0 auto !important;
+    font-size: 18px !important;
+    line-height: 1.62 !important;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+    background: #fafafa !important;
+    color: #2c3e50 !important;
+    padding: 40px 20px !important;
+}
+
+h1, h2, h3 { 
+    color: #1a1a1a !important; 
+    font-weight: 700 !important; 
+    margin-top: 1.5em !important; 
+    margin-bottom: 0.5em !important; 
+    line-height: 1.25 !important; 
+}
+
+
+h1 { font-size: 2.25rem !important; border-bottom: 1px solid #eaecef !important; padding-bottom: 0.3em !important; }
+h2 { font-size: 1.65rem !important; border-bottom: 1px solid #f0f0f0 !important; padding-bottom: 0.2em !important; }
+p { margin-bottom: 1.2em !important; text-align: justify !important; text-justify: inter-word !important; color: #2c3e50 !important; font-size: 18px !important; line-height: 1.62 !important; }
+ul, ol { padding-left: 2em !important; margin-bottom: 1.2em !important; }
+li { margin-bottom: 0.4em !important; color: #2c3e50 !important; }
+
+
+a {
+    color: #2b6cb0 !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+    border-bottom: 1px solid rgba(43, 108, 176, 0.25) !important;
+    padding-bottom: 1px !important;
+    transition: all 0.15s ease-in-out !important;
+}
+a:hover {
+    color: #3182ce !important;
+    border-bottom-color: #3182ce !important;
+    background-color: rgba(43, 108, 176, 0.05) !important;
+    border-radius: 2px !important;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5em 0;
+    font-size: 0.95rem;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    text-align: left;
+}
+
+th { background-color: #f5f5f5; font-weight: 600; }
+
+
+/* Dividers */
+hr { height: 1px; border: none; background-color: #eaecef; margin: 2.5em 0; }
+
+/* Typography and Spacing for Embedded Photos 
+/* HTML5 Semantic Layout Elements */
+
+figure {
+    margin: 2.5em 0;
+    padding: 0;
+    text-align: center; /* Centers both the image element and text layers */
+}
+
+figure img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto 0.8em auto; /* Centered, leaving a small gap for the caption */
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* Captions and Subtext Formatting */
+figcaption {
+    font-size: 0.85rem;      /* Lean font scale for meta descriptions */
+    line-height: 1.45;
+    color: #57606a;          /* Editorial gray, distinct from your main body color */
+    font-style: italic;      /* Classical presentation for technical notes */
+    max-width: 50ch;         /* Constraints caption width so lines track comfortably */
+    margin: 0 auto;          /* Multi-line captions remain centered */
+}
+
+/* Responsive Aspect Ratio Wrapper for Embedded iFrames */
+.video-container {
+    position: relative;
+    width: 100%;
+    /* Modern aspect-ratio property handles responsive sizing instantly */
+    aspect-ratio: 16 / 9; 
+    margin: 2.5em auto;
+    border-radius: 6px;
+    overflow: hidden; /* Cleans up iframe edges to match your layout style */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* Enforce fluid canvas rules onto the nested element */
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+

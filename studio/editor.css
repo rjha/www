@@ -1,0 +1,451 @@
+
+* { 
+    box-sizing: border-box; 
+    margin: 0; 
+    padding: 0; 
+}
+
+
+body { 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
+    height: 100vh; 
+    display: flex; 
+    flex-direction: column; 
+    background: #1e1e24; 
+    color: #fff; 
+}
+
+
+/* ==========================================================================
+   Typographical elements
+   ========================================================================== */
+
+h1, h2, h3 { 
+    color: #1a1a1a !important; 
+    font-weight: 700 !important; 
+    margin-top: 1.5em !important; 
+    margin-bottom: 0.5em !important; 
+    line-height: 1.25 !important; 
+}
+
+
+h1 { font-size: 2.25rem !important; border-bottom: 1px solid #eaecef !important; padding-bottom: 0.3em !important; }
+h2 { font-size: 1.65rem !important; border-bottom: 1px solid #f0f0f0 !important; padding-bottom: 0.2em !important; }
+p { margin-bottom: 1.2em !important; text-align: justify !important; text-justify: inter-word !important; color: #2c3e50 !important; font-size: 18px !important; line-height: 1.62 !important; }
+ul, ol { padding-left: 2em !important; margin-bottom: 1.2em !important; }
+li { margin-bottom: 0.4em !important; color: #2c3e50 !important; }
+
+
+a {
+    color: #2b6cb0 !important;
+    text-decoration: none !important;
+    font-weight: 500 !important;
+    border-bottom: 1px solid rgba(43, 108, 176, 0.25) !important;
+    padding-bottom: 1px !important;
+    transition: all 0.15s ease-in-out !important;
+}
+a:hover {
+    color: #3182ce !important;
+    border-bottom-color: #3182ce !important;
+    background-color: rgba(43, 108, 176, 0.05) !important;
+    border-radius: 2px !important;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5em 0;
+    font-size: 0.95rem;
+}
+
+th, td {
+    padding: 12px;
+    border: 1px solid #e0e0e0;
+    text-align: left;
+}
+
+th { background-color: #f5f5f5; font-weight: 600; }
+
+
+/* Dividers */
+hr { height: 1px; border: none; background-color: #eaecef; margin: 2.5em 0; }
+
+/* Typography and Spacing for Embedded Photos 
+/* HTML5 Semantic Layout Elements */
+
+figure {
+    margin: 2.5em 0;
+    padding: 0;
+    text-align: center; /* Centers both the image element and text layers */
+}
+
+figure img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto 0.8em auto; /* Centered, leaving a small gap for the caption */
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* Captions and Subtext Formatting */
+figcaption {
+    font-size: 0.85rem;      /* Lean font scale for meta descriptions */
+    line-height: 1.45;
+    color: #57606a;          /* Editorial gray, distinct from your main body color */
+    font-style: italic;      /* Classical presentation for technical notes */
+    max-width: 50ch;         /* Constraints caption width so lines track comfortably */
+    margin: 0 auto;          /* Multi-line captions remain centered */
+}
+
+/* Responsive Aspect Ratio Wrapper for Embedded iFrames */
+.video-container {
+    position: relative;
+    width: 100%;
+    /* Modern aspect-ratio property handles responsive sizing instantly */
+    aspect-ratio: 16 / 9; 
+    margin: 2.5em auto;
+    border-radius: 6px;
+    overflow: hidden; /* Cleans up iframe edges to match your layout style */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+/* Enforce fluid canvas rules onto the nested element */
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border: 0;
+}
+
+
+
+/* ==========================================================================
+   Editor Controls
+   ========================================================================== */
+
+
+#dev-controls { 
+    background: #111216; 
+    padding: 8px 16px; 
+    border-bottom: 1px solid #2d3139; 
+    display: flex; 
+    gap: 10px; 
+    align-items: center; 
+}
+
+.dev-btn { 
+    background: #2b6cb0; 
+    color: #fff; 
+    border: none; 
+    padding: 6px 14px; 
+    border-radius: 4px; 
+    font-size: 0.82rem; 
+    font-weight: 600; 
+    cursor: pointer; 
+}
+
+.dev-btn:hover { background: #3182ce; }
+.dev-btn.secondary { background: #2d3139; color: #e2e8f0; }
+.dev-btn.secondary:hover { background: #4a5568; }
+.dev-badge { font-size: 0.75rem; color: #a0aec0; margin-left: auto; font-family: monospace; font-weight: 600; }
+
+
+
+#workspace { 
+    display: flex; 
+    flex: 1; 
+    overflow: hidden; 
+    position: relative;
+}
+
+.pane { 
+    height: 100%; 
+    display: flex; 
+    flex-direction: column; 
+}
+
+/* Default pane layouts before user triggers cursor drag motions */
+#editor-pane { width: 50%; }
+#preview-pane { flex: 1; }
+
+
+
+/* Light/Whitish Minimalist Editor Canvas Theme */
+#editor { 
+    flex: 1; 
+    background: #f7f9fa; /* Off-white canvas tone */
+    color: #1a202c;      /* Soft dark slate text color for long form text writing */
+    border: none; 
+    padding: 24px; 
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace; 
+    font-size: 0.95rem; 
+    line-height: 1.55; 
+    resize: none; 
+    outline: none; 
+    border-right: 1px solid #e2e8f0;
+}
+
+#preview { 
+    flex: 1; 
+    background: #fafafa !important; 
+    color: #2c3e50 !important; 
+    padding: 40px; 
+    overflow-y: auto; 
+}
+
+/* Thicker, Tactile, Adjustable Panel Splitter Frame */
+#splitter {
+    width: 2px;
+    background: #2d3139;
+    cursor: col-resize;
+    height: 100%;
+    transition: background 0.15s ease;
+    z-index: 10;
+}
+
+#splitter:hover, #splitter:active {
+    background: #4a5568;
+}
+
+#preview-content { 
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    font-size: 18px;
+    line-height: 1.62;
+    color: #2c3e50;
+    max-width: 68ch; /* Crucial: Prevents eyes from straining on wide screens */
+    margin: 60px auto;
+    padding: 0 24px;
+    background-color: #fafafa;
+}
+
+
+
+/* ==========================================================================
+   Editor Panel Color Presets
+   ========================================================================== */
+
+/* 1. Theme Preset: Off-White (Your Preferred Default) */
+#editor.theme-light {
+    background: #f7f9fa !important;
+    color: #1a202c !important;
+    border-right: 1px solid #e2e8f0;
+}
+
+/* 2. Theme Preset: Slate Gray (Softer Contrast) */
+#editor.theme-slate {
+    background: #2d3748 !important;
+    color: #edf2f7 !important;
+    border-right: 1px solid #4a5568;
+}
+
+/* 3. Theme Preset: Terminal Black (High Contrast Dark) */
+#editor.theme-dark {
+    background: #0f141c !important;
+    color: #f5f5f7 !important;
+    border-right: 1px solid #1a202c;
+}
+
+
+
+/* ==========================================================================
+   Elegant IDE-Style Pane Headers
+   ========================================================================== */
+.pane-header {
+    background: #181b20;
+    color: #718096;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", monospace;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    padding: 8px 16px;
+    border-bottom: 1px solid #2d3139;
+    user-select: none;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+/* Visually guide the user that they can interact with the headers */
+.pane-header:hover {
+    background: #22262f;
+    color: #cbd5e0;
+}
+
+/* Ensure hidden panels completely shut down without breaking layout grids */
+.pane[style*="width: 0%"] {
+    display: none !important;
+}
+
+
+/* ==========================================================================
+ Collapsible GitHub Style Markdown Toolbar
+========================================================================== */
+#markdown-toolbar {
+    background: #eef1f4;
+    padding: 6px 12px;
+    border-bottom: 1px solid #cbd5e0;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-wrap: wrap;
+    user-select: none;
+}
+
+/* Enforce immediate workspace removal when collapsed state is flagged */
+#markdown-toolbar.collapsed {
+    display: none !important;
+}
+
+#markdown-toolbar button {
+    background: #ffffff;
+    color: #4a5568;
+    border: 1px solid #cbd5e0;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.1s ease, border-color 0.1s ease;
+}
+
+#markdown-toolbar button:hover {
+    background: #edf2f7;
+    color: #1a202c;
+    border-color: #718096;
+}
+
+#markdown-toolbar .tb-divider {
+    width: 1px;
+    height: 16px;
+    background: #cbd5e0;
+    margin: 0 4px;
+}
+
+#markdown-toolbar .tb-close-btn {
+    margin-left: auto; /* Pushes the button flush right against the monitor pane edge */
+    background: transparent !important;
+    color: #a0aec0 !important;
+    border: none !important;
+    font-size: 1.1rem !important;
+    padding: 2px 8px !important;
+    font-weight: bold !important;
+    transition: color 0.1s ease !important;
+}
+#markdown-toolbar .tb-close-btn:hover {
+    color: #e53e3e !important; /* Changes to a distinct crimson warning red on hover */
+}
+
+/* ==========================================================================
+  Cascading 2-Level Minimalist Dark Menu System Layout
+   ========================================================================== */
+
+/* Main menu positioning context container */
+.menu-item-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-left: 15px; /* Keeps dropdown separated from button row */
+}
+
+/* Base style for the global top toolbar menu trigger button */
+.menu-trigger {
+    background: #2d3139;
+    color: #e2e8f0;
+    border: 1px solid #4a5568;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.15s ease;
+}
+
+/* Active and Hover indicator highlight fills */
+.menu-trigger:hover,
+.menu-item-wrapper.active .menu-trigger {
+    background: #4a5568;
+    border-color: #cbd5e0;
+    color: #ffffff;
+}
+
+/* Level 1: Primary dropdown menu box container (Hidden by default) */
+.menu-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #111216; /* UPDATED: Matches your premium dark top-strip */
+    min-width: 190px;
+    border: 1px solid #2d3139; /* Premium flat border replacing retro boxes */
+    border-radius: 6px;
+    padding: 6px 0;
+    margin-top: 6px;
+    z-index: 100;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+}
+
+/* Reveal primary dropdown window when menu item wrapper holds .active status */
+.menu-item-wrapper.active .menu-dropdown {
+    display: block;
+}
+
+/* Standard internal menu action buttons list formatting */
+.menu-dropdown button,
+.submenu-dropdown button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    color: #cbd5e0; /* Clean off-white text color for readability */
+    border: none;
+    padding: 8px 16px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.1s ease, color 0.1s ease;
+}
+
+/* Hover tracking color paint fill for item selections */
+.menu-dropdown button:hover,
+.submenu-dropdown button:hover {
+    background: #2b6cb0; /* Modern dark blue highlight fill color */
+    color: #ffffff;
+}
+
+/* Minimalist dark dividing line */
+.menu-divider {
+    height: 1px;
+    background: #2d3139;
+    margin: 6px 0;
+}
+
+/* --------------------------------------------------------------------------
+   Level 2: Submenu Architecture & Hover Cascades
+   -------------------------------------------------------------------------- */
+.submenu-wrapper {
+    position: relative;
+}
+
+/* Level 2 Flyout Menu Window (Hidden by default) */
+.submenu-dropdown {
+    display: none;
+    position: absolute;
+    top: -6px;     /* Aligns perfectly alongside parent row tracking boundary */
+    left: 100%;    /* Flips box cleanly out to the right margin side edge */
+    background: #111216;
+    min-width: 160px;
+    border: 1px solid #2d3139;
+    border-radius: 6px;
+    padding: 6px 0;
+    z-index: 110;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+}
+
+/* CSS Cascade Trigger: Reveal second-level menu window on simple hover tracking */
+.submenu-wrapper:hover .submenu-dropdown {
+    display: block;
+}
