@@ -285,11 +285,8 @@ class TechnicalNotesStudio {
         });
 
         this.previewContent.innerHTML = compiledHtml;
+        // --- STEP 4: TRIGGER RE-HIGHLIGHTS ---
         Prism.highlightAllUnder(this.previewContent);
-
-        if (typeof AMprocessNode === 'function') {
-            AMprocessNode(this.previewContent, false);
-        }
         
         // Reset status message back to confirmation layouts
         this.statusBadge.textContent = "✔ Saved & Compiled";
