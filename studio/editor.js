@@ -34,6 +34,10 @@ class TechnicalNotesStudio {
         this.editorHeader = document.getElementById('editor-header');
         this.previewHeader = document.getElementById('preview-header');
         
+        // source file open dialog 
+        this.openNoteBtn = document.getElementById('menu-open-source');
+        this.currentFileHandle = null;
+
         this.rawTemplateText = '';
         this.isResizing = false;
     }
@@ -79,6 +83,8 @@ class TechnicalNotesStudio {
             this.editor.focus();
         });
 
+        this.openNoteBtn.addEventListener('click', () => this.openNoteFromDisk());
+
         // Delegate Level 2 Theme Buttons via dataset mappings 
         // inside your menu wrapper container
         this.menuWrapper.addEventListener('click', (e) => {
@@ -88,8 +94,6 @@ class TechnicalNotesStudio {
                 this.menuWrapper.classList.remove('active');
             }
         });
-
-        
 
         this.editor.classList.add('theme-light');
 
@@ -224,7 +228,7 @@ class TechnicalNotesStudio {
      * @returns {string} Fully compiled HTML payload string
      */
     compileMarkdownToHTML(rawText) {
-        
+
         if (typeof marked === 'undefined') {
             throw new Error(" FATAL: Marked.js parser engine not found. Aborting Compilation ...");
         }
@@ -470,6 +474,43 @@ class TechnicalNotesStudio {
         this.handleUnsavedStatusChange();
     }
 
+    /**
+     * Tool: Opens the native OS file explorer to read a markdown file into the editor
+     */
+    async openNoteFromDisk() {
+
+        if (!window.showOpenFilePicker) {
+            alert("Please use a modern browser that supports the native File System Access API.");
+            return;
+        }
+
+       try {
+            const [handle] = await window.showOpenFilePicker({
+                types: [{ description: 'Markdown Notes', accept: { 'text/markdown': ['.md'] } }]
+            });
+            
+            // TIMELINE PHASE 1: Immediate hourglass status trigger
+            this.statusBadge.textContent = "⏳ Loading Document...";
+            this.statusBadge.style.color = "#ecc94b"; /* Warning Gold */
+            
+            this.currentFileHandle = handle;
+            const fileData = await handle.getFile();
+            const textContent = await fileData.text();
+            
+            // TIMELINE PHASE 2: Lock the UI for exactly 1 second (3000ms) to let the loading bar breathe
+            await new Promise(resolve => setTimeout(resolve, 3000));
+            
+            // TIMELINE PHASE 3: Drop the source text into the textarea canvas
+            this.editor.value = textContent;
+            
+            // TIMELINE PHASE 4: Compile text and refresh the typography view
+            // This method automatically flips the status badge to "✔ Saved & Compiled" (Emerald Green)
+            this.updatePreview();
+
+        } catch (err) {
+            console.log("User cancelled file selection dialogue box.", err);
+        }
+    }
 
 
 }

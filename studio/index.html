@@ -22,7 +22,8 @@
         <div class="menu-item-wrapper" id="editor-menu-wrapper">
             <button class="menu-trigger" id="menu-main-trigger">⚙️ Editor</button>
             <div class="menu-dropdown">
-                <!-- Direct action to slide the formatting snippet bar open/closed -->
+                <!-- level:1 menus -->
+                <button id="menu-open-source">Open Source File</button>
                 <button id="menu-toggle-toolbar">Markdown Toolbar</button>
                 <div class="menu-divider"></div>
                 
@@ -36,14 +37,14 @@
                     </div>
                 </div>
                 <div class="menu-divider"></div>
-                    <button id="export-note-btn"">Export Source</button>
+                    <button id="export-note-btn"">Export Source File</button>
             </div>
         </div>
 
         <span class="dev-badge" id="status-badge">Status []</span>
     </div>
 
-    <!-- Collapsible GitHub Style Markdown Toolbar Container (Hidden by default) -->
+    <!-- Collapsible GitHub Style Markdown Toolbar (Hidden by default) -->
     <div id="markdown-toolbar" class="collapsed">
         <button data-action="h1">H1</button>
         <button data-action="h2">H2</button>
@@ -64,7 +65,6 @@
 
     <!-- Active Workspace Split Panel Grid -->
     <div id="workspace">
-        <!-- Editor Pane Section Container -->
         <!-- Editor Pane Section Container -->
         <div class="pane" id="editor-pane">
 
