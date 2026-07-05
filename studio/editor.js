@@ -57,7 +57,7 @@ class TechnicalNotesStudio {
         this.saveBtn.addEventListener('click', () => this.updatePreview());
         this.reloadBtn.addEventListener('click', () => this.hotReload());
         this.exportHtmlBtn.addEventListener('click', () => this.exportHTML());
-        this.exportNoteBtn.addEventListener('click', () => this.exportNote());
+        this.exportNoteBtn.addEventListener('click', () => this.exportNoteToDisk());
 
         // Toggle Editor Dropdown Menu
         const mainTrigger = document.getElementById('menu-main-trigger');
@@ -340,43 +340,6 @@ class TechnicalNotesStudio {
 
 
     /**
-     * export source panel content to studio-output.html file
-     */
-    exportHTML() {
-
-        // Read the content of source editor
-        const sourceMarkdownText = this.editor.value;
-        // Compile the source markup into outputHtml
-        const sourceHtml = this.compileMarkdownToHTML(sourceMarkdownText);
-        // Merge it safely into your studio-preview.html template envelope
-        const exportHtml = this.buildExportTemplate(sourceHtml);
-
-        // Stream the pristine byte stream directly to the local system file saver
-        const memoryBlob = new Blob([exportHtml], { type: 'text/html;charset=utf-8' });
-        const temporaryLink = document.createElement('a');
-        temporaryLink.download = 'xstudio-out.html';
-        temporaryLink.href = URL.createObjectURL(memoryBlob);
-        temporaryLink.click();
-        console.log("✔ HTML web page exported from source editor text.");
-
-    }
-
-    /**
-     * save editor panel content to studio-source.md file
-     */
-    exportNote() {
-        const rawNoteData = this.editor.value;
-        const memoryBlob = new Blob([rawNoteData], { type: 'text/markdown;charset=utf-8' });
-        
-        const fileAnchor = document.createElement('a');
-        fileAnchor.download = 'xstudio-source.md';
-        fileAnchor.href = URL.createObjectURL(memoryBlob);
-        fileAnchor.click();
-        console.log("✔ Raw markdown file exported to local system disk space.");
-    }
-
-
-    /**
      * Reads the chosen theme name token and repaints the textarea background on the fly
      * @param {string} targetThemeName - Selected profile class ('theme-light', 'theme-slate', or 'theme-dark')
      */
@@ -512,6 +475,101 @@ class TechnicalNotesStudio {
         }
     }
 
+    /**
+     * Tool: Saves source panel  content directly to a folder 
+     * and name of your choosing via an OS picker
+     */
+    async exportNoteToDisk() {
+
+        if (!window.showSaveFilePicker) {
+
+            alert("Please use a modern browser to do OS file access");
+            // Traditional fallback down to browser 
+            // Downloads folder if API is missing
+            const rawNoteData = this.editor.value;
+            const memoryBlob = new Blob([rawNoteData], { type: 'text/markdown;charset=utf-8' });
+            const fileAnchor = document.createElement('a');
+            fileAnchor.download = 'xstudio-source.md';
+            fileAnchor.href = URL.createObjectURL(memoryBlob);
+            fileAnchor.click();
+            console.log("✔ Raw markdown file exported to default system download channel.");
+            return;
+        }
+
+        try {
+            // Triggers a native OS "Save As" overlay dialogue box 
+            // tracking markdown files
+            const options = {
+                suggestedName: 'xstudio-source.md',
+                types: [{
+                    description: 'Source Markdown',
+                    accept: { 'text/markdown': ['.md'] }
+                }]
+            };
+
+            const fileHandle = await window.showSaveFilePicker(options);
+            // Open a secure system write stream connection to save the data onto your machine hard drive
+            const systemStream = await fileHandle.createWritable();
+            await systemStream.write(this.editor.value);
+            await systemStream.close();
+            
+            // Flash a successful status indicator label for human verification
+            this.statusBadge.textContent = `✔ Exported: ${fileHandle.name}`;
+            this.statusBadge.style.color = "#4af626"; /* Emerald Green */
+            console.log("✔ Raw markdown file exported successfully via native OS file save handle.");
+        } catch (error) {
+            console.log("User aborted the disk write window picker operation.", error);
+        }
+    }
+
+    
+    async exportHTML() {
+
+        // Read the content of source editor
+        const sourceMarkdownText = this.editor.value;
+        const sourceHtml = this.compileMarkdownToHTML(sourceMarkdownText);
+        const exportHtml = this.buildExportTemplate(sourceHtml);
+
+        // FALLBACK: Traditional browser file download 
+        // if the native System Access API is missing
+        if (!window.showSaveFilePicker) {
+            alert("Please use a modern browser to do OS file access");
+            // Stream the pristine byte stream directly to the local system file saver
+            const memoryBlob = new Blob([exportHtml], { type: 'text/html;charset=utf-8' });
+            const temporaryLink = document.createElement('a');
+            temporaryLink.download = 'xstudio-out.html';
+            temporaryLink.href = URL.createObjectURL(memoryBlob);
+            temporaryLink.click();
+            console.log("✔ HTML web page exported from studio.");
+            return;
+        }
+
+        try {
+            // Trigger a native OS "Save As" 
+            // overlay dialogue box tracking HTML documents
+            const options = {
+                suggestedName: 'xstudio-out.html',
+                types: [{
+                    description: 'HTML output Page',
+                    accept: { 'text/html': ['.html'] }
+                }]
+            };
+
+            const fileHandle = await window.showSaveFilePicker(options);
+            
+            // Open a secure system write stream connection to save the layout file onto your disk
+            const systemStream = await fileHandle.createWritable();
+            await systemStream.write(exportHtml);
+            await systemStream.close();
+            
+            // Flash a successful status indicator label for human verification
+            this.statusBadge.textContent = `✔ Exported: ${fileHandle.name}`;
+            this.statusBadge.style.color = "#4af626"; /* Emerald Green */
+            console.log("✔ HTML web page exported from source editor text via native OS file save handle.");
+        } catch (error) {
+            console.log("User aborted the HTML file save dialog box.", error);
+        }
+    }
 
 }
 
