@@ -276,3 +276,46 @@ body {
 }
 
 
+/* ==========================================================================
+ Collapsible GitHub-Style Snippet Toolbar
+========================================================================== */
+#markdown-toolbar {
+    background: #eef1f4;
+    padding: 6px 12px;
+    border-bottom: 1px solid #cbd5e0;
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-wrap: wrap;
+    user-select: none;
+}
+
+/* Enforce immediate workspace removal when collapsed state is flagged */
+#markdown-toolbar.collapsed {
+    display: none !important;
+}
+
+#markdown-toolbar button {
+    background: #ffffff;
+    color: #4a5568;
+    border: 1px solid #cbd5e0;
+    padding: 4px 10px;
+    border-radius: 4px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.1s ease, border-color 0.1s ease;
+}
+
+#markdown-toolbar button:hover {
+    background: #edf2f7;
+    color: #1a202c;
+    border-color: #718096;
+}
+
+#markdown-toolbar .tb-divider {
+    width: 1px;
+    height: 16px;
+    background: #cbd5e0;
+    margin: 0 4px;
+}

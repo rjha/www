@@ -23,6 +23,11 @@ class TechnicalNotesStudio {
         this.previewPane = document.getElementById('preview-pane'); 
         this.splitter = document.getElementById('splitter');
         
+        // Markdown Toolbar Bindings
+        this.toolbar = document.getElementById('markdown-toolbar');
+        this.toggleToolbarBtn = document.getElementById('toggle-toolbar-btn');
+
+
         // Double-Click Header Handle Bindings
         this.editorHeader = document.getElementById('editor-header');
         this.previewHeader = document.getElementById('preview-header');
@@ -72,6 +77,19 @@ class TechnicalNotesStudio {
         // double quick to expand panel to full screen
         this.editorHeader.addEventListener('dblclick', () => this.togglePaneFocus('editor'));
         this.previewHeader.addEventListener('dblclick', () => this.togglePaneFocus('preview'));
+
+        // Markdown toolbar events 
+        // Toggle toolbar slide state drawer execution loop
+        this.toggleToolbarBtn.addEventListener('click', () => this.toggleToolbarState());
+
+        // Dynamic event delegation handler to trace button data actions cleanly
+        this.toolbar.addEventListener('click', (e) => {
+            const targetButton = e.target.closest('button');
+            if (targetButton && targetButton.dataset.action) {
+                this.insertMarkdownTemplate(targetButton.dataset.action);
+            }
+        });
+
 
         console.log("✔ ES6 Technical Notes Studio engine initialized via explicit save framework.");
     }
@@ -343,6 +361,68 @@ class TechnicalNotesStudio {
         this.editor.focus();
     }
 
+        /**
+     * Intercepts formatting drawer visibility vectors cleanly
+     */
+    toggleToolbarState() {
+        this.toolbar.classList.toggle('collapsed');
+        // Toggle the button style profile to visually reflect active states
+        if (this.toolbar.classList.contains('collapsed')) {
+            this.toggleToolbarBtn.style.background = '';
+        } else {
+            this.toggleToolbarBtn.style.background = '#4a5568';
+        }
+        this.editor.focus();
+    }
+
+    /**
+     * Splices designated formatting boilerplate strings precisely into current cursor indices
+     * @param {string} action - Targeted markdown structural identity parameter identifier
+     */
+    insertMarkdownTemplate(action) {
+        const startPos = this.editor.selectionStart;
+        const endPos = this.editor.selectionEnd;
+        const currentText = this.editor.value;
+        let snippetText = "";
+
+        switch(action) {
+            case 'h1': snippetText = "\n# Heading 1\n"; break;
+            case 'h2': snippetText = "\n## Heading 2\n"; break;
+            case 'bold': snippetText = "**bold text**"; break;
+            case 'italic': snippetText = "*italic text*"; break;
+            case 'link': snippetText = "[Link Description](https://example.com)"; break;
+            case 'list': snippetText = "\n* Item Description\n"; break;
+            case 'math':
+                snippetText = "\n<div>\n$ text(Total Space Needed) = 50 text( GB) + 50 text( GB) = 100 text( GB) $\n</div>\n";
+                break;
+            case 'java':
+                snippetText = "\n<div class=\"source-code\">\n<pre>\n    <code class=\"language-java\">\npublic class NoteVerification {\n    public static void main(String[] args) {\n        System.out.println(\"Processing...\");\n    }\n}\n    </code>\n</pre>\n</div>\n";
+                break;
+            case 'terminal':
+                snippetText = "\n<pre><code class=\"language-shell-session\">\nrjha@vps:~$ ls -l /var/mail/vhosts/\ntotal 4\ndrwxr-xr-x 3 dms dms 4096 Jul  5 00:12 xdomain.com\n</code></pre>\n";
+                break;
+            case 'image':
+                snippetText = "\n<figure>\n    <img src=\"photos/image-name.png\" alt=\"Description Image\">\n    <figcaption>Figure 1: Typographic description goes here.</figcaption>\n</figure>\n";
+                break;
+            case 'video':
+                snippetText = "\n<div class=\"video-container\">\n<iframe width=\"560\" height=\"315\" src=\"https://youtube.com\" title=\"Video Player\" allowfullscreen></iframe>\n</div>\n";
+                break;
+        }
+
+        // Insert snippet text into current cursor index parameters
+        this.editor.value = currentText.substring(0, startPos) + snippetText + currentText.substring(endPos, currentText.length);
+        
+        // Return active editor pane cursor focus
+        this.editor.focus();
+        const updatedIndex = startPos + snippetText.length;
+        this.editor.selectionStart = updatedIndex;
+        this.editor.selectionEnd = updatedIndex;
+        
+        // Trigger status warning banner changes
+        this.handleUnsavedStatusChange();
+    }
+
+    
 
 }
 
