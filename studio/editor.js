@@ -217,6 +217,48 @@ class TechnicalNotesStudio {
         }
     }
 
+     /**
+     * Shared Core Compiler Pipeline
+     * Converts a raw text string into a clean compiled HTML structure with code isolation
+     * @param {string} rawText - The unparsed input string out of the editor canvas
+     * @returns {string} Fully compiled HTML payload string
+     */
+    compileMarkdownToHTML(rawText) {
+        
+        if (typeof marked === 'undefined') {
+            throw new Error(" FATAL: Marked.js parser engine not found. Aborting Compilation ...");
+        }
+
+        // --- STEP A: ISOLATE THE SOURCE CODE BLOCKS ---
+        const sourceCodePattern = /<div class="source-code">([\s\S]*?)<\/div>/g;
+        const savedCodeBlocks = [];
+
+        const preprocessedText = rawText.replace(sourceCodePattern, (match, interiorContent) => {
+            savedCodeBlocks.push(interiorContent);
+            return `<!--SOURCE_CODE_HOLDER_${savedCodeBlocks.length - 1}-->`;
+        });
+
+        // --- STEP B: RUN THE MARKDOWN COMPILER ---
+        let compiledHtml = "";
+        if (typeof marked.parse === 'function') {
+            compiledHtml = marked.parse(preprocessedText);
+        } else if (typeof marked === 'function') {
+            compiledHtml = marked(preprocessedText);
+        } else if (window.marked && typeof window.marked.parse === 'function') {
+            compiledHtml = window.marked.parse(preprocessedText);
+        }
+
+        // --- STEP C: RE-INJECT SOURCE CODES ---
+        savedCodeBlocks.forEach((codeMarkup, index) => {
+            const anchorToken = `<!--SOURCE_CODE_HOLDER_${index}-->`;
+            const replacementHtml = `<div class="source-code">${codeMarkup}</div>`;
+            compiledHtml = compiledHtml.replace(anchorToken, replacementHtml);
+        });
+
+        return compiledHtml;
+    }
+
+
     /**
      * Dynamic Script Injector: Prevents browser caches from latching onto local code edits
      */
@@ -250,48 +292,30 @@ class TechnicalNotesStudio {
     }
 
     /**
-     * Iterates parsing runs to build structured responsive typography preview updates
+     * 
+     * update the preview panel 
+     * 
      */
     updatePreview() {
-        if (typeof marked === 'undefined' || typeof Prism === 'undefined') return;
 
-        const rawMarkdownText = this.editor.value;
-        sessionStorage.setItem('notes_studio_draft', rawMarkdownText);
-
-        // --- STEP 1: ISOLATE THE SOURCE CODE BLOCKS ---
-        const sourceCodePattern = /<div class="source-code">([\s\S]*?)<\/div>/g;
-        const savedCodeBlocks = [];
-
-        const preprocessedText = rawMarkdownText.replace(sourceCodePattern, (match, interiorContent) => {
-            savedCodeBlocks.push(interiorContent);
-            return `<!--SOURCE_CODE_HOLDER_${savedCodeBlocks.length - 1}-->`;
-        });
-
-        // --- STEP 2: RUN THE MARKDOWN COMPILER ---
-        let compiledHtml = "";
-        if (typeof marked.parse === 'function') {
-            compiledHtml = marked.parse(preprocessedText);
-        } else if (typeof marked === 'function') {
-            compiledHtml = marked(preprocessedText);
-        } else if (window.marked && typeof window.marked.parse === 'function') {
-            compiledHtml = window.marked.parse(preprocessedText);
-        }
-
-        // --- STEP 3: RE-INJECT CODES INTO PREVIEW PANE ---
-        savedCodeBlocks.forEach((codeMarkup, index) => {
-            const anchorToken = `<!--SOURCE_CODE_HOLDER_${index}-->`;
-            const replacementHtml = `<div class="source-code">${codeMarkup}</div>`;
-            compiledHtml = compiledHtml.replace(anchorToken, replacementHtml);
-        });
-
-        this.previewContent.innerHTML = compiledHtml;
-        // --- STEP 4: TRIGGER RE-HIGHLIGHTS ---
+        // Call the clean shared compilation helper method
+        const sourceMarkdownText = this.editor.value;
+        sessionStorage.setItem('notes_studio_draft', sourceMarkdownText);
+        const sourceHtml = this.compileMarkdownToHTML(sourceMarkdownText);
+        this.previewContent.innerHTML = sourceHtml;
+        
+        // Let preview have its explicit highlight execution loops safely
         Prism.highlightAllUnder(this.previewContent);
+        if (typeof Prism === 'undefined') {
+            console.warn("⚠️ Prism.js syntax engine not found. skip syntax highlighting.");
+        } else {
+            Prism.highlightAllUnder(this.previewContent);
+        }
 
         // Reset status message back to confirmation layouts
         this.statusBadge.textContent = "✔ Saved & Compiled";
-        this.statusBadge.style.color = "#4af626"; /* Emerald green lock accent */
-        console.log("✔ Layout explicitly compiled successfully with raw code isolation.");
+        this.statusBadge.style.color = "#4af626";
+        console.log("✔ Preview pane parsed cleanly via shared compiler framework.");
     }
 
     /**
@@ -306,22 +330,31 @@ class TechnicalNotesStudio {
     /**
      * Structural Exporter Token Swapping Logic Pass
      */
-    buildProductionTemplate(bodyPayload) {
+    buildExportTemplate(bodyPayload) {
         return this.rawTemplateText.replace('<!-- BODY_PAYLOAD_HOOK -->', bodyPayload);
     }
 
+
     /**
-     * export preview panel content to studio-output.html file
+     * export source panel content to studio-output.html file
      */
     exportHTML() {
-        const compiledInteriorMarkup = this.previewContent.innerHTML;
-        const productionDocumentString = this.buildProductionTemplate(compiledInteriorMarkup);
 
-        const memoryBlob = new Blob([productionDocumentString], { type: 'text/html' });
+        // Read the content of source editor
+        const sourceMarkdownText = this.editor.value;
+        // Compile the source markup into outputHtml
+        const sourceHtml = this.compileMarkdownToHTML(sourceMarkdownText);
+        // Merge it safely into your studio-preview.html template envelope
+        const exportHtml = this.buildExportTemplate(sourceHtml);
+
+        // Stream the pristine byte stream directly to the local system file saver
+        const memoryBlob = new Blob([exportHtml], { type: 'text/html;charset=utf-8' });
         const temporaryLink = document.createElement('a');
         temporaryLink.download = 'xstudio-out.html';
         temporaryLink.href = URL.createObjectURL(memoryBlob);
         temporaryLink.click();
+        console.log("✔ HTML web page exported from source editor text.");
+
     }
 
     /**
