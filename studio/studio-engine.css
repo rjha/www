@@ -229,22 +229,6 @@ body {
     border-right: 1px solid #1a202c;
 }
 
-/* Style for the dropdown menu element inside the control strip */
-.theme-selector {
-    background: #2d3139;
-    color: #e2e8f0;
-    border: 1px solid #4a5568;
-    padding: 5px 10px;
-    border-radius: 4px;
-    font-size: 0.8rem;
-    font-weight: 600;
-    cursor: pointer;
-    outline: none;
-    margin-left: 20px; /* Separates it visually from button groups */
-}
-.theme-selector:hover {
-    border-color: #cbd5e0;
-}
 
 
 /* ==========================================================================
@@ -318,4 +302,117 @@ body {
     height: 16px;
     background: #cbd5e0;
     margin: 0 4px;
+}
+
+/* ==========================================================================
+  Cascading 2-Level Minimalist Dark Menu System Layout
+   ========================================================================== */
+
+/* Main menu positioning context container */
+.menu-item-wrapper {
+    position: relative;
+    display: inline-block;
+    margin-left: 15px; /* Keeps dropdown separated from button row */
+}
+
+/* Base style for the global top toolbar menu trigger button */
+.menu-trigger {
+    background: #2d3139;
+    color: #e2e8f0;
+    border: 1px solid #4a5568;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    outline: none;
+    transition: all 0.15s ease;
+}
+
+/* Active and Hover indicator highlight fills */
+.menu-trigger:hover,
+.menu-item-wrapper.active .menu-trigger {
+    background: #4a5568;
+    border-color: #cbd5e0;
+    color: #ffffff;
+}
+
+/* Level 1: Primary dropdown menu box container (Hidden by default) */
+.menu-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background: #111216; /* UPDATED: Matches your premium dark top-strip */
+    min-width: 190px;
+    border: 1px solid #2d3139; /* Premium flat border replacing retro boxes */
+    border-radius: 6px;
+    padding: 6px 0;
+    margin-top: 6px;
+    z-index: 100;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+}
+
+/* Reveal primary dropdown window when menu item wrapper holds .active status */
+.menu-item-wrapper.active .menu-dropdown {
+    display: block;
+}
+
+/* Standard internal menu action buttons list formatting */
+.menu-dropdown button,
+.submenu-dropdown button {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: transparent;
+    color: #cbd5e0; /* Clean off-white text color for readability */
+    border: none;
+    padding: 8px 16px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.1s ease, color 0.1s ease;
+}
+
+/* Hover tracking color paint fill for item selections */
+.menu-dropdown button:hover,
+.submenu-dropdown button:hover {
+    background: #2b6cb0; /* Modern dark blue highlight fill color */
+    color: #ffffff;
+}
+
+/* Minimalist dark dividing line */
+.menu-divider {
+    height: 1px;
+    background: #2d3139;
+    margin: 6px 0;
+}
+
+/* --------------------------------------------------------------------------
+   Level 2: Submenu Architecture & Hover Cascades
+   -------------------------------------------------------------------------- */
+.submenu-wrapper {
+    position: relative;
+}
+
+/* Level 2 Flyout Menu Window (Hidden by default) */
+.submenu-dropdown {
+    display: none;
+    position: absolute;
+    top: -6px;     /* Aligns perfectly alongside parent row tracking boundary */
+    left: 100%;    /* Flips box cleanly out to the right margin side edge */
+    background: #111216;
+    min-width: 160px;
+    border: 1px solid #2d3139;
+    border-radius: 6px;
+    padding: 6px 0;
+    z-index: 110;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+}
+
+/* CSS Cascade Trigger: Reveal second-level menu window on simple hover tracking */
+.submenu-wrapper:hover .submenu-dropdown {
+    display: block;
 }

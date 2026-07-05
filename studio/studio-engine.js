@@ -16,7 +16,10 @@ class TechnicalNotesStudio {
         this.statusBadge = document.getElementById('status-badge');
         
         // theme selector
-        this.themeDropdown = document.getElementById('theme-dropdown');
+        // Editor Dropdown menu in main toolbar  
+        this.menuWrapper = document.getElementById('editor-menu-wrapper');
+        this.menuToggleToolbar = document.getElementById('menu-toggle-toolbar');
+        
         // Splitter DOM nodes properties mapping
         this.workspace = document.getElementById('workspace');
         this.editorPane = document.getElementById('editor-pane');
@@ -25,7 +28,7 @@ class TechnicalNotesStudio {
         
         // Markdown Toolbar Bindings
         this.toolbar = document.getElementById('markdown-toolbar');
-        this.toggleToolbarBtn = document.getElementById('toggle-toolbar-btn');
+        
 
 
         // Double-Click Header Handle Bindings
@@ -40,6 +43,7 @@ class TechnicalNotesStudio {
      * Executes the hot runtime asset injections and configures event hook bindings
      */
     async init() {
+
         // Step 1: Force cache-busting loading sweeps across static framework files
         await this.injectNoCacheAssets();
 
@@ -52,8 +56,35 @@ class TechnicalNotesStudio {
         this.exportHtmlBtn.addEventListener('click', () => this.exportHTML());
         this.exportNoteBtn.addEventListener('click', () => this.exportNote());
 
-        // Configure theme presets on initialization pass
-        this.themeDropdown.addEventListener('change', () => this.changeEditorTheme());
+        // Toggle Editor Dropdown Menu
+        const mainTrigger = document.getElementById('menu-main-trigger');
+        mainTrigger.addEventListener('click', (e) => {
+            e.stopPropagation(); // Stops event bubbling so document listener doesn't immediately close it
+            this.menuWrapper.classList.toggle('active');
+        });
+        
+        // Close Menu automatically if a click lands 
+        // anywhere outside the wrapper container box
+        document.addEventListener('click', () => {
+            this.menuWrapper.classList.remove('active');
+        });
+
+        // Toggle Markdown Toolbar Action Route Hook
+        this.menuToggleToolbar.addEventListener('click', () => {
+            this.toggleToolbarState();
+            this.menuWrapper.classList.remove('active'); // Close menu on execution
+        });
+
+        // Delegate Level 2 Theme Buttons via dataset mappings 
+        // inside your menu wrapper container
+        this.menuWrapper.addEventListener('click', (e) => {
+            const themeButton = e.target.closest('button[data-theme]');
+            if (themeButton) {
+                this.changeEditorTheme(themeButton.dataset.theme);
+                this.menuWrapper.classList.remove('active');
+            }
+        });
+
         this.editor.classList.add('theme-light');
 
         // Step 4: Map Keydown listeners for Command+S / Control+S explicit overrides
@@ -78,10 +109,6 @@ class TechnicalNotesStudio {
         this.editorHeader.addEventListener('dblclick', () => this.togglePaneFocus('editor'));
         this.previewHeader.addEventListener('dblclick', () => this.togglePaneFocus('preview'));
 
-        // Markdown toolbar events 
-        // Toggle toolbar slide state drawer execution loop
-        this.toggleToolbarBtn.addEventListener('click', () => this.toggleToolbarState());
-
         // Dynamic event delegation handler to trace button data actions cleanly
         this.toolbar.addEventListener('click', (e) => {
             const targetButton = e.target.closest('button');
@@ -90,6 +117,7 @@ class TechnicalNotesStudio {
             }
         });
 
+       
 
         console.log("✔ ES6 Technical Notes Studio engine initialized via explicit save framework.");
     }
@@ -307,20 +335,20 @@ class TechnicalNotesStudio {
         console.log("✔ Raw markdown file exported to local system disk space.");
     }
 
+
     /**
-     * set the theme
+     * Reads the chosen theme name token and repaints the textarea background on the fly
+     * @param {string} targetThemeName - Selected profile class ('theme-light', 'theme-slate', or 'theme-dark')
      */
-    changeEditorTheme() {
-        const selectedTheme = this.themeDropdown.value;
-        
-        // Strip any previously applied theme helper tags out of the tracking list
+    changeEditorTheme(targetThemeName) {
+        // Strip any previously assigned canvas background tokens out of the tracking list
         this.editor.classList.remove('theme-light', 'theme-slate', 'theme-dark');
         
-        // Inject the newly designated theme helper class onto your editor node
-        this.editor.classList.add(selectedTheme);
+        // Inject your newly designated background class onto the active editor container node
+        this.editor.classList.add(targetThemeName);
         
-        // Save your theme choice to localStorage so the canvas state persists across browser reloads
-        localStorage.setItem('notes_studio_theme_preset', selectedTheme);
+        // Persist selection choice to local storage
+        localStorage.setItem('notes_studio_theme_preset', targetThemeName);
         this.editor.focus();
     }
 
@@ -361,19 +389,16 @@ class TechnicalNotesStudio {
         this.editor.focus();
     }
 
-        /**
-     * Intercepts formatting drawer visibility vectors cleanly
+    /**
+     * Change Markdown Toolbar visibility
      */
     toggleToolbarState() {
+        // Toggles the visibility class on your snippet container row
         this.toolbar.classList.toggle('collapsed');
-        // Toggle the button style profile to visually reflect active states
-        if (this.toolbar.classList.contains('collapsed')) {
-            this.toggleToolbarBtn.style.background = '';
-        } else {
-            this.toggleToolbarBtn.style.background = '#4a5568';
-        }
+        // Return active focus directly back onto the text entry canvas
         this.editor.focus();
     }
+
 
     /**
      * Splices designated formatting boilerplate strings precisely into current cursor indices
@@ -422,7 +447,7 @@ class TechnicalNotesStudio {
         this.handleUnsavedStatusChange();
     }
 
-    
+
 
 }
 
