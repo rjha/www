@@ -261,7 +261,7 @@ body {
 
 
 /* ==========================================================================
- Collapsible GitHub-Style Snippet Toolbar
+ Collapsible GitHub Style Markdown Toolbar
 ========================================================================== */
 #markdown-toolbar {
     background: #eef1f4;
@@ -302,6 +302,20 @@ body {
     height: 16px;
     background: #cbd5e0;
     margin: 0 4px;
+}
+
+#markdown-toolbar .tb-close-btn {
+    margin-left: auto; /* Pushes the button flush right against the monitor pane edge */
+    background: transparent !important;
+    color: #a0aec0 !important;
+    border: none !important;
+    font-size: 1.1rem !important;
+    padding: 2px 8px !important;
+    font-weight: bold !important;
+    transition: color 0.1s ease !important;
+}
+#markdown-toolbar .tb-close-btn:hover {
+    color: #e53e3e !important; /* Changes to a distinct crimson warning red on hover */
 }
 
 /* ==========================================================================

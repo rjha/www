@@ -28,9 +28,8 @@ class TechnicalNotesStudio {
         
         // Markdown Toolbar Bindings
         this.toolbar = document.getElementById('markdown-toolbar');
+        this.closeToolbarBtn = document.getElementById('close-toolbar-btn');
         
-
-
         // Double-Click Header Handle Bindings
         this.editorHeader = document.getElementById('editor-header');
         this.previewHeader = document.getElementById('preview-header');
@@ -68,11 +67,16 @@ class TechnicalNotesStudio {
         document.addEventListener('click', () => {
             this.menuWrapper.classList.remove('active');
         });
-
-        // Toggle Markdown Toolbar Action Route Hook
+        
         this.menuToggleToolbar.addEventListener('click', () => {
-            this.toggleToolbarState();
-            this.menuWrapper.classList.remove('active'); // Close menu on execution
+            this.toolbar.classList.remove('collapsed'); // Explicit open pass
+            this.menuWrapper.classList.remove('active');
+            this.editor.focus();
+        });
+
+        this.closeToolbarBtn.addEventListener('click', () => {
+            this.toolbar.classList.add('collapsed'); // Explicit close pass
+            this.editor.focus();
         });
 
         // Delegate Level 2 Theme Buttons via dataset mappings 
@@ -84,6 +88,8 @@ class TechnicalNotesStudio {
                 this.menuWrapper.classList.remove('active');
             }
         });
+
+        
 
         this.editor.classList.add('theme-light');
 
@@ -388,17 +394,6 @@ class TechnicalNotesStudio {
         
         this.editor.focus();
     }
-
-    /**
-     * Change Markdown Toolbar visibility
-     */
-    toggleToolbarState() {
-        // Toggles the visibility class on your snippet container row
-        this.toolbar.classList.toggle('collapsed');
-        // Return active focus directly back onto the text entry canvas
-        this.editor.focus();
-    }
-
 
     /**
      * Splices designated formatting boilerplate strings precisely into current cursor indices
