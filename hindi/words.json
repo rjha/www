@@ -1,0 +1,711 @@
+[
+    {
+        "hindi": "﻿असफलता",
+        "english_synonyms": [
+            "failure"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अचानक",
+        "english_synonyms": [
+            "suddenly"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "आवाज़",
+        "english_synonyms": [
+            "sound"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "आकार",
+        "english_synonyms": [
+            "figure",
+            "shape"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "आराम",
+        "english_synonyms": [
+            "rest",
+            "comfort",
+            "easy"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अथवा",
+        "english_synonyms": [
+            "OR"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अनिश्चित",
+        "english_synonyms": [
+            "not sure",
+            "not fixed"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "आशीर्वाद",
+        "english_synonyms": [
+            "Blessing"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "आरम्भ",
+        "english_synonyms": [
+            "start",
+            "Beginning"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अभिभावक",
+        "english_synonyms": [
+            "Guardian"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "आकर्षक",
+        "english_synonyms": [
+            "attractive"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अभ्यास",
+        "english_synonyms": [
+            "practice",
+            "exercise"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अतीत",
+        "english_synonyms": [
+            "past"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "विगत",
+        "english_synonyms": [
+            "gone",
+            "past"
+        ],
+        "hindi_synonyms": [
+            "बीता हुआ",
+            "समाप्त",
+            "गत"
+        ]
+    },
+    {
+        "hindi": "भविष्य",
+        "english_synonyms": [
+            "future"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "आदेश",
+        "english_synonyms": [
+            "Order"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "आसमान",
+        "english_synonyms": [
+            "Sky"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अम्बर",
+        "english_synonyms": [
+            "Sky"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अमावस",
+        "english_synonyms": [
+            "Dark moon"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "पूर्णिमा",
+        "english_synonyms": [
+            "Full mooon"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अपमान",
+        "english_synonyms": [
+            "insult",
+            "disgrace"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अपमानित",
+        "english_synonyms": [
+            "insulted"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "आक्रमण",
+        "english_synonyms": [
+            "Attack"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अंतर",
+        "english_synonyms": [
+            "difference"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "आंसू",
+        "english_synonyms": [
+            "Tears"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अगल-बगल",
+        "english_synonyms": [
+            "Nearby place"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अतिथि",
+        "english_synonyms": [
+            "Guest",
+            "Guy without an arrival date"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अर्थ",
+        "english_synonyms": [
+            "meaning",
+            "money"
+        ],
+        "hindi_synonyms": [
+            "अभिप्राय",
+            "मतलब"
+        ]
+    },
+    {
+        "hindi": "आर्थिक",
+        "english_synonyms": [
+            "economical",
+            "related to money"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "आंदोलन",
+        "english_synonyms": [
+            "Revolution",
+            "Agitation"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "परिवर्तन",
+        "english_synonyms": [
+            "change"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "सुधार",
+        "english_synonyms": [
+            "improvement"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अभिव्यक्त",
+        "english_synonyms": [
+            "express"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अभिव्यक्ति",
+        "english_synonyms": [
+            "expression"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अधिकांश",
+        "english_synonyms": [
+            "Most"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अधिक",
+        "english_synonyms": [
+            "more"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अंश",
+        "english_synonyms": [
+            "part"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "आत्मविश्वास",
+        "english_synonyms": [
+            "self-confidence"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "आत्मसम्मान",
+        "english_synonyms": [
+            "self-respect"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अंकुश",
+        "english_synonyms": [
+            "control"
+        ],
+        "hindi_synonyms": [
+            "नियंत्रण",
+            "रोक",
+            "पाबंदी"
+        ]
+    },
+    {
+        "hindi": "अंकुश",
+        "english_synonyms": [
+            "hook to control elephants"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अगुवा",
+        "english_synonyms": [
+            "leader"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अगुवाई",
+        "english_synonyms": [
+            "leadership"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अस्तबल",
+        "english_synonyms": [
+            "Horse stable"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अंत",
+        "english_synonyms": [
+            "end"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "आदि",
+        "english_synonyms": [
+            "start"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अत्याचार",
+        "english_synonyms": [
+            "atrocity",
+            "tyranny"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अध्यापक",
+        "english_synonyms": [
+            "teacher"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अध्ययन",
+        "english_synonyms": [
+            "studies"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अपाहिज",
+        "english_synonyms": [
+            "disabled"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अवसर",
+        "english_synonyms": [
+            "occasion",
+            "opportunity"
+        ],
+        "hindi_synonyms": [
+            "मौका",
+            "ठीक समय"
+        ]
+    },
+    {
+        "hindi": "अजीबोगरीब",
+        "english_synonyms": [
+            "weird",
+            "strange"
+        ],
+        "hindi_synonyms": [
+            "विचित्र",
+            "अद्भुत",
+            "अनोखा"
+        ]
+    },
+    {
+        "hindi": "आदान-प्रदान",
+        "english_synonyms": [
+            "exchange"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "औपचारिक",
+        "english_synonyms": [
+            "formal"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अनौपचारिक",
+        "english_synonyms": [
+            "informal"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "असमानता",
+        "english_synonyms": [
+            "inequality",
+            "unlike"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अलग",
+        "english_synonyms": [
+            "different",
+            "apart from"
+        ],
+        "hindi_synonyms": [
+            "भिन्न",
+            "पृथक",
+            "जुदा"
+        ]
+    },
+    {
+        "hindi": "अलावा",
+        "english_synonyms": [
+            "apart from"
+        ],
+        "hindi_synonyms": [
+            "अतिरिक्त'",
+            "'छोड़कर'",
+            "'सिवाय'"
+        ]
+    },
+    {
+        "hindi": "अधिकार",
+        "english_synonyms": [
+            "rights"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "आनंद",
+        "english_synonyms": [
+            "pleasure"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अंकित",
+        "english_synonyms": [
+            "carved",
+            "engraved"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अनेक",
+        "english_synonyms": [
+            "many",
+            "multiple"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अपशब्द",
+        "english_synonyms": [
+            "abuse",
+            "bad words",
+            "curse"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अन्याय",
+        "english_synonyms": [
+            "injustice"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अक्षर",
+        "english_synonyms": [
+            "letter"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अनंत",
+        "english_synonyms": [
+            "infinite",
+            "endless"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अपराध",
+        "english_synonyms": [
+            "crime"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अपराधी",
+        "english_synonyms": [
+            "criminal"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "अनमोल",
+        "english_synonyms": [
+            "priceless without मोल"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "इलाका",
+        "english_synonyms": [
+            "Area"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "ईर्ष्या",
+        "english_synonyms": [
+            "jealousy"
+        ],
+        "hindi_synonyms": [
+            "जलन",
+            "द्वेष"
+        ]
+    },
+    {
+        "hindi": "ईर्ष्यालु",
+        "english_synonyms": [
+            "jealous"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "इशारा",
+        "english_synonyms": [
+            "signal",
+            "pointing",
+            "gesture"
+        ],
+        "hindi_synonyms": [
+            "संकेत"
+        ]
+    },
+    {
+        "hindi": "इस्तेमाल",
+        "english_synonyms": [
+            "use"
+        ],
+        "hindi_synonyms": [
+            "प्रयोग"
+        ]
+    },
+    {
+        "hindi": "इकट्ठा",
+        "english_synonyms": [
+            "gather",
+            "collect",
+            "accumulate"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "उलटना",
+        "english_synonyms": [
+            "Flip",
+            "overturn",
+            "roll"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "उद्देशय",
+        "english_synonyms": [
+            "purpose",
+            "aim"
+        ],
+        "hindi_synonyms": [
+            "लक्ष्य"
+        ]
+    },
+    {
+        "hindi": "इरादा",
+        "english_synonyms": [
+            "intent"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "उत्तर",
+        "english_synonyms": [
+            "answer",
+            "a direction"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "उदाहरण",
+        "english_synonyms": [
+            "example"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "उत्पाद",
+        "english_synonyms": [
+            "produce"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "उत्पादन",
+        "english_synonyms": [
+            "production"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "उत्पादक",
+        "english_synonyms": [
+            "producer"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "उत्साह",
+        "english_synonyms": [
+            "excitement",
+            "enthusiasm",
+            "जोश"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "उछलना",
+        "english_synonyms": [
+            "Bounce"
+        ],
+        "hindi_synonyms": [
+            "कूदना"
+        ]
+    },
+    {
+        "hindi": "उद्यान",
+        "english_synonyms": [
+            "Garden",
+            "orchard"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "एकता",
+        "english_synonyms": [
+            "Unity",
+            "Harmony"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "एकत्रित",
+        "english_synonyms": [
+            "assembled",
+            "gathered",
+            "collected"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "उद्योग",
+        "english_synonyms": [
+            "Industry"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "उपाय",
+        "english_synonyms": [
+            "solution",
+            "remedy",
+            "means"
+        ],
+        "hindi_synonyms": [
+            "समाधान",
+            "तरकीब",
+            "युक्ति"
+        ]
+    }
+]

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hindi Word Quest</title>
+    <!-- Rock-solid Play CDN script for direct browser execution -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Bulletproof CSS fallback backup rules to enforce page separation */
+        .hidden-fallback {
+            display: none !important;
+        }
+        .game-btn {
+            transition: transform 0.1s ease, background-color 0.1s ease;
+        }
+        .game-btn:active {
+            transform: scale(0.98);
+        }
+    </style>
+</head>
+
+<body class="bg-gradient-to-br from-indigo-100 to-purple-200 min-h-screen flex flex-col items-center justify-center font-sans p-4">
+
+    <!-- MAIN GAME SCREEN (VISIBLE AT START) -->
+    <div id="game-card" class="bg-white rounded-3xl shadow-2xl p-8 max-w-md w-full text-center border-4 border-purple-400">
+        <div class="flex justify-between items-center mb-6">
+            <span class="text-lg font-bold text-purple-600 bg-purple-100 px-3 py-1 rounded-full">Score: <span id="score">0</span></span>
+            <span class="text-sm font-semibold text-gray-500">Question <span id="current-quest">1</span>/10</span>
+        </div>
+
+        <div class="mb-8">
+            <p class="text-gray-500 text-sm uppercase tracking-wider font-bold mb-2">Guess the English meaning for:</p>
+            <h1 id="hindi-word" class="text-5xl font-extrabold text-gray-800 tracking-tight py-4">---</h1>
+        </div>
+
+        <div id="options-container" class="grid grid-cols-1 gap-4 mb-6">
+            <!-- 4 Multiple choice buttons dynamically injected -->
+        </div>
+
+        <div id="feedback" class="text-xl font-bold h-8 transition-all duration-150"></div>
+    </div>
+
+    <!-- FINAL SCORE & REVIEW SHEET (HIDDEN BY DEFAULT AT START) -->
+    <div id="score-card" class="hidden-fallback bg-white rounded-3xl shadow-2xl p-8 max-w-2xl w-full border-4 border-green-400">
+        <h1 class="text-4xl font-extrabold text-center text-gray-800 mb-2">🏆 Round Complete!</h1>
+        <p class="text-2xl text-center text-gray-600 mb-6">Your Total Score: <span id="final-score" class="font-bold text-green-600">0</span> points</p>
+        
+        <h2 class="text-xl font-bold text-gray-700 mb-4 border-b pb-2">Vocabulary Review Sheet:</h2>
+        <div class="overflow-x-auto mb-6 max-h-80 overflow-y-auto border border-gray-200 rounded-xl">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-gray-100 text-gray-700 font-bold text-sm">
+                        <th class="p-3 border-b">Hindi Word</th>
+                        <th class="p-3 border-b">English Synonyms</th>
+                        <th class="p-3 border-b">Hindi Synonyms</th>
+                    </tr>
+                </thead>
+                <tbody id="review-table-body" class="text-sm text-gray-600">
+                    <!-- Words rows dynamically injected on round end -->
+                </tbody>
+            </table>
+        </div>
+        
+        <div class="text-center">
+            <button onclick="startNewRound()" class="bg-purple-600 hover:bg-purple-700 text-white text-lg font-bold py-3 px-8 rounded-2xl shadow-lg cursor-pointer transition">
+                Start Another Round
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let allWords = [];
+        let currentRoundWords = [];
+        let currentIndex = 0;
+        let score = 0;
+
+        // Fetch the external words.json file directly
+        async function loadVocabulary() {
+            try {
+                const response = await fetch('words.json');
+                allWords = await response.json();
+                startNewRound();
+            } catch (error) {
+                document.getElementById('hindi-word').innerText = "Error words.json";
+                console.error("Failed to load vocabulary schema file:", error);
+            }
+        }
+
+        function startNewRound() {
+            score = 0;
+            currentIndex = 0;
+            document.getElementById('score').innerText = score;
+            
+            // Randomly shuffle list and pick exactly 10 questions
+            currentRoundWords = [...allWords].sort(() => 0.5 - Math.random()).slice(0, 10);
+            
+            // Explicit view state toggles utilizing explicit classes
+            document.getElementById('score-card').classList.add('hidden-fallback');
+            document.getElementById('game-card').classList.remove('hidden-fallback');
+            
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            const feedbackEl = document.getElementById("feedback");
+            feedbackEl.innerText = "";
+            document.getElementById("current-quest").innerText = currentIndex + 1;
+            
+            const currentItem = currentRoundWords[currentIndex];
+            document.getElementById("hindi-word").innerText = currentItem.hindi;
+            
+            // Correct option is the joined string of synonyms
+            const correctString = currentItem.english_synonyms.join(", ");
+            
+            // Gather incorrect values from other objects
+            let incorrectPool = allWords
+                .filter(item => item.hindi !== currentItem.hindi)
+                .map(item => item.english_synonyms.join(", "));
+            
+            // Deduplicate options and slice 3 items randomly
+            incorrectPool = [...new Set(incorrectPool)].sort(() => 0.5 - Math.random()).slice(0, 3);
+            
+            // Merge options and shuffle layout positioning
+            const choiceOptions = [correctString, ...incorrectPool].sort(() => 0.5 - Math.random());
+            
+            const optionsContainer = document.getElementById("options-container");
+            optionsContainer.innerHTML = "";
+
+            choiceOptions.forEach(optionText => {
+                const btn = document.createElement("button");
+                btn.innerText = optionText;
+                btn.className = "game-btn w-full bg-gray-50 hover:bg-purple-500 hover:text-white text-gray-800 text-lg font-semibold py-3 px-5 rounded-2xl shadow border-b-4 border-gray-200 transition-all cursor-pointer text-left";
+                btn.onclick = () => handleChoiceSelection(optionText, correctString, btn);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function handleChoiceSelection(selected, correct, button) {
+            const optionsContainer = document.getElementById("options-container");
+            const feedbackEl = document.getElementById("feedback");
+            const buttons = optionsContainer.getElementsByTagName("button");
+            
+            for(let b of buttons) b.disabled = true;
+
+            if (selected === correct) {
+                score += 5;
+                button.className = button.className.replace('bg-gray-50', 'bg-green-500 text-white border-green-700');
+                feedbackEl.innerText = "🎉 Correct! +5 Points";
+                feedbackEl.className = "text-xl font-bold text-green-600";
+            } else {
+                score -= 2;
+                button.className = button.className.replace('bg-gray-50', 'bg-red-500 text-white border-red-700');
+                feedbackEl.innerText = "❌ Incorrect! -2 Points";
+                feedbackEl.className = "text-xl font-bold text-red-600";
+                
+                // Expose target correct item to back-seat aid learner
+                for(let b of buttons) {
+                    if(b.innerText === correct) {
+                        b.className = b.className.replace('bg-gray-50', 'bg-green-100 text-green-800 border-green-400 font-bold');
+                    }
+                }
+            }
+            
+            document.getElementById('score').innerText = score;
+
+            setTimeout(() => {
+                currentIndex++;
+                if (currentIndex < currentRoundWords.length) {
+                    loadQuestion();
+                } else {
+                    publishScoreSheet();
+                }
+            }, 2000);
+        }
+
+        function publishScoreSheet() {
+            // Swap cards cleanly
+            document.getElementById('game-card').classList.add('hidden-fallback');
+            document.getElementById('score-card').classList.remove('hidden-fallback');
+            document.getElementById('final-score').innerText = score;
+            
+            const tbody = document.getElementById('review-table-body');
+            tbody.innerHTML = "";
+            
+            currentRoundWords.forEach(item => {
+                const row = document.createElement('tr');
+                row.className = "border-b hover:bg-gray-50 transition";
+                row.innerHTML = `
+                    <td class="p-3 font-bold text-gray-800 text-base">${item.hindi}</td>
+                    <td class="p-3 text-purple-700 font-medium">${item.english_synonyms.join(', ') || '-'}</td>
+                    <td class="p-3 text-emerald-700 font-sans">${item.hindi_synonyms.join(', ') || '-'}</td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Initialize engine setup routines
+        loadVocabulary();
+    </script>
+</body>
+</html>
