@@ -70,10 +70,69 @@
     </div>
 
     <script>
+
         let allWords = [];
         let currentRoundWords = [];
         let currentIndex = 0;
         let score = 0;
+
+        // clap sound on success 
+        let audioCtx = null;
+        function playClapSound() {
+            // Initialize AudioContext on user interaction
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (!audioCtx) return;
+
+            const now = audioCtx.currentTime;
+            // We chain a quick sequence of ascending short bursts to simulate a cheerful chime/clap
+            const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+            
+            notes.forEach((freq, index) => {
+                const osc = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(freq, now + (index * 0.08));
+                
+                gainNode.gain.setValueAtTime(0.2, now + (index * 0.08));
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + (index * 0.08) + 0.15);
+                
+                osc.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                
+                osc.start(now + (index * 0.08));
+                osc.stop(now + (index * 0.08) + 0.15);
+            });
+        }
+
+        function playDisappointingSound() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (!audioCtx) return;
+
+            const now = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator();
+            const gainNode = audioCtx.createGain();
+
+            osc.type = 'sawtooth';
+            // Pitch starts at 180Hz and slides down to a low 90Hz frequency
+            osc.frequency.setValueAtTime(180, now); 
+            osc.frequency.linearRampToValueAtTime(90, now + 0.5); 
+
+            // Smooth volume fade out to prevent sharp audio clicks
+            gainNode.gain.setValueAtTime(0.15, now);
+            gainNode.gain.linearRampToValueAtTime(0.01, now + 0.5);
+
+            osc.connect(gainNode);
+            gainNode.connect(audioCtx.destination);
+
+            osc.start(now);
+            osc.stop(now + 0.5);
+        }
+
 
         // Fetch the external words.json file directly
         async function loadVocabulary() {
@@ -102,7 +161,9 @@
             loadQuestion();
         }
 
+
         function loadQuestion() {
+
             const feedbackEl = document.getElementById("feedback");
             feedbackEl.innerText = "";
             document.getElementById("current-quest").innerText = currentIndex + 1;
@@ -111,12 +172,18 @@
             document.getElementById("hindi-word").innerText = currentItem.hindi;
             
             // Correct option is the joined string of synonyms
-            const correctString = currentItem.english_synonyms.join(", ");
+            // const correctString = currentItem.english_synonyms.join(", ");
+            const correctString = currentItem.english_synonyms[Math.floor(Math.random() * currentItem.english_synonyms.length)];
+
             
             // Gather incorrect values from other objects
             let incorrectPool = allWords
                 .filter(item => item.hindi !== currentItem.hindi)
-                .map(item => item.english_synonyms.join(", "));
+               .map(item => {
+                    const synonyms = item.english_synonyms;
+                    return synonyms[Math.floor(Math.random() * synonyms.length)];
+                })
+                .filter(meaning => meaning !== correctString);
             
             // Deduplicate options and slice 3 items randomly
             incorrectPool = [...new Set(incorrectPool)].sort(() => 0.5 - Math.random()).slice(0, 3);
@@ -137,6 +204,7 @@
         }
 
         function handleChoiceSelection(selected, correct, button) {
+
             const optionsContainer = document.getElementById("options-container");
             const feedbackEl = document.getElementById("feedback");
             const buttons = optionsContainer.getElementsByTagName("button");
@@ -145,11 +213,15 @@
 
             if (selected === correct) {
                 score += 5;
+                playClapSound();
                 button.className = button.className.replace('bg-gray-50', 'bg-green-500 text-white border-green-700');
                 feedbackEl.innerText = "🎉 Correct! +5 Points";
                 feedbackEl.className = "text-xl font-bold text-green-600";
+
             } else {
+
                 score -= 2;
+                playDisappointingSound();
                 button.className = button.className.replace('bg-gray-50', 'bg-red-500 text-white border-red-700');
                 feedbackEl.innerText = "❌ Incorrect! -2 Points";
                 feedbackEl.className = "text-xl font-bold text-red-600";
