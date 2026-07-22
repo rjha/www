@@ -94,15 +94,25 @@
             osc.start(now); osc.stop(now + 0.4);
         }
 
+        // Declare the global empty Image container registry object
+        const alienImg = new Image();
+
         // --- Initialize Engine ---
         async function loadGameData() {
             try {
+                // 1. Fetch the vocabulary words JSON
                 const response = await fetch('words.json');
                 allWords = await response.json();
+                
+                // 2. Set the image path source directly to point to your new file asset
+                // This lets the browser fetch and load it safely over your network port
+                alienImg.src = 'monster.svg';
+                
+                // 3. Kick off the setup configurations and run physics frame loop
                 restartInvadersGame();
                 requestAnimationFrame(gameLoop);
             } catch (err) {
-                console.error("Critical: Could not read words.json", err);
+                console.error("Critical: Could not load game asset structures", err);
             }
         }
 
@@ -255,66 +265,75 @@
                 }
             }
 
-        function drawGameGraphics() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            function drawGameGraphics() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Twinkling matrix stars
-            ctx.fillStyle = "rgba(255,255,255,0.15)";
-            for (let i = 0; i < 15; i++) {
-                let sX = (Math.sin(Date.now() * 0.001 + i) * 0.5 + 0.5) * canvas.width;
-                ctx.fillRect(sX, (i * 22) % canvas.height, 2, 2);
+                // 1. Draw deep space background stars twinkling matrix profile
+                ctx.fillStyle = "rgba(255, 255, 255, 0.15)";
+                for (let i = 0; i < 15; i++) {
+                    let sX = (Math.sin(Date.now() * 0.001 + i) * 0.5 + 0.5) * canvas.width;
+                    ctx.fillRect(sX, (i * 22) % canvas.height, 2, 2);
+                }
+
+                // 2. Render the Retro SVG Arcade Alien Ship Matrix
+                // ADDED: Check naturalWidth to safely skip if the file is missing or broken
+                if (alienImg.complete && alienImg.naturalWidth !== 0) {
+                    ctx.drawImage(alienImg, ufo.x, ufo.y, ufo.width, ufo.height);
+                } else {
+                    // Simple neon fallback block in case image hasn't loaded yet
+                    ctx.fillStyle = "#a855f7";
+                    ctx.fillRect(ufo.x, ufo.y, ufo.width, ufo.height);
+                }
+
+                // 3. Print Central Target Display Word (Hindi prompt text shifted lower)
+                ctx.fillStyle = "#ffffff";
+                ctx.shadowColor = "black";
+                ctx.shadowBlur = 6;
+                ctx.font = "bold 22px sans-serif";
+                ctx.textAlign = "center";
+                ctx.textBaseline = "middle";
+                
+                // FIXED: Changed from (ufo.height / 2) to adding + 12 pixels to push text lower
+                ctx.fillText(currentItem ? currentItem.hindi : "", ufo.x + (ufo.width / 2), ufo.y + (ufo.height / 2) + 15);
+                ctx.shadowBlur = 0; // Turn off shadows for other game assets
+
+
+                // 4. Draw Base Weapon Defense Turret Gun Emplacement Matrix Platform
+                ctx.fillStyle = "#1e293b";
+                ctx.beginPath();
+                ctx.arc(canvas.width / 2, canvas.height + 10, 45, Math.PI, 0, false);
+                ctx.fill();
+                ctx.fillStyle = "#64748b";
+                ctx.fillRect(canvas.width / 2 - 6, canvas.height - 35, 12, 25);
+
+                // 5. Draw Launched Projectile Missile Engine Flare Core Profile
+                if (activeRocket) {
+                    ctx.fillStyle = activeRocket.isDeflected ? "#ef4444" : "#eab308";
+                    ctx.beginPath();
+                    ctx.arc(activeRocket.x, activeRocket.y, 8, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    // Projectile Meaning Data Text Flag String banner tracking overlay
+                    ctx.fillStyle = "#f8fafc";
+                    ctx.font = "12px sans-serif";
+                    ctx.fillText(activeRocket.text, activeRocket.x, activeRocket.y - 16);
+                }
+
+                // 6. Render Active Explosive Micro Particle Fields
+                particleExplosions.forEach(p => {
+                    ctx.save();
+                    ctx.globalAlpha = p.alpha;
+                    ctx.fillStyle = p.color;
+                    ctx.beginPath();
+                    ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                    ctx.fill();
+                    ctx.restore();
+                });
             }
 
-            // UFO Core Frame (Using plain fillRect for bulletproof browser compatibility)
-            ctx.fillStyle = "#334155";
-            ctx.fillRect(ufo.x, ufo.y, ufo.width, ufo.height);
-
-            // Cockpit center dome ring
-            ctx.fillStyle = "#06b6d4";
-            ctx.beginPath();
-            ctx.arc(ufo.x + (ufo.width / 2), ufo.y, 25, Math.PI, 0, false);
-            ctx.fill();
-
-            // Central Target Display Word (Hindi prompt text)
-            ctx.fillStyle = "#ffffff";
-            ctx.font = "bold 20px sans-serif";
-            ctx.textAlign = "center";
-            ctx.textBaseline = "middle";
-            ctx.fillText(currentItem ? currentItem.hindi : "", ufo.x + (ufo.width / 2), ufo.y + (ufo.height / 2));
-
-            // Gun Emplacement Turret Base
-            ctx.fillStyle = "#1e293b";
-            ctx.beginPath();
-            ctx.arc(canvas.width / 2, canvas.height + 10, 45, Math.PI, 0, false);
-            ctx.fill();
-            ctx.fillStyle = "#64748b";
-            ctx.fillRect(canvas.width / 2 - 6, canvas.height - 35, 12, 25);
-
-            // Projectile Core Flame
-            if (activeRocket) {
-                ctx.fillStyle = activeRocket.isDeflected ? "#ef4444" : "#eab308";
-                ctx.beginPath();
-                ctx.arc(activeRocket.x, activeRocket.y, 8, 0, Math.PI * 2);
-                ctx.fill();
-
-                ctx.fillStyle = "#f8fafc";
-                ctx.font = "12px sans-serif";
-                ctx.fillText(activeRocket.text, activeRocket.x, activeRocket.y - 16);
-            }
-
-            // Explosion Particles
-            particleExplosions.forEach(p => {
-                ctx.save();
-                ctx.globalAlpha = p.alpha;
-                ctx.fillStyle = p.color;
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                ctx.fill();
-                ctx.restore();
-            });
-        }
-
-        loadGameData();
+    
+            loadGameData();
 
         </script>
     </body>
