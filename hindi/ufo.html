@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hindi Space Invaders</title>
+    <!-- Rock-solid Play CDN script for direct browser execution -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { background-color: #020617 !important; color: #ffffff !important; }
+        .hidden-fallback { display: none !important; }
+        .ammo-slot { transition: all 0.15s ease; }
+        .loaded-slot { transform: scale(1.05); }
+    </style>
+</head>
+<body class="bg-slate-950 min-h-screen flex flex-col items-center justify-center font-sans p-4 text-white overflow-hidden">
+
+    <!-- GAME BOARD INTERFACE CONTAINER -->
+    <div class="bg-slate-900 border-4 border-cyan-500 rounded-3xl shadow-2xl p-6 max-w-2xl w-full flex flex-col items-center">
+        
+        <!-- Score Dashboard Header -->
+        <div class="w-full flex justify-between items-center mb-4 border-b border-slate-800 pb-3">
+            <span class="text-xl font-black text-cyan-400 tracking-wider">SCORE: <span id="score-val">0</span></span>
+            <span class="text-xs text-slate-400 font-bold tracking-widest bg-slate-950 px-3 py-1 rounded-md border border-slate-800">GAME MODE: INVADERS</span>
+        </div>
+
+        <!-- 2D Canvas Target Display Arena -->
+        <canvas id="spaceCanvas" width="600" height="320" class="bg-black border-2 border-slate-700 rounded-2xl w-full shadow-inner"></canvas>
+
+        <!-- Dynamic Rocket Loading Dock Instruction Banner -->
+        <p class="text-slate-400 text-xs font-semibold my-4 uppercase tracking-widest text-center">
+            Press keys <span class="text-yellow-400 font-black">1 - 4</span> to load cargo • Press <span class="text-cyan-400 font-black">ENTER</span> to fire launcher
+        </p>
+
+        <!-- Weapons Bay Configuration Bar -->
+        <div id="weapons-bay" class="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full">
+            <!-- 4 Rocket silos dynamically mapped here -->
+        </div>
+
+        <!-- GameOver Overlay Box -->
+        <div id="gameover-box" class="hidden-fallback fixed inset-0 bg-black/80 backdrop-blur-sm flex flex-col items-center justify-center text-center p-4 z-50">
+            <div class="bg-slate-900 border-4 border-red-500 rounded-3xl p-8 max-w-sm w-full">
+                <h1 class="text-4xl font-black text-red-500 mb-2 tracking-tighter">MISSION OVER</h1>
+                <p class="text-xl text-slate-300 mb-6">Final Score: <span id="final-score" class="font-bold text-cyan-400">0</span></p>
+                <button onclick="restartInvadersGame()" class="bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-extrabold text-lg py-3 px-8 rounded-xl shadow-lg cursor-pointer transition">
+                    Launch New Sortie
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let allWords = [];
+        let currentItem = null;
+        let choiceOptions = [];
+        let loadedIndex = null;
+        let score = 0;
+        let audioCtx = null;
+
+        const canvas = document.getElementById('spaceCanvas');
+        const ctx = canvas.getContext('2d');
+        
+        let ufo = { x: 300, y: 50, targetX: 300, width: 140, height: 40, speed: 2 };
+        let activeRocket = null;
+        let particleExplosions = [];
+
+        // --- Sound Engine ---
+        function initAudio() {
+            if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+
+        function playClapSound() {
+            initAudio(); if (!audioCtx) return;
+            const now = audioCtx.currentTime;
+            const notes = [523.25, 659.25, 783.99, 1046.50];
+            notes.forEach((freq, index) => {
+                const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
+                osc.type = 'triangle'; osc.frequency.setValueAtTime(freq, now + (index * 0.06));
+                gainNode.gain.setValueAtTime(0.2, now + (index * 0.06));
+                gainNode.gain.exponentialRampToValueAtTime(0.01, now + (index * 0.06) + 0.12);
+                osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+                osc.start(now + (index * 0.06)); osc.stop(now + (index * 0.06) + 0.12);
+            });
+        }
+
+        function playDisappointingSound() {
+            initAudio(); if (!audioCtx) return;
+            const now = audioCtx.currentTime;
+            const osc = audioCtx.createOscillator(); const gainNode = audioCtx.createGain();
+            osc.type = 'sawtooth'; osc.frequency.setValueAtTime(160, now);
+            osc.frequency.linearRampToValueAtTime(80, now + 0.4);
+            gainNode.gain.setValueAtTime(0.15, now); gainNode.gain.linearRampToValueAtTime(0.01, now + 0.4);
+            osc.connect(gainNode); gainNode.connect(audioCtx.destination);
+            osc.start(now); osc.stop(now + 0.4);
+        }
+
+        // --- Initialize Engine ---
+        async function loadGameData() {
+            try {
+                const response = await fetch('words.json');
+                allWords = await response.json();
+                restartInvadersGame();
+                requestAnimationFrame(gameLoop);
+            } catch (err) {
+                console.error("Critical: Could not read words.json", err);
+            }
+        }
+
+        function restartInvadersGame() {
+            score = 0;
+            activeRocket = null;
+            loadedIndex = null;
+            particleExplosions = [];
+            document.getElementById('score-val').innerText = score;
+            document.getElementById('gameover-box').classList.add('hidden-fallback');
+            nextTargetWave();
+        }
+
+        function nextTargetWave() {
+            activeRocket = null;
+            loadedIndex = null;
+            
+            currentItem = allWords[Math.floor(Math.random() * allWords.length)];
+            const correctMeaning = currentItem.english_synonyms[Math.floor(Math.random() * currentItem.english_synonyms.length)];
+            
+            let wrongMeanings = allWords
+                .filter(item => item.hindi !== currentItem.hindi)
+                .map(item => item.english_synonyms[Math.floor(Math.random() * item.english_synonyms.length)]);
+            wrongMeanings = [...new Set(wrongMeanings)].sort(() => 0.5 - Math.random()).slice(0, 3);
+            
+            choiceOptions = [correctMeaning, ...wrongMeanings].sort(() => 0.5 - Math.random());
+            
+            ufo.x = Math.random() * (canvas.width - ufo.width);
+            ufo.targetX = Math.random() * (canvas.width - ufo.width);
+            
+            renderWeaponsBayUi();
+        }
+
+        function renderWeaponsBayUi() {
+            const bay = document.getElementById('weapons-bay');
+            bay.innerHTML = "";
+
+            choiceOptions.forEach((optionText, idx) => {
+                const isLoaded = loadedIndex === idx;
+                const div = document.createElement('div');
+                div.id = `silo-${idx}`;
+                div.className = `ammo-slot border-2 p-3 rounded-xl text-center font-bold text-sm tracking-wide transition flex flex-col gap-1 items-center justify-center ${
+                    isLoaded 
+                    ? 'border-yellow-400 bg-slate-800 text-yellow-300 loaded-slot shadow-[0_0_15px_rgba(234,179,8,0.3)]' 
+                    : 'border-slate-700 bg-slate-950 text-slate-400'
+                }`;
+                div.innerHTML = `
+                    <span class="text-[10px] uppercase opacity-50 px-2 py-0.5 rounded bg-black/40 border border-slate-800">Slot ${idx + 1}</span>
+                    <span class="truncate max-w-full text-base font-extrabold mt-1">${optionText}</span>
+                `;
+                bay.appendChild(div);
+            });
+        }
+
+        // --- Keyboard Controls Engine ---
+        window.addEventListener('keydown', (e) => {
+            if (['1', '2', '3', '4'].includes(e.key)) {
+                const targetIdx = parseInt(e.key) - 1;
+                if (targetIdx < choiceOptions.length && !activeRocket) {
+                    loadedIndex = targetIdx;
+                    renderWeaponsBayUi();
+                }
+            }
+            if (e.key === 'Enter') {
+                if (loadedIndex !== null && !activeRocket) {
+                    activeRocket = {
+                        x: canvas.width / 2,
+                        y: canvas.height - 30,
+                        text: choiceOptions[loadedIndex],
+                        speed: 7,
+                        isDeflected: false,
+                        deflectVx: 0,
+                        deflectVy: 0
+                    };
+                    loadedIndex = null;
+                    renderWeaponsBayUi();
+                }
+            }
+        });
+
+        // --- Physics Engine & Core Render Loop ---
+        function gameLoop() {
+            updateGamePhysics();
+            drawGameGraphics();
+            requestAnimationFrame(gameLoop);
+        }
+
+        function createExplosion(x, y, color) {
+            for (let i = 0; i < 20; i++) {
+                particleExplosions.push({
+                    x: x, y: y,
+                    vx: (Math.random() - 0.5) * 6,
+                    vy: (Math.random() - 0.5) * 6,
+                    radius: Math.random() * 3 + 1,
+                    alpha: 1,
+                    decay: Math.random() * 0.03 + 0.02,
+                    color: color
+                });
+            }
+        }
+
+        function updateGamePhysics() {
+            if (Math.abs(ufo.x - ufo.targetX) < 5) {
+                ufo.targetX = Math.random() * (canvas.width - ufo.width);
+            }
+            ufo.x += (ufo.targetX > ufo.x ? 1 : -1) * ufo.speed;
+
+            particleExplosions.forEach((p, idx) => {
+                p.x += p.vx; p.y += p.vy; p.alpha -= p.decay;
+                if (p.alpha <= 0) particleExplosions.splice(idx, 1);
+            });
+
+            if (activeRocket) {
+                if (!activeRocket.isDeflected) {
+                    activeRocket.y -= activeRocket.speed;
+
+                    if (activeRocket.y <= ufo.y + ufo.height && activeRocket.y >= ufo.y) {
+                        if (activeRocket.x >= ufo.x && activeRocket.x <= ufo.x + ufo.width) {
+                            if (currentItem.english_synonyms.includes(activeRocket.text)) {
+                                score += 5;
+                                document.getElementById('score-val').innerText = score;
+                                playClapSound();
+                                createExplosion(activeRocket.x, activeRocket.y, '#10b981');
+                                nextTargetWave();
+                            } else {
+                                score -= 2;
+                                document.getElementById('score-val').innerText = score;
+                                playDisappointingSound();
+                                createExplosion(activeRocket.x, activeRocket.y, '#ef4444');
+                                
+                                activeRocket.isDeflected = true;
+                                activeRocket.deflectVx = (Math.random() > 0.5 ? 4 : -4);
+                                activeRocket.deflectVy = 5;
+                            }
+                        }
+                    }
+
+                    if (activeRocket && activeRocket.y < 0) {
+                        activeRocket = null;
+                    }
+                }
+                else {
+                        activeRocket.x += activeRocket.deflectVx;
+                        activeRocket.y += activeRocket.deflectVy;
+
+                        if (activeRocket.y > canvas.height || activeRocket.x < 0 || activeRocket.x > canvas.width) {
+                            activeRocket = null;
+                        }
+                    }
+                }
+            }
+
+        function drawGameGraphics() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            // Twinkling matrix stars
+            ctx.fillStyle = "rgba(255,255,255,0.15)";
+            for (let i = 0; i < 15; i++) {
+                let sX = (Math.sin(Date.now() * 0.001 + i) * 0.5 + 0.5) * canvas.width;
+                ctx.fillRect(sX, (i * 22) % canvas.height, 2, 2);
+            }
+
+            // UFO Core Frame (Using plain fillRect for bulletproof browser compatibility)
+            ctx.fillStyle = "#334155";
+            ctx.fillRect(ufo.x, ufo.y, ufo.width, ufo.height);
+
+            // Cockpit center dome ring
+            ctx.fillStyle = "#06b6d4";
+            ctx.beginPath();
+            ctx.arc(ufo.x + (ufo.width / 2), ufo.y, 25, Math.PI, 0, false);
+            ctx.fill();
+
+            // Central Target Display Word (Hindi prompt text)
+            ctx.fillStyle = "#ffffff";
+            ctx.font = "bold 20px sans-serif";
+            ctx.textAlign = "center";
+            ctx.textBaseline = "middle";
+            ctx.fillText(currentItem ? currentItem.hindi : "", ufo.x + (ufo.width / 2), ufo.y + (ufo.height / 2));
+
+            // Gun Emplacement Turret Base
+            ctx.fillStyle = "#1e293b";
+            ctx.beginPath();
+            ctx.arc(canvas.width / 2, canvas.height + 10, 45, Math.PI, 0, false);
+            ctx.fill();
+            ctx.fillStyle = "#64748b";
+            ctx.fillRect(canvas.width / 2 - 6, canvas.height - 35, 12, 25);
+
+            // Projectile Core Flame
+            if (activeRocket) {
+                ctx.fillStyle = activeRocket.isDeflected ? "#ef4444" : "#eab308";
+                ctx.beginPath();
+                ctx.arc(activeRocket.x, activeRocket.y, 8, 0, Math.PI * 2);
+                ctx.fill();
+
+                ctx.fillStyle = "#f8fafc";
+                ctx.font = "12px sans-serif";
+                ctx.fillText(activeRocket.text, activeRocket.x, activeRocket.y - 16);
+            }
+
+            // Explosion Particles
+            particleExplosions.forEach(p => {
+                ctx.save();
+                ctx.globalAlpha = p.alpha;
+                ctx.fillStyle = p.color;
+                ctx.beginPath();
+                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.restore();
+            });
+        }
+
+        loadGameData();
+
+        </script>
+    </body>
+</html>
