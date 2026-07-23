@@ -115,9 +115,9 @@
             "Past"
         ],
         "hindi_synonyms": [
-            "विगत",
             "समाप्त",
-            "गत"
+            "गत",
+            "विगत"
         ]
     },
     {
@@ -127,9 +127,9 @@
             "Past"
         ],
         "hindi_synonyms": [
+            "गत",
             "विगत",
-            "बीता हुआ",
-            "गत"
+            "बीता हुआ"
         ]
     },
     {
@@ -139,8 +139,8 @@
             "Past"
         ],
         "hindi_synonyms": [
-            "विगत",
             "समाप्त",
+            "विगत",
             "बीता हुआ"
         ]
     },
@@ -366,9 +366,9 @@
             "Control"
         ],
         "hindi_synonyms": [
-            "पाबंदी",
+            "अंकुश",
             "रोक",
-            "अंकुश"
+            "पाबंदी"
         ]
     },
     {
@@ -377,9 +377,9 @@
             "Control"
         ],
         "hindi_synonyms": [
-            "पाबंदी",
             "नियंत्रण",
-            "अंकुश"
+            "अंकुश",
+            "पाबंदी"
         ]
     },
     {
@@ -475,8 +475,8 @@
             "Opportunity"
         ],
         "hindi_synonyms": [
-            "अवसर",
-            "ठीक समय"
+            "ठीक समय",
+            "अवसर"
         ]
     },
     {
@@ -509,9 +509,9 @@
             "Strange"
         ],
         "hindi_synonyms": [
-            "अजीबोगरीब",
+            "अनोखा",
             "अद्भुत",
-            "अनोखा"
+            "अजीबोगरीब"
         ]
     },
     {
@@ -521,9 +521,9 @@
             "Strange"
         ],
         "hindi_synonyms": [
-            "अजीबोगरीब",
             "अनोखा",
-            "विचित्र"
+            "विचित्र",
+            "अजीबोगरीब"
         ]
     },
     {
@@ -533,9 +533,9 @@
             "Strange"
         ],
         "hindi_synonyms": [
-            "अजीबोगरीब",
+            "विचित्र",
             "अद्भुत",
-            "विचित्र"
+            "अजीबोगरीब"
         ]
     },
     {
@@ -586,9 +586,9 @@
             "Apart From"
         ],
         "hindi_synonyms": [
+            "पृथक",
             "अलग",
-            "जुदा",
-            "पृथक"
+            "जुदा"
         ]
     },
     {
@@ -610,9 +610,9 @@
             "Apart From"
         ],
         "hindi_synonyms": [
+            "पृथक",
             "भिन्न",
-            "अलग",
-            "पृथक"
+            "अलग"
         ]
     },
     {
@@ -632,8 +632,8 @@
             "Apart From"
         ],
         "hindi_synonyms": [
-            "अलावा",
             "सिवाय",
+            "अलावा",
             "छोड़कर"
         ]
     },
@@ -643,9 +643,9 @@
             "Apart From"
         ],
         "hindi_synonyms": [
-            "अलावा",
             "सिवाय",
-            "अतिरिक्त"
+            "अतिरिक्त",
+            "अलावा"
         ]
     },
     {
@@ -654,9 +654,9 @@
             "Apart From"
         ],
         "hindi_synonyms": [
+            "अतिरिक्त",
             "अलावा",
-            "छोड़कर",
-            "अतिरिक्त"
+            "छोड़कर"
         ]
     },
     {
@@ -764,8 +764,8 @@
             "Jealousy"
         ],
         "hindi_synonyms": [
-            "ईर्ष्या",
-            "द्वेष"
+            "द्वेष",
+            "ईर्ष्या"
         ]
     },
     {
@@ -774,8 +774,8 @@
             "Jealousy"
         ],
         "hindi_synonyms": [
-            "जलन",
-            "ईर्ष्या"
+            "ईर्ष्या",
+            "जलन"
         ]
     },
     {
@@ -986,9 +986,9 @@
             "Means"
         ],
         "hindi_synonyms": [
-            "तरकीब",
             "युक्ति",
-            "उपाय"
+            "उपाय",
+            "तरकीब"
         ]
     },
     {
@@ -1000,8 +1000,8 @@
         ],
         "hindi_synonyms": [
             "युक्ति",
-            "समाधान",
-            "उपाय"
+            "उपाय",
+            "समाधान"
         ]
     },
     {
@@ -1012,9 +1012,9 @@
             "Means"
         ],
         "hindi_synonyms": [
-            "तरकीब",
+            "उपाय",
             "समाधान",
-            "उपाय"
+            "तरकीब"
         ]
     },
     {
@@ -1168,8 +1168,8 @@
             "Imprisonment"
         ],
         "hindi_synonyms": [
-            "कारावास",
-            "जेल"
+            "जेल",
+            "कारावास"
         ]
     },
     {
@@ -1390,8 +1390,8 @@
             "Valuable"
         ],
         "hindi_synonyms": [
-            "मूल्यवान",
             "बहुमूल्य",
+            "मूल्यवान",
             "बेशकीमती"
         ]
     },
@@ -1402,9 +1402,9 @@
             "Valuable"
         ],
         "hindi_synonyms": [
-            "बेशकीमती",
+            "दुर्लभ",
             "बहुमूल्य",
-            "दुर्लभ"
+            "बेशकीमती"
         ]
     },
     {
@@ -1414,8 +1414,8 @@
             "Valuable"
         ],
         "hindi_synonyms": [
-            "मूल्यवान",
             "दुर्लभ",
+            "मूल्यवान",
             "बेशकीमती"
         ]
     },
@@ -1460,8 +1460,8 @@
         ],
         "hindi_synonyms": [
             "उल्लास",
-            "आनंद",
             "हर्ष",
+            "आनंद",
             "ख़ुशी"
         ]
     },
@@ -1472,9 +1472,9 @@
         ],
         "hindi_synonyms": [
             "उल्लास",
-            "ख़ुशी",
             "प्रसन्नता",
-            "आनंद"
+            "आनंद",
+            "ख़ुशी"
         ]
     },
     {
@@ -1484,9 +1484,447 @@
         ],
         "hindi_synonyms": [
             "हर्ष",
-            "ख़ुशी",
             "प्रसन्नता",
-            "आनंद"
+            "आनंद",
+            "ख़ुशी"
+        ]
+    },
+    {
+        "hindi": "खुशहाल",
+        "english_synonyms": [
+            "Happy"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "खुदाई",
+        "english_synonyms": [
+            "Digging"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "खूबसूरत",
+        "english_synonyms": [
+            "Beautiful",
+            "Nice Looking"
+        ],
+        "hindi_synonyms": [
+            "सुंदर",
+            "आकर्षक"
+        ]
+    },
+    {
+        "hindi": "सुंदर",
+        "english_synonyms": [
+            "Beautiful",
+            "Nice Looking"
+        ],
+        "hindi_synonyms": [
+            "खूबसूरत",
+            "आकर्षक"
+        ]
+    },
+    {
+        "hindi": "गर्व",
+        "english_synonyms": [
+            "Pride"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "ग्यारह",
+        "english_synonyms": [
+            "11"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "बारह",
+        "english_synonyms": [
+            "12"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "तेरह",
+        "english_synonyms": [
+            "13"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "गीला",
+        "english_synonyms": [
+            "Wet",
+            "Soggy"
+        ],
+        "hindi_synonyms": [
+            "भींगा"
+        ]
+    },
+    {
+        "hindi": "भींगा",
+        "english_synonyms": [
+            "Wet",
+            "Soggy"
+        ],
+        "hindi_synonyms": [
+            "गीला"
+        ]
+    },
+    {
+        "hindi": "सूखा",
+        "english_synonyms": [
+            "Dry"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "गद्य",
+        "english_synonyms": [
+            "Prose"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "गति",
+        "english_synonyms": [
+            "Speed",
+            "Motion",
+            "Pace"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "रफ़्तार",
+        "english_synonyms": [
+            "Speed"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "गवाह",
+        "english_synonyms": [
+            "Witness"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "गवाही",
+        "english_synonyms": [
+            "Evidence",
+            "Testimony"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "गंभीर",
+        "english_synonyms": [
+            "Serious",
+            "Grave"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "गंभीरता",
+        "english_synonyms": [
+            "Seriousness"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "गद्दार",
+        "english_synonyms": [
+            "Traitor"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "गद्दारी",
+        "english_synonyms": [
+            "Betrayal"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "गहराई",
+        "english_synonyms": [
+            "Depth"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "गरजना",
+        "english_synonyms": [
+            "Thundering"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "दहाड़ना",
+        "english_synonyms": [
+            "Roar"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "घबराहट",
+        "english_synonyms": [
+            "Nervousness",
+            "Anxiety"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "घरेलू",
+        "english_synonyms": [
+            "Domestic"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "चारा",
+        "english_synonyms": [
+            "Fodder",
+            "Animal Food"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "चना-चबेना",
+        "english_synonyms": [
+            "Snacks"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "चटपट",
+        "english_synonyms": [
+            "Spicy"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "चटपटी",
+        "english_synonyms": [
+            "Spicy"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "चमत्कार",
+        "english_synonyms": [
+            "Miracle"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "चिलचिलाती",
+        "english_synonyms": [
+            "Scorching"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "चिकना",
+        "english_synonyms": [
+            "Smooth"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "चिपक",
+        "english_synonyms": [
+            "Sticks"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "चक्कर",
+        "english_synonyms": [
+            "Round",
+            "Dizziness"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "चिकित्सालय",
+        "english_synonyms": [
+            "Hospital"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "चिकित्सा",
+        "english_synonyms": [
+            "Treatment"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "चिकित्सक",
+        "english_synonyms": [
+            "Doctor"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "चुनौती",
+        "english_synonyms": [
+            "Challenge"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "चर्चा",
+        "english_synonyms": [
+            "Discussion"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "चमक",
+        "english_synonyms": [
+            "Shine"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "चमकीला",
+        "english_synonyms": [
+            "Shining"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "चट्टान",
+        "english_synonyms": [
+            "Rock"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "चीख",
+        "english_synonyms": [
+            "Scream"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "चिल्लाना",
+        "english_synonyms": [
+            "Shouting"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "छाया",
+        "english_synonyms": [
+            "Shadow"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "झटका",
+        "english_synonyms": [
+            "Shock",
+            "Jerk"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "झुण्ड",
+        "english_synonyms": [
+            "Crowd",
+            "Group",
+            "Pack"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "जंजीर",
+        "english_synonyms": [
+            "Shackles"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "हथकड़ी",
+        "english_synonyms": [
+            "Handcuff"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "ज्योति",
+        "english_synonyms": [
+            "Light"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "जानकारी",
+        "english_synonyms": [
+            "Information"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "जिज्ञासा",
+        "english_synonyms": [
+            "Curiosity"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "ठिकाना",
+        "english_synonyms": [
+            "Destination",
+            "Hideout"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "ठोस",
+        "english_synonyms": [
+            "Solid"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "ढोना",
+        "english_synonyms": [
+            "To Carry",
+            "To Suffer"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "ढूंढ",
+        "english_synonyms": [
+            "Search"
+        ],
+        "hindi_synonyms": []
+    },
+    {
+        "hindi": "खोज",
+        "english_synonyms": [
+            "Discover",
+            "Search"
+        ],
+        "hindi_synonyms": [
+            "तलाश"
+        ]
+    },
+    {
+        "hindi": "तलाश",
+        "english_synonyms": [
+            "Discover",
+            "Search"
+        ],
+        "hindi_synonyms": [
+            "खोज"
         ]
     }
 ]
