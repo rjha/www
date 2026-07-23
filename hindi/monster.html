@@ -29,7 +29,7 @@
 
         <!-- Dynamic Rocket Loading Dock Instruction Banner -->
         <p class="text-slate-400 text-xs font-semibold my-4 uppercase tracking-widest text-center">
-            Press keys <span class="text-yellow-400 font-black">1 - 4</span> to load cargo • Press <span class="text-cyan-400 font-black">ENTER</span> to fire launcher
+            Use touchpad to <span class="text-yellow-400 font-black"> <span class="text-cyan-400 font-black">Click</span> and fire launcher
         </p>
 
         <!-- Weapons Bay Configuration Bar -->
@@ -151,6 +151,7 @@
             bay.innerHTML = "";
 
             choiceOptions.forEach((optionText, idx) => {
+
                 const isLoaded = loadedIndex === idx;
                 const div = document.createElement('div');
                 div.id = `silo-${idx}`;
@@ -163,35 +164,39 @@
                     <span class="text-[10px] uppercase opacity-50 px-2 py-0.5 rounded bg-black/40 border border-slate-800">Slot ${idx + 1}</span>
                     <span class="truncate max-w-full text-base font-extrabold mt-1">${optionText}</span>
                 `;
+
+                div.addEventListener('click', () => {
+                    // 1. Instantly set the selected slot
+                    loadedIndex = idx;
+                    
+                    // 2. Instantly launch the rocket
+                    if (loadedIndex !== null && !activeRocket) {
+                        activeRocket = {
+                            x: canvas.width / 2,
+                            y: canvas.height - 30,
+                            text: choiceOptions[loadedIndex],
+                            speed: 7,
+                            isDeflected: false,
+                            deflectVx: 0,
+                            deflectVy: 0
+                        };
+                        // Clear the load index and refresh the UI slots
+                        loadedIndex = null;
+                        renderWeaponsBayUi();
+                    }
+                });
+
+                // For mobile devices, map the exact same logic to touch
+                div.addEventListener('touchend', (e) => {
+                    e.preventDefault(); // Prevents double-triggering a click event
+                    div.click();        // Triggers the click block above
+                });
+
                 bay.appendChild(div);
             });
         }
 
-        // --- Keyboard Controls Engine ---
-        window.addEventListener('keydown', (e) => {
-            if (['1', '2', '3', '4'].includes(e.key)) {
-                const targetIdx = parseInt(e.key) - 1;
-                if (targetIdx < choiceOptions.length && !activeRocket) {
-                    loadedIndex = targetIdx;
-                    renderWeaponsBayUi();
-                }
-            }
-            if (e.key === 'Enter') {
-                if (loadedIndex !== null && !activeRocket) {
-                    activeRocket = {
-                        x: canvas.width / 2,
-                        y: canvas.height - 30,
-                        text: choiceOptions[loadedIndex],
-                        speed: 7,
-                        isDeflected: false,
-                        deflectVx: 0,
-                        deflectVy: 0
-                    };
-                    loadedIndex = null;
-                    renderWeaponsBayUi();
-                }
-            }
-        });
+        
 
         // --- Physics Engine & Core Render Loop ---
         function gameLoop() {
