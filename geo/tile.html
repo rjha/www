@@ -1,0 +1,152 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dynamic Coordinate Array XYZ Tile Finder</title>
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="/assets/geo/css/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+
+    <style>
+        body { margin: 0; padding: 0; font-family: sans-serif; display: flex; height: 100vh; }
+        #sidebar { width: 360px; padding: 15px; box-sizing: border-box; display: flex; flex-direction: column; background: #f8f9fa; border-right: 1px solid #ccc; }
+        #map { flex-grow: 1; height: 100%; }
+        textarea { width: 100%; height: 180px; font-family: monospace; resize: vertical; margin-bottom: 10px; }
+        button { padding: 10px; background: #28a745; color: white; border: none; cursor: pointer; border-radius: 4px; font-weight: bold; }
+        button:hover { background: #218838; }
+        #output { flex-grow: 1; overflow-y: auto; background: white; padding: 10px; border: 1px solid #ddd; margin-top: 10px; font-family: monospace; font-size: 13px; }
+        .zoom-display { font-size: 16px; margin: 10px 0; padding: 5px; background: #e9ecef; border-left: 4px solid #007bff; }
+        .tile-list { margin: 0; padding-left: 20px; }
+    </style>
+</head>
+<body>
+
+    <div id="sidebar">
+        <h3>1. Paste Polygon Coordinates</h3>
+        <textarea id="coords-input" placeholder="Paste array here... e.g., [[[lng, lat], [lng, lat], ...]]"></textarea>
+        <button onclick="loadCoordinates()">Plot & Calculate Tiles</button>
+        
+        <div class="zoom-display" id="current-zoom">Current Zoom: --</div>
+        
+        <h3>2. Intersecting Tiles</h3>
+        <div id="output">Paste a valid coordinate array and click the button to compute tiles.</div>
+    </div>
+
+    <div id="map"></div>
+
+    <!-- Leaflet JS -->
+    <script src="/assets/geo/js/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <script>
+        // Initialize Map centered on Patna area
+        const map = L.map('map').setView([25.6, 85.1], 12);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        let polygonLayer = null;
+        let currentBounds = null;
+
+        // Populate with your coordinate sample by default
+        document.getElementById('coords-input').value = JSON.stringify([
+            [
+                [85.074348, 25.601574],
+                [85.097866, 25.618614],
+                [85.126705, 25.607926],
+                [85.124474, 25.587941],
+                [85.100098, 25.582208],
+                [85.081387, 25.574151],
+                [85.074348, 25.601574]
+            ]
+        ], null, 2);
+
+        // Standard Longitude to Tile conversion
+        function lon2tile(lon, zoom) {
+            return Math.floor((lon + 180) / 360 * Math.pow(2, zoom));
+        }
+
+        // Standard Latitude to Tile conversion
+        function lat2tile(lat, zoom) {
+            return Math.floor((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * Math.pow(2, zoom));
+        }
+
+        // Core Calculation Engine
+        function calculateTiles() {
+            if (!currentBounds) return;
+
+            const zoom = map.getZoom();
+            document.getElementById('current-zoom').innerHTML = `<strong>Current Zoom Level:</strong> ${zoom}`;
+
+            const minLng = currentBounds.getWest();
+            const maxLng = currentBounds.getEast();
+            const minLat = currentBounds.getSouth();
+            const maxLat = currentBounds.getNorth();
+
+            const xMin = lon2tile(minLng, zoom);
+            const xMax = lon2tile(maxLng, zoom);
+            const yMin = lat2tile(maxLat, zoom); 
+            const yMax = lat2tile(minLat, zoom); 
+
+            const totalTiles = (xMax - xMin + 1) * (yMax - yMin + 1);
+
+            let html = `<strong>Bounding Box Range:</strong><br>`;
+            html += `X Range: ${xMin} to ${xMax}<br>`;
+            html += `Y Range: ${yMin} to ${yMax}<br>`;
+            html += `Total Grid Count: <b>${totalTiles} tiles</b><br><br>`;
+            html += `<strong>Tile Paths:</strong><br><ul class="tile-list">`;
+
+            if (totalTiles > 200) {
+                html += `<li>List preview hidden (too many tiles: ${totalTiles}). Use range parameters above to fetch.</li>`;
+            } else {
+                for (let x = xMin; x <= xMax; x++) {
+                    for (let y = yMin; y <= yMax; y++) {
+                        html += `<li>/${zoom}/${x}/${y}.png</li>`;
+                    }
+                }
+            }
+            html += `</ul>`;
+
+            document.getElementById('output').innerHTML = html;
+        }
+
+        // Parse User Array Inputs
+        function loadCoordinates() {
+            try {
+                const rawInput = document.getElementById('coords-input').value.trim();
+                const coordinates = JSON.parse(rawInput);
+
+                if (!Array.isArray(coordinates) || coordinates.length === 0) {
+                    throw new Error("Must be a valid nested array framework.");
+                }
+
+                // Clean old layer
+                if (polygonLayer) map.removeLayer(polygonLayer);
+
+                // Leaflet expects coordinates in [lat, lng] ordering, but GeoJSON format supplies them as [lng, lat].
+                // We reverse the layout order on the fly to render properly.
+                const leafletCoords = coordinates.map(ring => 
+                    ring.map(coord => [coord[1], coord[0]])
+                );
+
+                polygonLayer = L.polygon(leafletCoords, {
+                    color: "#007bff", weight: 3, fillOpacity: 0.2
+                }).addTo(map);
+
+                currentBounds = polygonLayer.getBounds();
+                map.fitBounds(currentBounds);
+                calculateTiles();
+
+            } catch (error) {
+                alert("Parsing Error! Verify your array structure looks exactly like:\n[[[lng, lat], [lng, lat], ...]]");
+            }
+        }
+
+        // Live calculation update whenever map is zoomed
+        map.on('zoomend', calculateTiles);
+        
+        // Initial setup load
+        loadCoordinates();
+    </script>
+</body>
+</html>
