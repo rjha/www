@@ -115,7 +115,7 @@
 केंद्रित ; focused on
 केंद्रिय ; central 
 क़तार ; line ; पंक्ति
-कीमत ; price ; मोल-भाव 
+कीमत ; price ; मोल;भाव 
 कीमती ; expensive, pricey
 बेशकीमती; priceless, valuable ; दुर्लभ, मूल्यवान, बहुमूल्य
 किनारा ; edge, river bank
@@ -177,5 +177,113 @@
 ढोना; To carry, to suffer
 ढूंढ; search 
 खोज; discover, search ; तलाश
-
-
+त्यौहार; Festival
+तरीका ; way, method
+तर्क ; argument, logic
+तैयार ; ready 
+तीखा ; spicy
+मीठा; sweet 
+तीखा ; sharp
+तीखा जवाब  ; savage reply
+तर्क ; logic, reasoning, argument 
+तारीफ़ ; praise, compliment; प्रशंसा, सराहना 
+तोहफा ; gift, present ;भेंट , सौगात
+तुलना ; comparison
+तनख्वाह ; salary ; वेतन
+तीव्र ; fast , rapid ; तेज  
+धीमा ; slow 
+तिथि ; Date 
+तीर्थ ; Pilgrimage 
+तीर्थयात्री ; Pilgrim 
+तपस्या ; penance
+तीर ; arrow 
+दृश्य  ; scene, visual ; नज़ारा
+दुःखी ; sad,  unhappy; उदास 
+दल ; group , party ; समूह
+दंग ; stunned, astonished, amazed ; हैरान, चकित
+दरबार ; court 
+दरबारी ; courtier, person in king’s court
+दाग ; stains, bloat ;  धब्बा 
+दृष्टि ; sight, eyesight, vision ; नजर 
+दिवस ; day ; दिन
+दिशा ; direction
+दुखिया ; sad ; पीड़ित 
+दोष ; defect, flaw, fault ; कमी, खराबी, गलती, त्रुटि
+दिक्कत ; trouble, difficulty, problem
+दया ; mercy, compassion  
+धैर्य ; patience
+धन ; money 
+धमकी ; threat 
+ध्यान ; attention, focus 
+न्याय ; justice
+नदी ;  River 
+नद  ; male river
+नौजवान  ; Young man ; युवा
+नवयुवती ; young woman ; युवती 
+निर्धन ; Poor 
+निकट ; Near; समीप
+नौकरी ; Job 
+निगाह ; eyes 
+नाप ; measurement 
+निशाना ; target 
+निर्मल ; clean 
+नन्हा ; small 
+नन्ही ; small
+निश्चय ; decision, determination 
+निश्चित ; sure, decided
+निश्चिंत ; carefree, worryless; बेफिक्र
+निर्दोष ; innocent ;बेकसूर, बेगुनाह, मासूम
+नर्म ; soft ; मुलायम, कोमल 
+नज़र ; vision, keep an eye on
+नक़ल ; copy 
+नकली ; fake 
+निर्णय ; decision ; फैसला
+पथ; road, ; राह, रास्ता; मार्ग 
+पद्य - poem 
+पछतावा; regret, remorse ; पश्चात्ताप, अफ़सोस
+पग-डंडी - walkway ; पग + डंडी
+डंडी; stick 
+परीक्षा; Exam ; इम्तिहान
+पश्चात; afterwards, after; subsequently 
+प्रथम; First 
+प्रयोग; use ; उपयोग 
+क्षमता; capacity 
+प्रसन्न; happy; खुश, हर्षित
+प्रेम; love 
+पत्थर; stone, rock ; शिला 
+प्रतिभा; talent 
+प्रतियोगिता; competition 
+परिवर्तन; change 
+प्रारम्भ; Beginning, start;  आरम्भ, शुरू 
+पालकी; Palanquin 
+पकवान; Nice food 
+पलट; change, turn 
+परन्तु;  but; किन्तु, लेकिन, मगर, फिर भी 
+प्रदेश; area;  इलाका
+प्रदर्शन; exhibition, display, demonstration 
+प्रशिक्षण; Training 
+परवरिश; care, parenting 
+प्रातः;  Morning; भोर, सुबह 
+दोपहर; afternoon ; मध्याह्न 
+संध्या; Evening; शाम , सायंकाल
+रात्रि ; Night ; रात 
+प्रातःकाल; morning
+प्रतीक; Symbol, Sign 
+चिह्न; sign 
+आकृति; shape, figure 
+प्रगति; Progress; बनावट
+शक्ल; Face 
+पंक्ति; Line
+पृष्ठभूमि - Background
+पृष्ठ; backside 
+पृष्ठ; page 
+पूर्व; East
+पश्चिम; west 
+उत्तर; North
+दक्षिण; south 
+पवित्र; pure
+अपवित्र; impure  
+प्रकृति; Nature 
+प्राकृतिक; Natural 
+प्रतिदिन; every day
+प्रयास; Effort
