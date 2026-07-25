@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +6,8 @@
 
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="/assets/geo/css/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
+    <!-- Leaflet.draw CSS -->
+    <link rel="stylesheet" href="/assets/geo/css/leaflet.draw.css" />
 
     <style>
         body { margin: 0; padding: 0; font-family: sans-serif; display: flex; height: 100vh; }
@@ -23,20 +24,24 @@
 <body>
 
     <div id="sidebar">
-        <h3>1. Paste Polygon Coordinates</h3>
+        <h3>Polygon Coordinates</h3>
         <textarea id="coords-input" placeholder="Paste array here... e.g., [[[lng, lat], [lng, lat], ...]]"></textarea>
         <button onclick="loadCoordinates()">Plot & Calculate Tiles</button>
         
         <div class="zoom-display" id="current-zoom">Current Zoom: --</div>
         
-        <h3>2. Intersecting Tiles</h3>
-        <div id="output">Paste a valid coordinate array and click the button to compute tiles.</div>
+        <h3>Tiles</h3>
+        <div id="output">Paste a valid coordinate array or use the map draw tool to compute tiles.</div>
     </div>
 
     <div id="map"></div>
 
     <!-- Leaflet JS -->
     <script src="/assets/geo/js/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    <!-- Leaflet.draw JS -->
+    <script src="/assets/geo/js/leaflet.draw.js"></script>
+    <script src="/assets/geo/js/turf.min.js"></script>
+
     <script>
         // Initialize Map centered on Patna area
         const map = L.map('map').setView([25.6, 85.1], 12);
@@ -45,7 +50,55 @@
             attribution: '© OpenStreetMap'
         }).addTo(map);
 
-        let polygonLayer = null;
+        // --- NEW: Custom Red GridLayer to draw visible grid cells and XYZ labels ---
+        const XYZGridLayer = L.GridLayer.extend({
+            createTile: function (coords) {
+                const tile = document.createElement('div');
+                tile.style.outline = '1px solid rgba(255, 0, 0, 0.5)'; // Clean red lines
+                tile.style.background = 'rgba(255, 0, 0, 0.02)'; // Subtle tint
+                tile.style.display = 'flex';
+                tile.style.flexDirection = 'column';
+                tile.style.justifyContent = 'center';
+                tile.style.alignItems = 'center';
+                tile.style.color = '#cc0000';
+                tile.style.fontWeight = 'bold';
+                tile.style.fontSize = '11px';
+                tile.style.fontFamily = 'monospace';
+                tile.style.textShadow = '1px 1px 0 white, -1px -1px 0 white';
+                
+                // Print the corresponding XYZ context values directly on screen
+                tile.innerHTML = `Z: ${coords.z}<br>X: ${coords.x}<br>Y: ${coords.y}`;
+                return tile;
+            }
+        });
+        new XYZGridLayer().addTo(map);
+        // ------------------------------------------------------------------------
+
+        // Feature group to manage our single drawn layer
+        const drawnItems = new L.FeatureGroup();
+        map.addLayer(drawnItems);
+
+        // Initialize the Draw Toolbar (Configured strictly for 1 Polygon only)
+        const drawControl = new L.Control.Draw({
+            draw: {
+                polygon: {
+                    allowIntersection: false,
+                    showArea: true,
+                    shapeOptions: { color: "#007bff", weight: 3, fillOpacity: 0.2 }
+                },
+                polyline: false,
+                circle: false,
+                rectangle: false,
+                marker: false,
+                circlemarker: false
+            },
+            edit: {
+                featureGroup: drawnItems,
+                remove: true
+            }
+        });
+        map.addControl(drawControl);
+
         let currentBounds = null;
 
         // Populate with your coordinate sample by default
@@ -71,46 +124,100 @@
             return Math.floor((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * Math.pow(2, zoom));
         }
 
-        // Core Calculation Engine
+        
         function calculateTiles() {
+            
             if (!currentBounds) return;
 
             const zoom = map.getZoom();
             document.getElementById('current-zoom').innerHTML = `<strong>Current Zoom Level:</strong> ${zoom}`;
 
-            const minLng = currentBounds.getWest();
-            const maxLng = currentBounds.getEast();
-            const minLat = currentBounds.getSouth();
-            const maxLat = currentBounds.getNorth();
+            // 1. Get structural limits for the raw loop index search grid
+            const minLng = currentBounds.getWest(), maxLng = currentBounds.getEast();
+            const minLat = currentBounds.getSouth(), maxLat = currentBounds.getNorth();
 
-            const xMin = lon2tile(minLng, zoom);
-            const xMax = lon2tile(maxLng, zoom);
-            const yMin = lat2tile(maxLat, zoom); 
-            const yMax = lat2tile(minLat, zoom); 
+            const xMin = lon2tile(minLng, zoom), xMax = lon2tile(maxLng, zoom);
+            const yMin = lat2tile(maxLat, zoom), yMax = lat2tile(minLat, zoom);
+            
+            // 2. Extract current active shape directly from your text-area value
+            let turfPolygon;
+            try {
+                const rawInput = document.getElementById('coords-input').value.trim();
+                const coordsArray = JSON.parse(rawInput);
+                turfPolygon = turf.polygon(coordsArray);
+            } catch(e) {
+                return; // Halt calculation if text payload is invalid or being typed
+            }
 
+            // Math for area
+            const R = 6378.137; 
+            const midLat = (minLat + maxLat) / 2;
+            const tileSideKm = (Math.cos(midLat * Math.PI / 180) * 2 * Math.PI * R) / Math.pow(2, zoom);
+            const tileAreaKm2 = tileSideKm * tileSideKm;
+
+            let intersectingTiles = [];
             const totalTiles = (xMax - xMin + 1) * (yMax - yMin + 1);
+
+            // Helper functions to reverse tile index back to dynamic Lon/Lat edges
+            function tile2lon(x, z) { return x / Math.pow(2, z) * 360 - 180; }
+            function tile2lat(y, z) {
+                const n = Math.PI - 2 * Math.PI * y / Math.pow(2, z);
+                return 180 / Math.PI * Math.atan(0.5 * (Math.exp(n) - Math.exp(-n)));
+            }
+
+            // 3. Scan bounding grid, but test exact polygon geometric intersections
+            for (let x = xMin; x <= xMax; x++) {
+                for (let y = yMin; y <= yMax; y++) {
+                    // Calculate spatial boundaries of this specific individual tile
+                    const w = tile2lon(x, zoom);
+                    const e = tile2lon(x + 1, zoom);
+                    const n = tile2lat(y, zoom);
+                    const s = tile2lat(y + 1, zoom);
+
+                    // Turn the single tile space into a turf layout box polygon
+                    const turfTileBox = turf.bboxPolygon([w, s, e, n]);
+
+                    // True spatial geometry overlap query evaluation
+                    const intersection = turf.intersect(turf.featureCollection([turfPolygon, turfTileBox]));
+
+                    if (intersection) {
+                        intersectingTiles.push({x: x, y: y});
+                    }
+                }
+            }
+
+            const trueCount = intersectingTiles.length;
+
+            // 4. Output string text generation
 
             let html = `<strong>Bounding Box Range:</strong><br>`;
             html += `X Range: ${xMin} to ${xMax}<br>`;
             html += `Y Range: ${yMin} to ${yMax}<br>`;
             html += `Total Grid Count: <b>${totalTiles} tiles</b><br><br>`;
-            html += `<strong>Tile Paths:</strong><br><ul class="tile-list">`;
 
-            if (totalTiles > 200) {
-                html += `<li>List preview hidden (too many tiles: ${totalTiles}). Use range parameters above to fetch.</li>`;
+            html = `<strong>True Intersecting Metrics:</strong><br>`;
+            html += `Bounding Grid Checked: ${totalTiles} tiles<br>`;
+            html += `Actual Touched Tiles: <b>${trueCount} tiles</b><br><br>`;
+            
+            html += `<strong>Individual Tile Metrics:</strong><br>`;
+            html += `Tile Side: <b>${tileSideKm.toFixed(3)} km</b><br>`;
+            html += `Approx. Tile Area: <b>${tileAreaKm2.toFixed(4)} km²</b><br><br>`;
+
+            html += `<strong>Intersecting Tile Paths:</strong><br><ul class="tile-list">`;
+            if (trueCount > 200) {
+                html += `<li>List preview hidden (too many active intersections: ${trueCount}). Zoom in closer.</li>`;
             } else {
-                for (let x = xMin; x <= xMax; x++) {
-                    for (let y = yMin; y <= yMax; y++) {
-                        html += `<li>/${zoom}/${x}/${y}.png</li>`;
-                    }
-                }
+                intersectingTiles.forEach(t => {
+                    html += `<li>/${zoom}/${t.x}/${t.y}.png</li>`;
+                });
             }
             html += `</ul>`;
-
             document.getElementById('output').innerHTML = html;
+
         }
 
-        // Parse User Array Inputs
+
+        // Parse User Manual Text Area Array Inputs
         function loadCoordinates() {
             try {
                 const rawInput = document.getElementById('coords-input').value.trim();
@@ -120,31 +227,74 @@
                     throw new Error("Must be a valid nested array framework.");
                 }
 
-                // Clean old layer
-                if (polygonLayer) map.removeLayer(polygonLayer);
+                drawnItems.clearLayers();
 
-                // Leaflet expects coordinates in [lat, lng] ordering, but GeoJSON format supplies them as [lng, lat].
-                // We reverse the layout order on the fly to render properly.
                 const leafletCoords = coordinates.map(ring => 
                     ring.map(coord => [coord[1], coord[0]])
                 );
 
-                polygonLayer = L.polygon(leafletCoords, {
+                const polygonLayer = L.polygon(leafletCoords, {
                     color: "#007bff", weight: 3, fillOpacity: 0.2
-                }).addTo(map);
+                });
+                drawnItems.addLayer(polygonLayer);
 
                 currentBounds = polygonLayer.getBounds();
                 map.fitBounds(currentBounds);
                 calculateTiles();
+
 
             } catch (error) {
                 alert("Parsing Error! Verify your array structure looks exactly like:\n[[[lng, lat], [lng, lat], ...]]");
             }
         }
 
-        // Live calculation update whenever map is zoomed
+        // Intercept Leaflet Canvas Drawing Events
+        map.on(L.Draw.Event.CREATED, function (e) {
+            drawnItems.clearLayers();
+
+            const layer = e.layer;
+            drawnItems.addLayer(layer);
+
+            const latlngs = layer.getLatLngs()[0];
+            const outputCoords = latlngs.map(ll => [
+                parseFloat(ll.lng.toFixed(6)), 
+                parseFloat(ll.lat.toFixed(6))
+            ]);
+
+            if (outputCoords.length > 0) {
+                outputCoords.push([outputCoords[0][0], outputCoords[0][1]]);
+            }
+
+            document.getElementById('coords-input').value = JSON.stringify([outputCoords], null, 2);
+
+            currentBounds = layer.getBounds();
+            calculateTiles();
+        });
+
+        map.on(L.Draw.Event.EDITED, function (e) {
+            e.layers.eachLayer(function (layer) {
+                const latlngs = layer.getLatLngs()[0];
+                const outputCoords = latlngs.map(ll => [
+                    parseFloat(ll.lng.toFixed(6)), 
+                    parseFloat(ll.lat.toFixed(6))
+                ]);
+                if (outputCoords.length > 0) {
+                    outputCoords.push([outputCoords[0][0], outputCoords[0][1]]);
+                }
+                document.getElementById('coords-input').value = JSON.stringify([outputCoords], null, 2);
+                currentBounds = layer.getBounds();
+                calculateTiles();
+            });
+        });
+
+        map.on(L.Draw.Event.DELETED, function () {
+            currentBounds = null;
+            document.getElementById('coords-input').value = "";
+            document.getElementById('output').innerHTML = "Paste a valid coordinate array or use the map draw tool to compute tiles.";
+        });
+
         map.on('zoomend', calculateTiles);
-        
+
         // Initial setup load
         loadCoordinates();
     </script>
