@@ -10,27 +10,95 @@
     <link rel="stylesheet" href="/assets/geo/css/leaflet.draw.css" />
 
     <style>
-        body { margin: 0; padding: 0; font-family: sans-serif; display: flex; height: 100vh; }
-        #sidebar { width: 360px; padding: 15px; box-sizing: border-box; display: flex; flex-direction: column; background: #f8f9fa; border-right: 1px solid #ccc; }
-        #map { flex-grow: 1; height: 100%; }
-        textarea { width: 100%; height: 180px; font-family: monospace; resize: vertical; margin-bottom: 10px; }
-        button { padding: 10px; background: #28a745; color: white; border: none; cursor: pointer; border-radius: 4px; font-weight: bold; }
-        button:hover { background: #218838; }
-        #output { flex-grow: 1; overflow-y: auto; background: white; padding: 10px; border: 1px solid #ddd; margin-top: 10px; font-family: monospace; font-size: 13px; }
-        .zoom-display { font-size: 16px; margin: 10px 0; padding: 5px; background: #e9ecef; border-left: 4px solid #007bff; }
-        .tile-list { margin: 0; padding-left: 20px; }
+        body { 
+            margin: 0; 
+            padding: 0; 
+            font-family: sans-serif; 
+            display: flex; 
+            height: 100vh; 
+        }
+
+        #sidebar { 
+            width: 360px; 
+            padding: 15px; 
+            box-sizing: border-box; 
+            display: flex; 
+            flex-direction: column; 
+            background: #f8f9fa; 
+            border-right: 1px solid #ccc; 
+        }
+
+        #map { 
+            flex-grow: 1; 
+            height: 100%; 
+        }
+
+        textarea { 
+            width: 100%; 
+            height: 180px; 
+            font-family: monospace; 
+            resize: vertical; 
+            margin-bottom: 10px; 
+        }
+
+        button { 
+            padding: 10px; 
+            background: #28a745; 
+            color: white; 
+            border: none; 
+            cursor: pointer; 
+            border-radius: 4px; 
+            font-weight: bold; 
+        }
+
+        button:hover { 
+            background: #218838; 
+        }
+
+        .result { 
+            flex: 1;            
+            min-height: 120px;  
+            overflow-y: auto;   
+            background: white; 
+            padding: 10px; 
+            border: 1px solid #ddd; 
+            margin-top: 10px; 
+            font-family: monospace; 
+            font-size: 13px; 
+        }
+
+        .zoom-display { 
+            font-size: 16px; 
+            margin: 10px 0; 
+            padding: 5px; 
+            background: #e9ecef; 
+            border-left: 4px solid #007bff; 
+        }
+
+        .tile-list { 
+            margin: 0; 
+            padding-left: 20px; 
+        }
     </style>
+
+    
+
 </head>
 <body>
 
     <div id="sidebar">
         <h3>Polygon Coordinates</h3>
+        
         <textarea id="polygon-input" placeholder="Paste array here... e.g., [[[lng, lat], [lng, lat], ...]]"></textarea>
-        <button onclick="loadCoordinates()">Plot & Calculate Tiles</button>
+        <button onclick="loadCoordinates()">Display on Map</button>
         <div class="zoom-display" id="current-zoom">Current Zoom: --</div>
         
-        <h3>Tiles</h3>
-        <div id="output">Paste a valid coordinate array or use the map draw tool to compute tiles.</div>
+        <h3>Polygon</h3>
+        <div class="result" id="polygon-data">Display polygon area and tiles stats </div>
+
+        <h3>Touching Tiles</h3>
+        <div class ="result" id="tile-path">Display touching tile paths.</div>
+
     </div>
 
     <div id="map"></div>
@@ -126,7 +194,7 @@
         }
 
         
-        function calculateTiles() {
+         function calculateTiles() {
             
             if (!currentBounds) return;
 
@@ -151,7 +219,10 @@
                 return; // Halt calculation if text payload is invalid or being typed
             }
 
-            // Math for area
+            // --- NEW: Calculate Total Polygon Area using Turf.js ---
+            const totalPolygonAreaM2 = turf.area(turfPolygon);
+
+            // Math for area (Keep for grid context stats if desired)
             const R = 6378.137; 
             const midLat = (minLat + maxLat) / 2;
             const tileSideKm = (Math.cos(midLat * Math.PI / 180) * 2 * Math.PI * R) / Math.pow(2, zoom);
@@ -183,38 +254,50 @@
                     const intersection = turf.intersect(turf.featureCollection([turfPolygon, turfTileBox]));
 
                     if (intersection) {
-                        intersectingTiles.push({x: x, y: y});
+                        // --- NEW: Calculate intersection area & coverage percentage ---
+                        const tileAreaM2 = turf.area(turfTileBox);
+                        const intersectionAreaM2 = turf.area(intersection);
+                        const coveragePercentage = (intersectionAreaM2 / tileAreaM2) * 100;
+
+                        intersectingTiles.push({
+                            x: x, 
+                            y: y,
+                            percentage: coveragePercentage.toFixed(1)
+                        });
                     }
                 }
             }
 
             const trueCount = intersectingTiles.length;
+            const bounding_x_tiles = (xMax - xMin + 1);
+            const bounding_y_tiles = (yMax - yMin + 1);
 
             // 4. Output string text generation
-
-            let html = `<strong>Bounding Box Range:</strong><br>`;
-            html += `X Range: ${xMin} to ${xMax}<br>`;
-            html += `Y Range: ${yMin} to ${yMax}<br>`;
-            html += `Total Grid Count: <b>${totalTiles} tiles</b><br><br>`;
-
-            html = `<strong>True Intersecting Metrics:</strong><br>`;
-            html += `Bounding Grid Checked: ${totalTiles} tiles<br>`;
-            html += `Actual Touched Tiles: <b>${trueCount} tiles</b><br><br>`;
+            let area_html = `<strong>Polygon Metrics:</strong><br>`;
+            area_html += `Enclosed Area: <b>${totalPolygonAreaM2.toLocaleString(undefined, {maximumFractionDigits: 2})} m²</b><br>`;
+            area_html += `Bounding Box: ${totalTiles} tiles<br>`;
+            area_html += `x: ${xMin}, ${xMax} (${bounding_x_tiles}) <br>`;
+            area_html += `y: ${yMin}, ${yMax} (${bounding_y_tiles}) <br>`;
+            area_html += `Actual Touched Tiles: <b>${trueCount} tiles</b><br> <br>`;
             
-            html += `<strong>Individual Tile Metrics:</strong><br>`;
-            html += `Tile Side: <b>${tileSideKm.toFixed(3)} km</b><br>`;
-            html += `Approx. Tile Area: <b>${tileAreaKm2.toFixed(4)} km²</b><br><br>`;
+            area_html += `<strong>Single Tile Metrics:</strong><br>`;
+            area_html += `Side: <b>${tileSideKm.toFixed(3)} km</b><br>`;
+            area_html += `Approx. Area: <b>${tileAreaKm2.toFixed(4)} km²</b><br><br>`;
+            document.getElementById('polygon-data').innerHTML = area_html;
+            
 
-            html += `<strong>Intersecting Tile Paths:</strong><br><ul class="tile-list">`;
+            let path_html = `<strong>Touching Tile Paths (% Coverage):</strong><br><ul class="tile-list">`;
             if (trueCount > 200) {
-                html += `<li>List preview hidden (too many active intersections: ${trueCount}). Zoom in closer.</li>`;
+                path_html += `<li>List preview hidden (too many active intersections: ${trueCount}). Zoom in closer.</li>`;
             } else {
                 intersectingTiles.forEach(t => {
-                    html += `<li>/${zoom}/${t.x}/${t.y}.png</li>`;
+                    // --- NEW: Render the path with its respective area percentage ---
+                    path_html += `<li>/${zoom}/${t.x}/${t.y}.png (<b>${t.percentage}%</b>)</li>`;
                 });
             }
-            html += `</ul>`;
-            document.getElementById('output').innerHTML = html;
+
+            path_html += `</ul>`; 
+            document.getElementById('tile-path').innerHTML = path_html;
 
         }
 
@@ -306,7 +389,7 @@
         map.on(L.Draw.Event.DELETED, function () {
             currentBounds = null;
             document.getElementById('polygon-input').value = "";
-            document.getElementById('output').innerHTML = "Paste a valid coordinate array or use the map draw tool to compute tiles.";
+            document.getElementById('polygon-data').innerHTML = "Paste a valid coordinate array or use the map draw tool to compute tiles.";
         });
 
         map.on('zoomend', calculateTiles);
