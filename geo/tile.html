@@ -82,6 +82,31 @@
             margin: 0; 
             padding-left: 20px; 
         }
+
+        .input-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin: 12px 0;
+        }
+
+        .input-row label {
+            font-weight: bold;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .input-row input {
+            width: 100px;
+            padding: 6px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-family: monospace;
+            text-align: right;
+        }
+
     </style>
 
     
@@ -92,11 +117,20 @@
     <div id="sidebar">
         <h3>Polygon Coordinates</h3>
         
+         <!-- altitude box -->
+        <div class="input-row">
+            <label for="altitude-input">Altitude (meters):</label>
+            <input type="number" id="altitude-input" value="53" min="0" max="9000">
+        </div>
+
         <textarea id="polygon-input" placeholder="Paste array here... e.g., [[[lng, lat], [lng, lat], ...]]"></textarea>
-        <button onclick="loadCoordinates()">Display on Map</button>
-        <div class="zoom-display" id="current-zoom">Current Zoom: --</div>
-        
+        <button onclick="loadCoordinates()">Reload the Map</button>
+
+       
         <h3>Polygon</h3>
+        <!-- xoom level -->
+        <div class="zoom-display" id="current-zoom">Current Zoom: --</div>
+       
         <div class="result" id="polygon-data">Display polygon area and tiles stats </div>
 
         <h3>Touching Tiles</h3>
@@ -319,7 +353,11 @@
         function calculateTiles() {
             
             if (!currentBounds) return;
+            // Earth radius constants
+            const EARTH_R_KM = 6378.137; 
+            const EARTH_R_M = 6371009;     
 
+            // map xoom level
             const zoom = map.getZoom();
             document.getElementById('current-zoom').innerHTML = `<strong>Current Zoom Level:</strong> ${zoom}`;
 
@@ -352,12 +390,17 @@
             // calculate area by correcting for ellipsoidal 
             // shape of the earth. we use Azimuthal equidistant approximation 
             // using the center of our polygon instead of using UTM zones.  
-            const totalPolygonAreaM2 = calculatePlanarConvexArea(turfPolygon.geometry.coordinates);
+            const totalPolygonArea_M2_A = calculatePlanarConvexArea(turfPolygon.geometry.coordinates);
+            // altitude correction 
+            const altitudeElement = document.getElementById('altitude-input');
+            const h = altitudeElement ? parseFloat(altitudeElement.value) || 0 : 0; 
+            const altitudeScaleFactor = Math.pow(1 + h / EARTH_R_M, 2); 
+            // Adjust the planar area dynamically
+            const totalPolygonAreaM2 = totalPolygonArea_M2_A * altitudeScaleFactor;
 
-            // Math for tile area at this zoom level
-            const R = 6378.137; 
+            
             const midLat = (minLat + maxLat) / 2;
-            const tileSideKm = (Math.cos(midLat * Math.PI / 180) * 2 * Math.PI * R) / Math.pow(2, zoom);
+            const tileSideKm = (Math.cos(midLat * Math.PI / 180) * 2 * Math.PI * EARTH_R_KM) / Math.pow(2, zoom);
             const tileAreaKm2 = tileSideKm * tileSideKm;
 
             let intersectingTiles = [];
