@@ -18,15 +18,16 @@
             height: 100vh; 
         }
 
-        #sidebar { 
+       #sidebar { 
             width: 360px; 
             padding: 15px; 
             box-sizing: border-box; 
-            display: flex; 
-            flex-direction: column; 
             background: #f8f9fa; 
             border-right: 1px solid #ccc; 
+            height: 100vh;
+            overflow-y: auto;   /* Allows the sidebar itself to scroll if you make the textarea massive */
         }
+
 
         #map { 
             flex-grow: 1; 
@@ -37,8 +38,9 @@
             width: 100%; 
             height: 180px; 
             font-family: monospace; 
-            resize: vertical; 
+            resize: vertical;    /* Enables vertical resizing */
             margin-bottom: 10px; 
+            box-sizing: border-box;
         }
 
         button { 
@@ -56,8 +58,8 @@
         }
 
         .result { 
-            flex: 1;            
             min-height: 120px;  
+            max-height: 300px;   /* Prevents the results lists from getting infinitely long */
             overflow-y: auto;   
             background: white; 
             padding: 10px; 
@@ -65,6 +67,7 @@
             margin-top: 10px; 
             font-family: monospace; 
             font-size: 13px; 
+            box-sizing: border-box;
         }
 
         .zoom-display { 
