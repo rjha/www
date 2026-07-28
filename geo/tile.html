@@ -231,6 +231,89 @@
             };
         }
 
+        /** 
+         * we cannot use static R (radius) number for the whole earth as the earth 
+         * is flattened at the top and bottom. The length of one degree of latitude 
+         * changes slightly from the equator to the poles because of that.
+         * 
+         * The length of one degree of longitude changes drastically because the lines 
+         * of longitude converge at the poles. Here we convert 1 degree LAT/LON to meters 
+         * using Standard WGS-84 Ellipsoid constants
+         * 
+        */
+        
+        function getGlobalMetricScales(centerLat) {
+
+            const latRad = centerLat * Math.PI / 180;
+
+            // Standard WGS-84 Ellipsoid constants
+            const a = 6378137.0;          // Equatorial radius in meters
+            const b = 6356752.314245;     // Polar radius in meters
+            const eSq = 1 - (b * b) / (a * a); // Square of eccentricity
+
+            // Calculate radius of curvature along the meridian (North-South)
+            const denominator = Math.pow(1 - eSq * Math.sin(latRad) * Math.sin(latRad), 1.5);
+            const M = (a * (1 - eSq)) / denominator;
+
+            // Calculate radius of curvature along the prime vertical (East-West)
+            const N = a / Math.sqrt(1 - eSq * Math.sin(latRad) * Math.sin(latRad));
+
+            // Convert radian metrics 
+            // cleanly to 1 Degree of movement on Earth
+            const latToMeters = (Math.PI / 180) * M;
+            const lngToMeters = (Math.PI / 180) * N * Math.cos(latRad);
+            return { latToMeters, lngToMeters };
+
+        }
+
+        /** 
+         * Azimuthal equdistant approximation using the center point of 
+         * our polygon. For standard surveys, we use the UTM zone conversion 
+         * factors. 
+         */ 
+
+        function calculatePlanarConvexArea(turfPolygonCoordinates) {
+
+            if(!turfPolygonCoordinates 
+                || turfPolygonCoordinates.length === 0) {
+                return 0;
+            }
+
+            // Get the first coordinates array. 
+            // We only store simple convex polygon data.
+            const points = turfPolygonCoordinates[0]; 
+            if (!points 
+                || points.length === 0) {
+                return 0;
+            }
+
+            let sumLng = 0, sumLat = 0;
+            points.forEach(coord => {
+                sumLng += coord[0];
+                sumLat += coord[1];
+            });
+
+            const centerLng = sumLng / points.length;
+            const centerLat = sumLat / points.length;
+            const scales = getGlobalMetricScales(centerLat);
+            
+            let projectedPoints = points.map(coord => [
+                (coord[0] - centerLng) * scales.lngToMeters,
+                (coord[1] - centerLat) * scales.latToMeters
+            ]);
+            
+            let numPoints = projectedPoints.length;
+            let area = 0;
+
+            for (let i = 0; i < numPoints; i++) {
+                let j = (i + 1) % numPoints;
+                area += projectedPoints[i][0] * projectedPoints[j][1];
+                area -= projectedPoints[j][0] * projectedPoints[i][1];
+            }
+
+            return Math.abs(area / 2);
+
+        }
 
 
         function calculateTiles() {
@@ -253,8 +336,8 @@
                 // Extract current active shape directly from text-area
                 const rawInput = document.getElementById('polygon-input').value.trim();
                 const polygonObj = JSON.parse(rawInput);
-                const coordsArray = polygonObj["coordinates"];
 
+                const coordsArray = polygonObj["coordinates"];
                 let rawTurfPolygon = turf.polygon(coordsArray);
                 // Enforce right-hand rule winding 
                 // for accurate area calculation
@@ -266,10 +349,10 @@
                 return; 
             }
 
-            // Calculate highly precise Ellipsoidal Area
-            // using the turf library
-            const sphericalAreaM2 = turf.area(turfPolygon);
-            const totalPolygonAreaM2 = sphericalAreaM2 * Math.pow(6371008.8 / 6378137, 2);
+            // calculate area by correcting for ellipsoidal 
+            // shape of the earth. we use Azimuthal equidistant approximation 
+            // using the center of our polygon instead of using UTM zones.  
+            const totalPolygonAreaM2 = calculatePlanarConvexArea(turfPolygon.geometry.coordinates);
 
             // Math for tile area at this zoom level
             const R = 6378.137; 
@@ -387,15 +470,15 @@
 
         // Intercept Leaflet Canvas Drawing Events
         map.on(L.Draw.Event.CREATED, function (e) {
-            drawnItems.clearLayers();
 
+            drawnItems.clearLayers();
             const layer = e.layer;
             drawnItems.addLayer(layer);
 
             const latlngs = layer.getLatLngs()[0];
             const outputCoords = latlngs.map(ll => [
-                parseFloat(ll.lng.toFixed(6)), 
-                parseFloat(ll.lat.toFixed(6))
+                parseFloat(ll.lng.toFixed(8)), 
+                parseFloat(ll.lat.toFixed(8))
             ]);
 
             if (outputCoords.length > 0) {
@@ -418,8 +501,8 @@
             e.layers.eachLayer(function (layer) {
                 const latlngs = layer.getLatLngs()[0];
                 const outputCoords = latlngs.map(ll => [
-                    parseFloat(ll.lng.toFixed(6)), 
-                    parseFloat(ll.lat.toFixed(6))
+                    parseFloat(ll.lng.toFixed(8)), 
+                    parseFloat(ll.lat.toFixed(8))
                 ]);
                 if (outputCoords.length > 0) {
                     outputCoords.push([outputCoords[0][0], outputCoords[0][1]]);
