@@ -25,9 +25,8 @@
 
     <div id="sidebar">
         <h3>Polygon Coordinates</h3>
-        <textarea id="coords-input" placeholder="Paste array here... e.g., [[[lng, lat], [lng, lat], ...]]"></textarea>
+        <textarea id="polygon-input" placeholder="Paste array here... e.g., [[[lng, lat], [lng, lat], ...]]"></textarea>
         <button onclick="loadCoordinates()">Plot & Calculate Tiles</button>
-        
         <div class="zoom-display" id="current-zoom">Current Zoom: --</div>
         
         <h3>Tiles</h3>
@@ -102,7 +101,9 @@
         let currentBounds = null;
 
         // Populate with your coordinate sample by default
-        document.getElementById('coords-input').value = JSON.stringify([
+        document.getElementById('polygon-input').value = JSON.stringify({
+            "type": "Polygon",
+            "coordinates": [
             [
                 [85.074348, 25.601574],
                 [85.097866, 25.618614],
@@ -112,7 +113,7 @@
                 [85.081387, 25.574151],
                 [85.074348, 25.601574]
             ]
-        ], null, 2);
+        ]}, null, 2);
 
         // Standard Longitude to Tile conversion
         function lon2tile(lon, zoom) {
@@ -142,8 +143,9 @@
             // 2. Extract current active shape directly from your text-area value
             let turfPolygon;
             try {
-                const rawInput = document.getElementById('coords-input').value.trim();
-                const coordsArray = JSON.parse(rawInput);
+                const rawInput = document.getElementById('polygon-input').value.trim();
+                const polygonObj = JSON.parse(rawInput);
+                const coordsArray = polygonObj["coordinates"];
                 turfPolygon = turf.polygon(coordsArray);
             } catch(e) {
                 return; // Halt calculation if text payload is invalid or being typed
@@ -219,16 +221,18 @@
 
         // Parse User Manual Text Area Array Inputs
         function loadCoordinates() {
+
             try {
-                const rawInput = document.getElementById('coords-input').value.trim();
-                const coordinates = JSON.parse(rawInput);
+
+                const rawInput = document.getElementById('polygon-input').value.trim();
+                const polygonObj = JSON.parse(rawInput);
+                const coordinates = polygonObj["coordinates"];
 
                 if (!Array.isArray(coordinates) || coordinates.length === 0) {
                     throw new Error("Must be a valid nested array framework.");
                 }
 
                 drawnItems.clearLayers();
-
                 const leafletCoords = coordinates.map(ring => 
                     ring.map(coord => [coord[1], coord[0]])
                 );
@@ -236,8 +240,8 @@
                 const polygonLayer = L.polygon(leafletCoords, {
                     color: "#007bff", weight: 3, fillOpacity: 0.2
                 });
-                drawnItems.addLayer(polygonLayer);
 
+                drawnItems.addLayer(polygonLayer);
                 currentBounds = polygonLayer.getBounds();
                 map.fitBounds(currentBounds);
                 calculateTiles();
@@ -265,13 +269,19 @@
                 outputCoords.push([outputCoords[0][0], outputCoords[0][1]]);
             }
 
-            document.getElementById('coords-input').value = JSON.stringify([outputCoords], null, 2);
+            const polygonObj = {
+                "type": "Polygon",
+                "coordinates": [outputCoords]
+            }
 
+            document.getElementById('polygon-input').value = JSON.stringify(polygonObj, null, 2);
             currentBounds = layer.getBounds();
             calculateTiles();
+
         });
 
         map.on(L.Draw.Event.EDITED, function (e) {
+
             e.layers.eachLayer(function (layer) {
                 const latlngs = layer.getLatLngs()[0];
                 const outputCoords = latlngs.map(ll => [
@@ -281,7 +291,13 @@
                 if (outputCoords.length > 0) {
                     outputCoords.push([outputCoords[0][0], outputCoords[0][1]]);
                 }
-                document.getElementById('coords-input').value = JSON.stringify([outputCoords], null, 2);
+
+                const polygonObj = {
+                    "type": "Polygon",
+                    "coordinates": [outputCoords]
+                }
+
+                document.getElementById('polygon-input').value = JSON.stringify(polygonObj, null, 2);
                 currentBounds = layer.getBounds();
                 calculateTiles();
             });
@@ -289,7 +305,7 @@
 
         map.on(L.Draw.Event.DELETED, function () {
             currentBounds = null;
-            document.getElementById('coords-input').value = "";
+            document.getElementById('polygon-input').value = "";
             document.getElementById('output').innerHTML = "Paste a valid coordinate array or use the map draw tool to compute tiles.";
         });
 
