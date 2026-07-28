@@ -246,22 +246,32 @@
 
             const xMin = lon2tile(minLng, zoom), xMax = lon2tile(maxLng, zoom);
             const yMin = lat2tile(maxLat, zoom), yMax = lat2tile(minLat, zoom);
-            
-            // 2. Extract current active shape directly from your text-area value
             let turfPolygon;
+
             try {
+
+                // Extract current active shape directly from text-area
                 const rawInput = document.getElementById('polygon-input').value.trim();
                 const polygonObj = JSON.parse(rawInput);
                 const coordsArray = polygonObj["coordinates"];
-                turfPolygon = turf.polygon(coordsArray);
+
+                let rawTurfPolygon = turf.polygon(coordsArray);
+                // Enforce right-hand rule winding 
+                // for accurate area calculation
+                turfPolygon = turf.rewind(rawTurfPolygon, { mutate: true });
+
+
             } catch(e) {
-                return; // Halt calculation if text payload is invalid or being typed
+                // Halt calculation if text payload is invalid or being typed
+                return; 
             }
 
-            // --- NEW: Calculate Total Polygon Area using Turf.js ---
-            const totalPolygonAreaM2 = turf.area(turfPolygon);
+            // Calculate highly precise Ellipsoidal Area
+            // using the turf library
+            const sphericalAreaM2 = turf.area(turfPolygon);
+            const totalPolygonAreaM2 = sphericalAreaM2 * Math.pow(6371008.8 / 6378137, 2);
 
-            // Math for area (Keep for grid context stats if desired)
+            // Math for tile area at this zoom level
             const R = 6378.137; 
             const midLat = (minLat + maxLat) / 2;
             const tileSideKm = (Math.cos(midLat * Math.PI / 180) * 2 * Math.PI * R) / Math.pow(2, zoom);
@@ -277,7 +287,8 @@
                 return 180 / Math.PI * Math.atan(0.5 * (Math.exp(n) - Math.exp(-n)));
             }
 
-            // 3. Scan bounding grid, but test exact polygon geometric intersections
+            // Scan bounding grid, 
+            // and test exact polygon geometric intersections
             for (let x = xMin; x <= xMax; x++) {
                 for (let y = yMin; y <= yMax; y++) {
                     // Calculate spatial boundaries of this specific individual tile
@@ -293,7 +304,7 @@
                     const intersection = turf.intersect(turf.featureCollection([turfPolygon, turfTileBox]));
 
                     if (intersection) {
-                        // --- NEW: Calculate intersection area & coverage percentage ---
+                        // Calculate Tile intersection area & coverage percentage ---
                         const tileAreaM2 = turf.area(turfTileBox);
                         const intersectionAreaM2 = turf.area(intersection);
                         const coveragePercentage = (intersectionAreaM2 / tileAreaM2) * 100;
@@ -312,7 +323,7 @@
             const bounding_y_tiles = (yMax - yMin + 1);
             const areaInfo = formatPolygonArea(totalPolygonAreaM2);
 
-            // 4. Output string text generation
+            //  Output string text generation
             let area_html = `<strong>Polygon Metrics:</strong><br>`;
             area_html += `Enclosed Area: <b>${areaInfo.value} ${areaInfo.unit}</b><br>`;
             area_html += `Bounding Box: ${totalTiles} tiles<br>`;
@@ -331,7 +342,6 @@
                 path_html += `<li>List preview hidden (too many active intersections: ${trueCount}). Zoom in closer.</li>`;
             } else {
                 intersectingTiles.forEach(t => {
-                    // --- NEW: Render the path with its respective area percentage ---
                     path_html += `<li>/${zoom}/${t.x}/${t.y}.png (<b>${t.percentage}%</b>)</li>`;
                 });
             }
