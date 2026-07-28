@@ -107,6 +107,15 @@
             text-align: right;
         }
 
+        .button-wrapper {
+            display: flex;
+            justify-content: flex-end; /* Pushes child elements completely to the right */
+            width: 100%;
+            margin-bottom: 10px;       /* Preserves structural spacing above the next header */
+        }
+
+
+
     </style>
 
     
@@ -115,22 +124,21 @@
 <body>
 
     <div id="sidebar">
-        <h3>Polygon Coordinates</h3>
+        
         
          <!-- altitude box -->
         <div class="input-row">
             <label for="altitude-input">Altitude (meters):</label>
             <input type="number" id="altitude-input" value="53" min="0" max="9000">
         </div>
-
+        <h3>Polygon Coordinates</h3>
         <textarea id="polygon-input" placeholder="Paste array here... e.g., [[[lng, lat], [lng, lat], ...]]"></textarea>
-        <button onclick="loadCoordinates()">Reload the Map</button>
-
+        <div class="button-wrapper">
+            <button onclick="loadCoordinates()">Reload Map</button>
+        </div>
        
-        <h3>Polygon</h3>
         <!-- xoom level -->
         <div class="zoom-display" id="current-zoom">Current Zoom: --</div>
-       
         <div class="result" id="polygon-data">Display polygon area and tiles stats </div>
 
         <h3>Touching Tiles</h3>
