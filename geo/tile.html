@@ -240,37 +240,52 @@
 
         function formatPolygonArea(areaM2) {
 
+            // 0.5 Acre = 2023.4282112 m^2
             // 1 Acre = 4046.8564224 m²
+            // 5000 acres = 20234283 sqm 
             // 1 Hectare = 10000 m²
             // 1 Sq Km = 1,000,000 m²
+            // 1 sqm = 10.76391042 sqFT
             
             let value = areaM2;
-            let unit = "m²";
+            const SQM_TO_SQFT = 10.76391042;
+            
+            if(areaM2 < 2000) {
+                // less than 2000 sqm 
+                // report in sqft, sqm 
+                const sqft = areaM2 * SQM_TO_SQFT ;
+                return `${areaM2.toFixed(2)} sqm (${sqft.toFixed(2)} sqft)`;
+            
+            } else if (areaM2 < 4046.8564224) {
+                // more than half acre and less than 1 acre 
+                // report sqm, acre 
+                const sqft = areaM2 * SQM_TO_SQFT ;
+                const acres = areaM2 / 4046.8564224;
+                return `${areaM2.toFixed(2)} sqm (${acres.toFixed(2)} Acre, ${sqft.toFixed(2)} sqft)`;
 
-            if (areaM2 >= 1000000) { 
-                value = areaM2 / 1000000;
-                unit = "sq km";
+            } else if (areaM2 < 1000000) {
 
-            } else if (areaM2 >= 4046.86) { 
-                // For medium agricultural scale sizes, 
-                // use Acres and Hectares together
+                // more than 1 Acre less than 250 Acre
+                // report sqm, acre 
+                const sqft = areaM2 * SQM_TO_SQFT ;
+                const acres = areaM2 / 4046.8564224;
+                return `${areaM2.toFixed(2)} sqm (${acres.toFixed(2)} Acre)`;
+                
+            } else if (areaM2 < 20234283) { 
+                // till 5000 acres 
                 const acres = areaM2 / 4046.8564224;
                 const hectares = areaM2 / 10000;
-                return {
-                    value: `${acres.toFixed(2)} Acres (${hectares.toFixed(2)} ha)`,
-                    unit: "" // Combined into value string
-                };
+                const sqkm = areaM2 / 1000000; 
+                return `${sqkm.toFixed(2)} sqkm (${acres.toFixed(2)} Acres, ${hectares.toFixed(2)} ha)` ;
 
             } else {
-                // Tiny structural plots
-                value = areaM2;
-                unit = "sq m";
+                // more than 5000 acres 
+                const sqkm = areaM2 / 1000000; 
+                return `${sqkm.toFixed(2)} sqkm` ;
             }
 
-            return {
-                value: value.toLocaleString(undefined, { maximumFractionDigits: 2 }),
-                unit: unit
-            };
+            return `${value.toFixed(2)} sqm` ;
+
         }
 
         /** 
@@ -459,7 +474,7 @@
 
             //  Output string text generation
             let area_html = `<strong>Polygon Metrics:</strong><br>`;
-            area_html += `Enclosed Area: <b>${areaInfo.value} ${areaInfo.unit}</b><br>`;
+            area_html += `Enclosed Area: <b>${areaInfo} </b><br>`;
             area_html += `Bounding Box: ${totalTiles} tiles<br>`;
             area_html += `x: ${xMin}, ${xMax} (${bounding_x_tiles}) <br>`;
             area_html += `y: ${yMin}, ${yMax} (${bounding_y_tiles}) <br>`;
