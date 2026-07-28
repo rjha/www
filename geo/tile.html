@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Dynamic Coordinate Array XYZ Tile Finder</title>
+    <title>xstudio Freehand Polygon and Tiles Calculator on a Map</title>
 
     <!-- Leaflet CSS -->
     <link rel="stylesheet" href="/assets/geo/css/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
@@ -196,8 +196,44 @@
             return Math.floor((1 - Math.log(Math.tan(lat * Math.PI / 180) + 1 / Math.cos(lat * Math.PI / 180)) / Math.PI) / 2 * Math.pow(2, zoom));
         }
 
-        
-         function calculateTiles() {
+        function formatPolygonArea(areaM2) {
+
+            // 1 Acre = 4046.8564224 m²
+            // 1 Hectare = 10000 m²
+            // 1 Sq Km = 1,000,000 m²
+            
+            let value = areaM2;
+            let unit = "m²";
+
+            if (areaM2 >= 1000000) { 
+                value = areaM2 / 1000000;
+                unit = "sq km";
+
+            } else if (areaM2 >= 4046.86) { 
+                // For medium agricultural scale sizes, 
+                // use Acres and Hectares together
+                const acres = areaM2 / 4046.8564224;
+                const hectares = areaM2 / 10000;
+                return {
+                    value: `${acres.toFixed(2)} Acres (${hectares.toFixed(2)} ha)`,
+                    unit: "" // Combined into value string
+                };
+
+            } else {
+                // Tiny structural plots
+                value = areaM2;
+                unit = "sq m";
+            }
+
+            return {
+                value: value.toLocaleString(undefined, { maximumFractionDigits: 2 }),
+                unit: unit
+            };
+        }
+
+
+
+        function calculateTiles() {
             
             if (!currentBounds) return;
 
@@ -274,10 +310,11 @@
             const trueCount = intersectingTiles.length;
             const bounding_x_tiles = (xMax - xMin + 1);
             const bounding_y_tiles = (yMax - yMin + 1);
+            const areaInfo = formatPolygonArea(totalPolygonAreaM2);
 
             // 4. Output string text generation
             let area_html = `<strong>Polygon Metrics:</strong><br>`;
-            area_html += `Enclosed Area: <b>${totalPolygonAreaM2.toLocaleString(undefined, {maximumFractionDigits: 2})} m²</b><br>`;
+            area_html += `Enclosed Area: <b>${areaInfo.value} ${areaInfo.unit}</b><br>`;
             area_html += `Bounding Box: ${totalTiles} tiles<br>`;
             area_html += `x: ${xMin}, ${xMax} (${bounding_x_tiles}) <br>`;
             area_html += `y: ${yMin}, ${yMax} (${bounding_y_tiles}) <br>`;
