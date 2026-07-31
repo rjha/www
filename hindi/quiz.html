@@ -172,18 +172,15 @@
             document.getElementById("current-quest").innerText = currentIndex + 1;
             
             const currentItem = currentRoundWords[currentIndex];
-            document.getElementById("hindi-word").innerText = currentItem.hindi;
+            document.getElementById("hindi-word").innerText = currentItem.root;
             
             // Correct option is the joined string of synonyms
-            // const correctString = currentItem.english_synonyms.join(", ");
-            const correctString = currentItem.english_synonyms[Math.floor(Math.random() * currentItem.english_synonyms.length)];
-
-            
+            const correctString = currentItem.root_english[Math.floor(Math.random() * currentItem.root_english.length)];
             // Gather incorrect values from other objects
             let incorrectPool = allWords
-                .filter(item => item.hindi !== currentItem.hindi)
+                .filter(item => item.root !== currentItem.root)
                .map(item => {
-                    const synonyms = item.english_synonyms;
+                    const synonyms = item.root_english;
                     return synonyms[Math.floor(Math.random() * synonyms.length)];
                 })
                 .filter(meaning => meaning !== correctString);
@@ -262,9 +259,9 @@
                 const row = document.createElement('tr');
                 row.className = "border-b hover:bg-gray-50 transition";
                 row.innerHTML = `
-                    <td class="p-3 font-bold text-gray-800 text-base">${item.hindi}</td>
-                    <td class="p-3 text-purple-700 font-medium">${item.english_synonyms.join(', ') || '-'}</td>
-                    <td class="p-3 text-emerald-700 font-sans">${item.hindi_synonyms.join(', ') || '-'}</td>
+                    <td class="p-3 font-bold text-gray-800 text-base">${item.root}</td>
+                    <td class="p-3 text-purple-700 font-medium">${item.root_english.join(', ') || '-'}</td>
+                    <td class="p-3 text-emerald-700 font-sans">${item.root_synonyms.join(', ') || '-'}</td>
                 `;
                 tbody.appendChild(row);
             });

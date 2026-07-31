@@ -133,8 +133,8 @@
             // Create flat list of 12 card objects
             const cardsArray = [];
             selectedPairs.forEach((item, index) => {
-                const randomEnglish = item.english_synonyms[Math.floor(Math.random() * item.english_synonyms.length)];
-                cardsArray.push({ id: index, type: 'hindi', text: item.hindi });
+                const randomEnglish = item.root_english[Math.floor(Math.random() * item.root_english.length)];
+                cardsArray.push({ id: index, type: 'hindi', text: item.root });
                 cardsArray.push({ id: index, type: 'english', text: randomEnglish });
             });
 

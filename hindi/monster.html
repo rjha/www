@@ -133,11 +133,11 @@
             loadedIndex = null;
             
             currentItem = allWords[Math.floor(Math.random() * allWords.length)];
-            const correctMeaning = currentItem.english_synonyms[Math.floor(Math.random() * currentItem.english_synonyms.length)];
+            const correctMeaning = currentItem.root_english[Math.floor(Math.random() * currentItem.root_english.length)];
             
             let wrongMeanings = allWords
-                .filter(item => item.hindi !== currentItem.hindi)
-                .map(item => item.english_synonyms[Math.floor(Math.random() * item.english_synonyms.length)]);
+                .filter(item => item.root !== currentItem.root)
+                .map(item => item.root_english[Math.floor(Math.random() * item.root_english.length)]);
             wrongMeanings = [...new Set(wrongMeanings)].sort(() => 0.5 - Math.random()).slice(0, 3);
             
             choiceOptions = [correctMeaning, ...wrongMeanings].sort(() => 0.5 - Math.random());
@@ -238,7 +238,7 @@
 
                     if (activeRocket.y <= ufo.y + ufo.height && activeRocket.y >= ufo.y) {
                         if (activeRocket.x >= ufo.x && activeRocket.x <= ufo.x + ufo.width) {
-                            if (currentItem.english_synonyms.includes(activeRocket.text)) {
+                            if (currentItem.root_english.includes(activeRocket.text)) {
                                 score += 5;
                                 document.getElementById('score-val').innerText = score;
                                 playClapSound();
@@ -302,7 +302,7 @@
                 ctx.textBaseline = "middle";
                 
                 // FIXED: Changed from (ufo.height / 2) to adding + 12 pixels to push text lower
-                ctx.fillText(currentItem ? currentItem.hindi : "", ufo.x + (ufo.width / 2), ufo.y + (ufo.height / 2) + 15);
+                ctx.fillText(currentItem ? currentItem.root : "", ufo.x + (ufo.width / 2), ufo.y + (ufo.height / 2) + 15);
                 ctx.shadowBlur = 0; // Turn off shadows for other game assets
 
 
