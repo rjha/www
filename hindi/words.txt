@@ -24,9 +24,9 @@
 अंतर ; difference
 आंसू ; Tears 
 अगल-बगल ; Nearby place
-अतिथि ; Guest , Guy without an arrival date
+अतिथि ; Guest
 अर्थ ; meaning, money ; अभिप्राय, मतलब
-आर्थिक ; economical, related to money
+आर्थिक ; economical, money-matters
 आंदोलन ; Revolution, Agitation
 परिवर्तन ; change 
 सुधार; improvement 
@@ -64,9 +64,9 @@
 अन्याय ; injustice
 अक्षर ; letter 
 अनंत ; infinite, endless 
-अपराध  ; crime 
+अपराध  ; crime ; गुनाह, जुर्म 
 अपराधी ; criminal
-अनमोल ; priceless without मोल
+अनमोल ; priceless
 इलाका ; Area 
 ईर्ष्या ; jealousy ; जलन, द्वेष
 ईर्ष्यालु ; jealous 
@@ -239,9 +239,9 @@
 नकली ; fake 
 निर्णय ; decision ; फैसला
 पथ; road, ; राह, रास्ता; मार्ग 
-पद्य - poem 
+पद्य; poem 
 पछतावा; regret, remorse ; पश्चात्ताप, अफ़सोस
-पग-डंडी - walkway ; पग + डंडी
+पग-डंडी; walkway
 डंडी; stick 
 परीक्षा; Exam ; इम्तिहान
 पश्चात; afterwards, after; subsequently 
@@ -287,3 +287,51 @@
 प्राकृतिक; Natural 
 प्रतिदिन; every day
 प्रयास; Effort
+परिचय; introduction 
+पीड़ा; pain; दर्द, व्यथा,वेदना
+पिछड़ा; backward 
+पाप; sin
+प्रकाश; light ; रोशनी, ज्योति
+फब्ति; snide comments, belittle
+ताना; mocking 
+फिसड्डी; incompetent, hopeless ; निकम्मा, अयोग्य 
+फैसला; decision; निर्णय, निश्चय
+प्राचीन; ancient ; पुराना, पुरातन 
+आधुनिक; modern; नया, नवीन
+प्रिय; favorite, loved one ;प्यारा
+शर्म; shame
+बिक्री; sales ; विक्रय, बेचना
+बूँद ; drop 
+बुद्धि ; brains, intelligence
+बुढ़ापा ; old age ; वृद्धावस्था 
+बाजू;  side
+बाजु ; Arm ; बाँह, भुजा
+भोजन ; Food, meal ; खाना, आहार 
+भजन - Devotional song , prayer
+भंडार ; storage ; गोदाम
+भट्ठी; furnace 
+भोला; innocent ; सीधा-सादा, मासूम, सरल
+सरल; simple, easy, innocent
+भावना; feelings, emotion
+भरोसा; Trust, support 
+मांग ; demand  
+मेला; Fair 
+मुख्य;  main, chief ; प्रधान, प्रमुख
+मुख; mouth, face 
+महत्व ; Importance 
+महत्वपूर्ण ; Important 
+मरम्मत ; repair, fixing
+मक्कार ; cunning, tricky, fraud ; धोखेबाज़, कपटी, धूर्त 
+छल ; cheat 
+कपट ; fraud 
+धूर्त ; fraud 
+फरेब ; cheating, fraud 
+मासूम; innocent
+मात्रा ;  amount 
+मौसम ; season, weather
+मुलायम ; soft ; कोमल  
+मुसाफिर ; traveler ; यात्री, राहगीर, पथिक, बटोही, राही 
+यात्रा; Travel; सफ़र, भ्रमण 
+मन;  mind 
+मोल ; value, price 
+मिलता-जुलता; similar
