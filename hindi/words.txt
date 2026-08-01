@@ -2,7 +2,9 @@
 अचानक ; Suddenly
 आवाज़ ; Sound
 आकार ; Figure, Shape 
-आराम ; Rest, comfort, easy 
+आराम ; Rest, Relief
+विश्राम ; Rest
+विराम ; pause 
 अथवा ; OR 
 अनिश्चित ; not sure, not fixed
 आशीर्वाद  ; Blessing  
@@ -38,7 +40,7 @@
 आत्मविश्वास ; self-confidence 
 आत्मसम्मान ; self-respect 
 अंकुश ;  control ; नियंत्रण, रोक, पाबंदी
-अंकुश ; hook to control elephants
+निरंकुश; Without control ; तानाशाह 
 अगुवा ; leader 
 अगुवाई ; leadership 
 अस्तबल ; Horse stable
@@ -54,8 +56,8 @@
 औपचारिक ; formal 
 अनौपचारिक ; informal 
 असमानता ; inequality, unlike
-अलग ; different, apart from; भिन्न, पृथक, जुदा 
-अलावा ; apart from ; अतिरिक्त, छोड़कर, सिवाय
+अलग ; different, apart; भिन्न, पृथक, जुदा 
+अलावा ; apart from; अतिरिक्त, छोड़कर, सिवाय
 अधिकार ; rights 
 आनंद ; pleasure 
 अंकित  ;  carved, engraved
@@ -75,8 +77,8 @@
 इकट्ठा ; gather, collect, accumulate
 उलटना ; Flip, overturn, roll 
 उद्देशय ; purpose, aim ; लक्ष्य
-इरादा; intent 
-उत्तर ; answer, a direction 
+इरादा; intention; मंशा
+उत्तर ; answer, A direction 
 उदाहरण ; example
 उत्पाद ; produce   
 उत्पादन ; production  
@@ -141,7 +143,7 @@
 गद्दार; traitor 
 गद्दारी; betrayal 
 गहराई; depth 
-गरजना; thundering
+गरजना; thundering 
 दहाड़ना ; roar 
 घबराहट; Nervousness, anxiety 
 घरेलू; domestic
@@ -244,7 +246,7 @@
 पग-डंडी; walkway
 डंडी; stick 
 परीक्षा; Exam ; इम्तिहान
-पश्चात; afterwards, after; subsequently 
+पश्चात; afterwards, after, subsequently
 प्रथम; First 
 प्रयोग; use ; उपयोग 
 क्षमता; capacity 
@@ -331,7 +333,269 @@
 मौसम ; season, weather
 मुलायम ; soft ; कोमल  
 मुसाफिर ; traveler ; यात्री, राहगीर, पथिक, बटोही, राही 
-यात्रा; Travel; सफ़र, भ्रमण 
+यात्रा; Travel, Journey; सफ़र, भ्रमण 
 मन;  mind 
 मोल ; value, price 
-मिलता-जुलता; similar
+मिलता-जुलता; similar, alike 
+यात्री; Traveler 
+युवा; Young 
+युवती; Young Lady
+यौवन; Youth 
+प्रौढ़; mature, adult ; वयस्क
+परिपक्व; mature ; पूरी तरह विकसित, पका हुआ
+विकसित; developed 
+रूढ़िवादी; Orthodox, conservative, blind faith
+रोगी; Patient, sick; मरीज़, बीमार, अस्वस्थ
+रास्ता; Road 
+राह; road, path; रास्ता, पथ
+रात्रि; night 
+काल ; time, period ; समय 
+रोजमर्रा; daily 
+रूचि; interest 
+अरुचि;  disinterest, dislike
+लचीला; flexible, elastic 
+वर्णन; Description 
+उल्लेख; mention ; ज़िक्र
+वाहन; Vehicle
+विद्वान; scholar, pundit
+विषय; subject, topic 
+विज्ञान; science 
+विशाल; huge
+वस्तु; item, object 
+विरोध; opposition 
+विभिन्न; various, different
+विश्वास; faith, trust, belief, confidence 
+व्यक्ति; Person
+व्यक्तिगत; Personal 
+व्यापर; business 
+वृक्ष; Tree ; पेड़, तरु
+स्नेह; Love, Affection; प्रेम
+विवेक; wisdom 
+वैद्य; Doctor 
+वैद्य-शाला; Dispensary
+पाठशाला; school  
+पाकशाला; kitchen
+वातावरण; environment 
+समान; same, equal, similar  
+सामान; item, object 
+सहमत; Agree
+सफलता; success
+विफलता; failure 
+सरोवर; Lake, Pond
+समुद्र; Sea, Ocean ; सागर, सिंधु
+स्पष्ट; Clear; साफ 
+संकट; trouble, crisis ; मुसीबत, विपत्ति, कष्ट
+सम्मान; Respect ; आदर, इज़्ज़त
+सतह; surface 
+समर्थन; support ; साथ
+साथ; with  
+सुबह ; morning;  प्रातः, सवेरा, भोर  
+सजावट ; decoration
+समाज ; society  
+संदेह; doubt ; शक, शंका, संशय
+सागर; ocean 
+सहायता; help, assistance; मदद, सहयोग
+आश्रय; shelter, refuge 
+आसरा; support ; सहारा, भरोसा
+भरोसा; Trust 
+सूखा; dry
+गीला; wet 
+सीख; Learning, Lesson; सबक
+साल; Year; वर्ष 
+स्वादिष्ट; delicious 
+स्वस्थ्; healthy 
+स्वास्थ्य; health 
+स्वीकार; accept 
+स्वागत; welcome
+सार्थक; meaningful
+निरर्थक; useless 
+स्वीकृति; acceptance ; मंजूरी, सहमति 
+सुरक्षा; security, safety, protection ; बचाव
+रखवाला; guard 
+सर्व; all; समस्त, सभी
+सार्वजनिक; public
+सस्ता ; cheap 
+संस्कृति; culture, civilization
+संवाद ; dialogues 
+स्थान; place 
+समाप्त; end ; खत्म, अंत 
+सिंचाई; irrigation 
+सिंहासन; throne
+संसार; world ; जग, दुनिया, जगत, विश्व
+स्वच्छ; clean ; साफ, निर्मल
+स्वयं - self
+सेहत; health 
+समस्या; problem, difficulty; कठिनाई, बाधा, परेशानी
+संतोष; satisfaction 
+सीधा;  straight, simple 
+सम्बन्ध; relationship; रिश्ता 
+स्वर; sound 
+स्वभाव; behavior, nature
+शांत; calm, quiet, peaceful
+शोर; Noise; कोलाहल, हल्ला 
+शरारत; naughtiness, mischief; बदमाशी 
+शाकाहारी; vegetarian 
+शक्ति; power, force, strength; बल, ताकत 
+शिकार; hunting 
+शीर्षक; Title, Headline 
+शिक्षक; teacher 
+शिविर; camp 
+शिकायत; complaint 
+शान; pride, swag 
+शर्म; shame 
+हरियाली; Greenery 
+हृदय; Heart ; दिल, कलेजा 
+हसीन; Beautiful 
+हड़ताल; strike, walkout 
+होनहार; Promising 
+हैरानी; surprise; ताज्जुब, अचंभा, आश्चर्य
+हैसियत; status, capacity ; औकात
+हिचकिचाहट; hesitation 
+हिंसक; Violent 
+हिम; Ice
+हिमनद; Glacier
+ऋषि; sage 
+ऋतु; season
+आधार; Foundation, Basis
+अभिनय; acting 
+अभिनेता; actor
+अभिनेत्री; actress
+आश्चर्य; Wonder, surprise ; अचम्भा, अचरज, ताज्जुब
+आय; Income 
+आयकर;  income tax
+अमृत; Nectar, Elixir
+आदर; Respect ; इज़्ज़त 
+निरादर; disrespect; दुत्कार,  अपमान, अनादर, बेइज़्ज़ती 
+सत्कार; respect, honor, hospitality  
+अतिरिक्त; extra, additional, surplus
+अयोग्य; not eligible, not fit
+अहंकार; ego, arrogance
+घमंडी; arrogant, show-off
+दम्भ; arrogance, snobbery; अहंकार, घमंड
+घमंड; arrogance, pride; अभिमान
+औकात; status, capacity; क्षमता, हैसियत
+क्षमता; capacity ; सामर्थ्य
+सामर्थ्य; strength; क्षमता, शक्ति
+अत्याचार; atrocity, Tyranny, oppression; अन्याय, जुल्म, शोषण
+आश्रम; Hermitage, Monastery 
+अनुभव; experience; तजुर्बा
+अक्सर; Often, Frequently; प्रायः, बहुधा, बार-बार
+लगातार ; continuously
+इत्यादि; et cetera 
+इंसाफ; Justice ; न्याय
+उपचार; treatment, remedy ; इलाज
+उपलब्धि; achievement, accomplishment ; सफलता
+उत्सुक; curious, anxious 
+उपलक्ष्य; Celebration, Occasion
+उद्घाटन; Opening, Inauguration
+कराह; Groan
+कल्पना; imagination
+काल्पनिक; Imaginary 
+कारीगर; artisan 
+खातिरदारी; hospitality;  सत्कार, सेवा 
+खातिर; respect; आदर, सम्मान
+ज्यादा; More 
+प्रथम ; first 
+द्वितीय ; second 
+तृतीय ; third 
+चतुर्थ ; fourth 
+चंचल; playful; नटखट
+चिह्न; mark, sign
+छाप; impression 
+चौंकना; startled, surprised
+हक्का-बक्का; Bewildered;  हैरान, भौचक्का 
+चकित; amazed, surprised; दंग
+जोश; excitement, enthusiasm 
+जाँच; checking
+जाँच-पड़ताल; investigation 
+झट-पट; quickly  
+ठिकाना; address, whereabouts ;स्थान, पता
+ठहर; stop, stay ; रुकना
+प्रतीक्षा; wait 
+निवास; residence, home ; घर
+ठिठुर; shivering 
+ठहराव; pause
+ठोकर - stumble, bump 
+ठहाका; laughter; जोरदार-हंसी 
+ठिठक; stop, stutter 
+ध्येय; aim, goal ; लक्ष्य, उद्देश्य
+उद्देश्य; purpose
+निरुद्देश्य; aimless 
+गंतव्य; destination; मंजिल
+लक्ष्य; Aim 
+खुशहालि; prosperity
+चबूतरा; platform 
+संस्मरण; memoir
+स्मरण; remember; याद 
+स्मृति ; memory  ; याददाश्त
+घटना; event 
+दुर्घटना; accident 
+ढुलकना; Rolling 
+डील-डौल; Physique, physical appearance, build
+कद काठी; Physique, build
+तरल; Liquid; द्रव
+ठोस ; solid 
+तय; fixed 
+तरकीब; scheme, method;  उपाय, योजना, जुगाड़
+तुच्छ; insignificant 
+थोपना; impose
+दोहा; poem 
+दोबारा; again;  पुनः, फिर-से
+दीन; poor; गरीब, निर्धन, दुखी
+असहाय; powerless, helpless; लाचार
+दशा; state
+दीप; small lamp; दीया
+दीपक ; lamp 
+दूब; Grass
+दोषी; Guilty
+निर्दोष; innocent 
+द्वार; Gate
+प्रवेश; Entry 
+पाठ; lesson 
+विनिमय; exchange 
+परिक्रमा; circle; चक्कर 
+जनता; public ; प्रजा 
+सुनहरा ; golden 
+तट; shore, bank, coast 
+खुदाई; Digging 
+दिलचस्पी; Interest, Curiosity ; रुचि, अभिरुचि
+शौक; Hobby 
+भाप; steam 
+झुर्री ; wrinkle 
+झिलमिलाना ; Flicker 
+अधमरा ; Half-dead
+सिकुड़ ; shrink
+संकुचित; tight; compressed 
+संकरा ; Narrow, tight ; तंग
+भाग्य ; Luck, Fate ; किस्मत, तकदीर, नसीब
+दुर्भाग्य ; misfortune, bad luck 
+सौभाग्य ; fortune, good luck
+रेंगना ; crawl 
+सुगंध ; fragrance, smell 
+दुर्गन्ध ; stink 
+चोट ; injury
+घाव; wound ; जख्म 
+आघात; storke 
+हाँफना ; panting 
+टपकना ; dripping , falling 
+दरार; crack
+सीलन; dampness 
+शून्य ; zero, nothing 
+लकीर ; line ; रेखा
+चतुर ; clever ; बुद्धिमान, होशियार
+चालाक; cunning; धूर्त
+रहस्य ; mystery, secret ; राज़, भेद
+स्वतंत्रता ; liberty, independence ; आज़ादी
+मुक्ति ; freedom 
+निडर ; fearless; निर्भय, साहसी
+ग्रह ; planet 
+उपग्रह ; satellite 
+दलदल ; swamp 
+रेगिस्तान ; desert 
+दया; mercy 
+बेहोश ; unconscious, fainted; मूर्छित
+अलविदा; Goodbye
+खरोंच ; scratch 
+चिंता ; worry 
+गुस्सा;  Anger; क्रोध
+चित्रण ; illustration 
