@@ -32,8 +32,21 @@
         "root": "आराम",
         "root_english": [
             "Rest",
-            "Comfort",
-            "Easy"
+            "Relief"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "विश्राम",
+        "root_english": [
+            "Rest"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "विराम",
+        "root_english": [
+            "Pause"
         ],
         "root_synonyms": []
     },
@@ -116,8 +129,8 @@
         ],
         "root_synonyms": [
             "समाप्त",
-            "गत",
-            "विगत"
+            "विगत",
+            "गत"
         ]
     },
     {
@@ -128,8 +141,8 @@
         ],
         "root_synonyms": [
             "विगत",
-            "बीता हुआ",
-            "गत"
+            "गत",
+            "बीता हुआ"
         ]
     },
     {
@@ -140,8 +153,8 @@
         ],
         "root_synonyms": [
             "समाप्त",
-            "बीता हुआ",
-            "विगत"
+            "विगत",
+            "बीता हुआ"
         ]
     },
     {
@@ -232,8 +245,7 @@
     {
         "root": "अतिथि",
         "root_english": [
-            "Guest",
-            "Guy Without An Arrival Date"
+            "Guest"
         ],
         "root_synonyms": []
     },
@@ -255,8 +267,8 @@
             "Money"
         ],
         "root_synonyms": [
-            "मतलब",
-            "अर्थ"
+            "अर्थ",
+            "मतलब"
         ]
     },
     {
@@ -266,15 +278,15 @@
             "Money"
         ],
         "root_synonyms": [
-            "अभिप्राय",
-            "अर्थ"
+            "अर्थ",
+            "अभिप्राय"
         ]
     },
     {
         "root": "आर्थिक",
         "root_english": [
             "Economical",
-            "Related To Money"
+            "Money-Matters"
         ],
         "root_synonyms": []
     },
@@ -378,8 +390,8 @@
         ],
         "root_synonyms": [
             "पाबंदी",
-            "अंकुश",
-            "नियंत्रण"
+            "नियंत्रण",
+            "अंकुश"
         ]
     },
     {
@@ -389,8 +401,26 @@
         ],
         "root_synonyms": [
             "रोक",
-            "अंकुश",
-            "नियंत्रण"
+            "नियंत्रण",
+            "अंकुश"
+        ]
+    },
+    {
+        "root": "निरंकुश",
+        "root_english": [
+            "Without Control"
+        ],
+        "root_synonyms": [
+            "तानाशाह"
+        ]
+    },
+    {
+        "root": "तानाशाह",
+        "root_english": [
+            "Without Control"
+        ],
+        "root_synonyms": [
+            "निरंकुश"
         ]
     },
     {
@@ -475,8 +505,8 @@
             "Opportunity"
         ],
         "root_synonyms": [
-            "अवसर",
-            "ठीक समय"
+            "ठीक समय",
+            "अवसर"
         ]
     },
     {
@@ -486,8 +516,8 @@
             "Opportunity"
         ],
         "root_synonyms": [
-            "अवसर",
-            "मौका"
+            "मौका",
+            "अवसर"
         ]
     },
     {
@@ -509,9 +539,9 @@
             "Strange"
         ],
         "root_synonyms": [
-            "अजीबोगरीब",
+            "अनोखा",
             "अद्भुत",
-            "अनोखा"
+            "अजीबोगरीब"
         ]
     },
     {
@@ -521,9 +551,9 @@
             "Strange"
         ],
         "root_synonyms": [
+            "अनोखा",
             "अजीबोगरीब",
-            "विचित्र",
-            "अनोखा"
+            "विचित्र"
         ]
     },
     {
@@ -533,9 +563,9 @@
             "Strange"
         ],
         "root_synonyms": [
+            "अद्भुत",
             "अजीबोगरीब",
-            "विचित्र",
-            "अद्भुत"
+            "विचित्र"
         ]
     },
     {
@@ -571,7 +601,7 @@
         "root": "अलग",
         "root_english": [
             "Different",
-            "Apart From"
+            "Apart"
         ],
         "root_synonyms": [
             "भिन्न",
@@ -583,19 +613,19 @@
         "root": "भिन्न",
         "root_english": [
             "Different",
-            "Apart From"
+            "Apart"
         ],
         "root_synonyms": [
+            "पृथक",
             "जुदा",
-            "अलग",
-            "पृथक"
+            "अलग"
         ]
     },
     {
         "root": "पृथक",
         "root_english": [
             "Different",
-            "Apart From"
+            "Apart"
         ],
         "root_synonyms": [
             "जुदा",
@@ -607,11 +637,11 @@
         "root": "जुदा",
         "root_english": [
             "Different",
-            "Apart From"
+            "Apart"
         ],
         "root_synonyms": [
-            "भिन्न",
             "पृथक",
+            "भिन्न",
             "अलग"
         ]
     },
@@ -632,9 +662,9 @@
             "Apart From"
         ],
         "root_synonyms": [
+            "छोड़कर",
             "अलावा",
-            "सिवाय",
-            "छोड़कर"
+            "सिवाय"
         ]
     },
     {
@@ -654,9 +684,9 @@
             "Apart From"
         ],
         "root_synonyms": [
+            "छोड़कर",
             "अलावा",
-            "अतिरिक्त",
-            "छोड़कर"
+            "अतिरिक्त"
         ]
     },
     {
@@ -746,8 +776,8 @@
             "Crime"
         ],
         "root_synonyms": [
-            "गुनाह",
-            "अपराध"
+            "अपराध",
+            "गुनाह"
         ]
     },
     {
@@ -760,7 +790,7 @@
     {
         "root": "अनमोल",
         "root_english": [
-            "Priceless Without मोल"
+            "Priceless"
         ],
         "root_synonyms": []
     },
@@ -889,9 +919,20 @@
     {
         "root": "इरादा",
         "root_english": [
-            "Intent"
+            "Intention"
         ],
-        "root_synonyms": []
+        "root_synonyms": [
+            "मंशा"
+        ]
+    },
+    {
+        "root": "मंशा",
+        "root_english": [
+            "Intention"
+        ],
+        "root_synonyms": [
+            "इरादा"
+        ]
     },
     {
         "root": "उत्तर",
@@ -1010,8 +1051,8 @@
         ],
         "root_synonyms": [
             "युक्ति",
-            "तरकीब",
-            "उपाय"
+            "उपाय",
+            "तरकीब"
         ]
     },
     {
@@ -1035,8 +1076,8 @@
             "Means"
         ],
         "root_synonyms": [
-            "उपाय",
             "समाधान",
+            "उपाय",
             "तरकीब"
         ]
     },
@@ -1191,8 +1232,8 @@
             "Imprisonment"
         ],
         "root_synonyms": [
-            "जेल",
-            "कारावास"
+            "कारावास",
+            "जेल"
         ]
     },
     {
@@ -1413,9 +1454,9 @@
             "Valuable"
         ],
         "root_synonyms": [
-            "बेशकीमती",
             "बहुमूल्य",
-            "मूल्यवान"
+            "मूल्यवान",
+            "बेशकीमती"
         ]
     },
     {
@@ -1425,9 +1466,9 @@
             "Valuable"
         ],
         "root_synonyms": [
-            "दुर्लभ",
+            "बहुमूल्य",
             "बेशकीमती",
-            "बहुमूल्य"
+            "दुर्लभ"
         ]
     },
     {
@@ -1437,9 +1478,9 @@
             "Valuable"
         ],
         "root_synonyms": [
-            "दुर्लभ",
+            "मूल्यवान",
             "बेशकीमती",
-            "मूल्यवान"
+            "दुर्लभ"
         ]
     },
     {
@@ -1482,8 +1523,8 @@
             "Happiness"
         ],
         "root_synonyms": [
-            "आनंद",
             "उल्लास",
+            "आनंद",
             "ख़ुशी",
             "हर्ष"
         ]
@@ -1495,9 +1536,9 @@
         ],
         "root_synonyms": [
             "उल्लास",
-            "ख़ुशी",
+            "प्रसन्नता",
             "आनंद",
-            "प्रसन्नता"
+            "ख़ुशी"
         ]
     },
     {
@@ -1506,9 +1547,9 @@
             "Happiness"
         ],
         "root_synonyms": [
-            "ख़ुशी",
-            "आनंद",
             "प्रसन्नता",
+            "आनंद",
+            "ख़ुशी",
             "हर्ष"
         ]
     },
@@ -1544,8 +1585,8 @@
             "Nice Looking"
         ],
         "root_synonyms": [
-            "आकर्षक",
-            "खूबसूरत"
+            "खूबसूरत",
+            "आकर्षक"
         ]
     },
     {
@@ -2019,8 +2060,8 @@
             "Compliment"
         ],
         "root_synonyms": [
-            "तारीफ़",
-            "सराहना"
+            "सराहना",
+            "तारीफ़"
         ]
     },
     {
@@ -2052,8 +2093,8 @@
             "Present"
         ],
         "root_synonyms": [
-            "सौगात",
-            "तोहफा"
+            "तोहफा",
+            "सौगात"
         ]
     },
     {
@@ -2063,8 +2104,8 @@
             "Present"
         ],
         "root_synonyms": [
-            "भेंट",
-            "तोहफा"
+            "तोहफा",
+            "भेंट"
         ]
     },
     {
@@ -2234,8 +2275,8 @@
             "Amazed"
         ],
         "root_synonyms": [
-            "चकित",
-            "दंग"
+            "दंग",
+            "चकित"
         ]
     },
     {
@@ -2246,8 +2287,8 @@
             "Amazed"
         ],
         "root_synonyms": [
-            "हैरान",
-            "दंग"
+            "दंग",
+            "हैरान"
         ]
     },
     {
@@ -2372,9 +2413,9 @@
             "Fault"
         ],
         "root_synonyms": [
-            "खराबी",
-            "गलती",
             "दोष",
+            "गलती",
+            "खराबी",
             "त्रुटि"
         ]
     },
@@ -2388,8 +2429,8 @@
         "root_synonyms": [
             "दोष",
             "गलती",
-            "कमी",
-            "त्रुटि"
+            "त्रुटि",
+            "कमी"
         ]
     },
     {
@@ -2400,10 +2441,10 @@
             "Fault"
         ],
         "root_synonyms": [
-            "खराबी",
             "दोष",
-            "कमी",
-            "त्रुटि"
+            "खराबी",
+            "त्रुटि",
+            "कमी"
         ]
     },
     {
@@ -2414,10 +2455,10 @@
             "Fault"
         ],
         "root_synonyms": [
-            "कमी",
             "दोष",
             "गलती",
-            "खराबी"
+            "खराबी",
+            "कमी"
         ]
     },
     {
@@ -2650,9 +2691,9 @@
             "Innocent"
         ],
         "root_synonyms": [
+            "बेगुनाह",
             "मासूम",
-            "निर्दोष",
-            "बेगुनाह"
+            "निर्दोष"
         ]
     },
     {
@@ -2661,9 +2702,9 @@
             "Innocent"
         ],
         "root_synonyms": [
+            "निर्दोष",
             "मासूम",
-            "बेकसूर",
-            "निर्दोष"
+            "बेकसूर"
         ]
     },
     {
@@ -2672,9 +2713,9 @@
             "Innocent"
         ],
         "root_synonyms": [
-            "बेकसूर",
+            "बेगुनाह",
             "निर्दोष",
-            "बेगुनाह"
+            "बेकसूर"
         ]
     },
     {
@@ -2693,8 +2734,8 @@
             "Soft"
         ],
         "root_synonyms": [
-            "नर्म",
-            "कोमल"
+            "कोमल",
+            "नर्म"
         ]
     },
     {
@@ -2778,6 +2819,13 @@
         ]
     },
     {
+        "root": "पद्य",
+        "root_english": [
+            "Poem"
+        ],
+        "root_synonyms": []
+    },
+    {
         "root": "पछतावा",
         "root_english": [
             "Regret",
@@ -2806,14 +2854,14 @@
             "Remorse"
         ],
         "root_synonyms": [
-            "पश्चात्ताप",
-            "पछतावा"
+            "पछतावा",
+            "पश्चात्ताप"
         ]
     },
     {
-        "root": "पग-डंडी - walkway",
+        "root": "पग-डंडी",
         "root_english": [
-            "पग + डंडी"
+            "Walkway"
         ],
         "root_synonyms": []
     },
@@ -2846,21 +2894,10 @@
         "root": "पश्चात",
         "root_english": [
             "Afterwards",
-            "After"
+            "After",
+            "Subsequently"
         ],
-        "root_synonyms": [
-            "subsequently"
-        ]
-    },
-    {
-        "root": "subsequently",
-        "root_english": [
-            "Afterwards",
-            "After"
-        ],
-        "root_synonyms": [
-            "पश्चात"
-        ]
+        "root_synonyms": []
     },
     {
         "root": "प्रथम",
@@ -2974,8 +3011,8 @@
             "Start"
         ],
         "root_synonyms": [
-            "प्रारम्भ",
-            "आरम्भ"
+            "आरम्भ",
+            "प्रारम्भ"
         ]
     },
     {
@@ -3018,10 +3055,10 @@
             "But"
         ],
         "root_synonyms": [
-            "लेकिन",
-            "मगर",
+            "फिर भी",
             "परन्तु",
-            "फिर भी"
+            "मगर",
+            "लेकिन"
         ]
     },
     {
@@ -3030,10 +3067,10 @@
             "But"
         ],
         "root_synonyms": [
-            "मगर",
-            "परन्तु",
+            "फिर भी",
             "किन्तु",
-            "फिर भी"
+            "मगर",
+            "परन्तु"
         ]
     },
     {
@@ -3042,10 +3079,10 @@
             "But"
         ],
         "root_synonyms": [
-            "लेकिन",
-            "परन्तु",
+            "फिर भी",
             "किन्तु",
-            "फिर भी"
+            "परन्तु",
+            "लेकिन"
         ]
     },
     {
@@ -3054,10 +3091,10 @@
             "But"
         ],
         "root_synonyms": [
-            "लेकिन",
-            "मगर",
+            "परन्तु",
             "किन्तु",
-            "परन्तु"
+            "मगर",
+            "लेकिन"
         ]
     },
     {
@@ -3119,8 +3156,8 @@
             "Morning"
         ],
         "root_synonyms": [
-            "भोर",
-            "प्रातः"
+            "प्रातः",
+            "भोर"
         ]
     },
     {
@@ -3157,8 +3194,8 @@
             "Evening"
         ],
         "root_synonyms": [
-            "संध्या",
-            "सायंकाल"
+            "सायंकाल",
+            "संध्या"
         ]
     },
     {
@@ -3338,9 +3375,9 @@
             "Pain"
         ],
         "root_synonyms": [
-            "पीड़ा",
             "वेदना",
-            "व्यथा"
+            "व्यथा",
+            "पीड़ा"
         ]
     },
     {
@@ -3349,8 +3386,8 @@
             "Pain"
         ],
         "root_synonyms": [
-            "दर्द",
             "वेदना",
+            "दर्द",
             "पीड़ा"
         ]
     },
@@ -3360,9 +3397,9 @@
             "Pain"
         ],
         "root_synonyms": [
-            "दर्द",
             "पीड़ा",
-            "व्यथा"
+            "व्यथा",
+            "दर्द"
         ]
     },
     {
@@ -3395,8 +3432,8 @@
             "Light"
         ],
         "root_synonyms": [
-            "ज्योति",
-            "प्रकाश"
+            "प्रकाश",
+            "ज्योति"
         ]
     },
     {
@@ -3432,8 +3469,8 @@
             "Hopeless"
         ],
         "root_synonyms": [
-            "फिसड्डी",
-            "अयोग्य"
+            "अयोग्य",
+            "फिसड्डी"
         ]
     },
     {
@@ -3443,8 +3480,8 @@
             "Hopeless"
         ],
         "root_synonyms": [
-            "फिसड्डी",
-            "निकम्मा"
+            "निकम्मा",
+            "फिसड्डी"
         ]
     },
     {
@@ -3473,8 +3510,8 @@
             "Ancient"
         ],
         "root_synonyms": [
-            "प्राचीन",
-            "पुराना"
+            "पुराना",
+            "प्राचीन"
         ]
     },
     {
@@ -3503,8 +3540,8 @@
             "Modern"
         ],
         "root_synonyms": [
-            "नया",
-            "आधुनिक"
+            "आधुनिक",
+            "नया"
         ]
     },
     {
@@ -3560,8 +3597,8 @@
             "Sales"
         ],
         "root_synonyms": [
-            "विक्रय",
-            "बिक्री"
+            "बिक्री",
+            "विक्रय"
         ]
     },
     {
@@ -3620,8 +3657,8 @@
             "Arm"
         ],
         "root_synonyms": [
-            "बाजु",
-            "भुजा"
+            "भुजा",
+            "बाजु"
         ]
     },
     {
@@ -3663,8 +3700,8 @@
             "Meal"
         ],
         "root_synonyms": [
-            "खाना",
-            "भोजन"
+            "भोजन",
+            "खाना"
         ]
     },
     {
@@ -3720,8 +3757,8 @@
             "Innocent"
         ],
         "root_synonyms": [
-            "सीधा-सादा",
             "भोला",
+            "सीधा-सादा",
             "मासूम"
         ]
     },
@@ -3839,9 +3876,9 @@
             "Fraud"
         ],
         "root_synonyms": [
+            "धूर्त",
             "मक्कार",
-            "कपटी",
-            "धूर्त"
+            "कपटी"
         ]
     },
     {
@@ -3852,9 +3889,9 @@
             "Fraud"
         ],
         "root_synonyms": [
-            "धोखेबाज़",
+            "धूर्त",
             "मक्कार",
-            "धूर्त"
+            "धोखेबाज़"
         ]
     },
     {
@@ -3865,9 +3902,9 @@
             "Fraud"
         ],
         "root_synonyms": [
+            "मक्कार",
             "धोखेबाज़",
-            "कपटी",
-            "मक्कार"
+            "कपटी"
         ]
     },
     {
@@ -3926,11 +3963,11 @@
             "Traveler"
         ],
         "root_synonyms": [
-            "पथिक",
-            "राहगीर",
-            "राही",
             "बटोही",
-            "मुसाफिर"
+            "राही",
+            "राहगीर",
+            "मुसाफिर",
+            "पथिक"
         ]
     },
     {
@@ -3939,11 +3976,11 @@
             "Traveler"
         ],
         "root_synonyms": [
-            "पथिक",
+            "बटोही",
             "राही",
             "यात्री",
-            "बटोही",
-            "मुसाफिर"
+            "मुसाफिर",
+            "पथिक"
         ]
     },
     {
@@ -3952,10 +3989,10 @@
             "Traveler"
         ],
         "root_synonyms": [
-            "राहगीर",
+            "बटोही",
             "राही",
             "यात्री",
-            "बटोही",
+            "राहगीर",
             "मुसाफिर"
         ]
     },
@@ -3965,11 +4002,11 @@
             "Traveler"
         ],
         "root_synonyms": [
-            "पथिक",
-            "राहगीर",
             "राही",
             "यात्री",
-            "मुसाफिर"
+            "राहगीर",
+            "मुसाफिर",
+            "पथिक"
         ]
     },
     {
@@ -3978,17 +4015,18 @@
             "Traveler"
         ],
         "root_synonyms": [
-            "पथिक",
-            "राहगीर",
-            "यात्री",
             "बटोही",
-            "मुसाफिर"
+            "यात्री",
+            "राहगीर",
+            "मुसाफिर",
+            "पथिक"
         ]
     },
     {
         "root": "यात्रा",
         "root_english": [
-            "Travel"
+            "Travel",
+            "Journey"
         ],
         "root_synonyms": [
             "सफ़र",
@@ -3998,7 +4036,8 @@
     {
         "root": "सफ़र",
         "root_english": [
-            "Travel"
+            "Travel",
+            "Journey"
         ],
         "root_synonyms": [
             "यात्रा",
@@ -4008,11 +4047,12 @@
     {
         "root": "भ्रमण",
         "root_english": [
-            "Travel"
+            "Travel",
+            "Journey"
         ],
         "root_synonyms": [
-            "यात्रा",
-            "सफ़र"
+            "सफ़र",
+            "यात्रा"
         ]
     },
     {
@@ -4025,7 +4065,2942 @@
     {
         "root": "मिलता-जुलता",
         "root_english": [
+            "Similar",
+            "Alike"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "यौवन",
+        "root_english": [
+            "Youth"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "प्रौढ़",
+        "root_english": [
+            "Mature",
+            "Adult"
+        ],
+        "root_synonyms": [
+            "वयस्क"
+        ]
+    },
+    {
+        "root": "वयस्क",
+        "root_english": [
+            "Mature",
+            "Adult"
+        ],
+        "root_synonyms": [
+            "प्रौढ़"
+        ]
+    },
+    {
+        "root": "परिपक्व",
+        "root_english": [
+            "Mature"
+        ],
+        "root_synonyms": [
+            "पूरी तरह विकसित",
+            "पका हुआ"
+        ]
+    },
+    {
+        "root": "पूरी तरह विकसित",
+        "root_english": [
+            "Mature"
+        ],
+        "root_synonyms": [
+            "पका हुआ",
+            "परिपक्व"
+        ]
+    },
+    {
+        "root": "पका हुआ",
+        "root_english": [
+            "Mature"
+        ],
+        "root_synonyms": [
+            "पूरी तरह विकसित",
+            "परिपक्व"
+        ]
+    },
+    {
+        "root": "विकसित",
+        "root_english": [
+            "Developed"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "रूढ़िवादी",
+        "root_english": [
+            "Orthodox",
+            "Conservative",
+            "Blind Faith"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "रोगी",
+        "root_english": [
+            "Patient",
+            "Sick"
+        ],
+        "root_synonyms": [
+            "मरीज़",
+            "बीमार",
+            "अस्वस्थ"
+        ]
+    },
+    {
+        "root": "मरीज़",
+        "root_english": [
+            "Patient",
+            "Sick"
+        ],
+        "root_synonyms": [
+            "रोगी",
+            "बीमार",
+            "अस्वस्थ"
+        ]
+    },
+    {
+        "root": "बीमार",
+        "root_english": [
+            "Patient",
+            "Sick"
+        ],
+        "root_synonyms": [
+            "रोगी",
+            "अस्वस्थ",
+            "मरीज़"
+        ]
+    },
+    {
+        "root": "अस्वस्थ",
+        "root_english": [
+            "Patient",
+            "Sick"
+        ],
+        "root_synonyms": [
+            "रोगी",
+            "बीमार",
+            "मरीज़"
+        ]
+    },
+    {
+        "root": "रोजमर्रा",
+        "root_english": [
+            "Daily"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "रूचि",
+        "root_english": [
+            "Interest"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "अरुचि",
+        "root_english": [
+            "Disinterest",
+            "Dislike"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "लचीला",
+        "root_english": [
+            "Flexible",
+            "Elastic"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "वर्णन",
+        "root_english": [
+            "Description"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "उल्लेख",
+        "root_english": [
+            "Mention"
+        ],
+        "root_synonyms": [
+            "ज़िक्र"
+        ]
+    },
+    {
+        "root": "ज़िक्र",
+        "root_english": [
+            "Mention"
+        ],
+        "root_synonyms": [
+            "उल्लेख"
+        ]
+    },
+    {
+        "root": "वाहन",
+        "root_english": [
+            "Vehicle"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "विद्वान",
+        "root_english": [
+            "Scholar",
+            "Pundit"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "विषय",
+        "root_english": [
+            "Subject",
+            "Topic"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "विज्ञान",
+        "root_english": [
+            "Science"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "विशाल",
+        "root_english": [
+            "Huge"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "वस्तु",
+        "root_english": [
+            "Item",
+            "Object"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "विरोध",
+        "root_english": [
+            "Opposition"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "विभिन्न",
+        "root_english": [
+            "Various",
+            "Different"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "विश्वास",
+        "root_english": [
+            "Faith",
+            "Trust",
+            "Belief",
+            "Confidence"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "व्यक्ति",
+        "root_english": [
+            "Person"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "व्यक्तिगत",
+        "root_english": [
+            "Personal"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "व्यापर",
+        "root_english": [
+            "Business"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "वृक्ष",
+        "root_english": [
+            "Tree"
+        ],
+        "root_synonyms": [
+            "पेड़",
+            "तरु"
+        ]
+    },
+    {
+        "root": "पेड़",
+        "root_english": [
+            "Tree"
+        ],
+        "root_synonyms": [
+            "वृक्ष",
+            "तरु"
+        ]
+    },
+    {
+        "root": "तरु",
+        "root_english": [
+            "Tree"
+        ],
+        "root_synonyms": [
+            "पेड़",
+            "वृक्ष"
+        ]
+    },
+    {
+        "root": "स्नेह",
+        "root_english": [
+            "Love",
+            "Affection"
+        ],
+        "root_synonyms": [
+            "प्रेम"
+        ]
+    },
+    {
+        "root": "विवेक",
+        "root_english": [
+            "Wisdom"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "वैद्य",
+        "root_english": [
+            "Doctor"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "वैद्य-शाला",
+        "root_english": [
+            "Dispensary"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "पाठशाला",
+        "root_english": [
+            "School"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "पाकशाला",
+        "root_english": [
+            "Kitchen"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "वातावरण",
+        "root_english": [
+            "Environment"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "समान",
+        "root_english": [
+            "Same",
+            "Equal",
             "Similar"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "सामान",
+        "root_english": [
+            "Item",
+            "Object"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "सहमत",
+        "root_english": [
+            "Agree"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "सफलता",
+        "root_english": [
+            "Success"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "विफलता",
+        "root_english": [
+            "Failure"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "सरोवर",
+        "root_english": [
+            "Lake",
+            "Pond"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "समुद्र",
+        "root_english": [
+            "Sea",
+            "Ocean"
+        ],
+        "root_synonyms": [
+            "सागर",
+            "सिंधु"
+        ]
+    },
+    {
+        "root": "सागर",
+        "root_english": [
+            "Sea",
+            "Ocean"
+        ],
+        "root_synonyms": [
+            "समुद्र",
+            "सिंधु"
+        ]
+    },
+    {
+        "root": "सिंधु",
+        "root_english": [
+            "Sea",
+            "Ocean"
+        ],
+        "root_synonyms": [
+            "सागर",
+            "समुद्र"
+        ]
+    },
+    {
+        "root": "स्पष्ट",
+        "root_english": [
+            "Clear"
+        ],
+        "root_synonyms": [
+            "साफ"
+        ]
+    },
+    {
+        "root": "साफ",
+        "root_english": [
+            "Clear"
+        ],
+        "root_synonyms": [
+            "स्पष्ट"
+        ]
+    },
+    {
+        "root": "संकट",
+        "root_english": [
+            "Trouble",
+            "Crisis"
+        ],
+        "root_synonyms": [
+            "मुसीबत",
+            "विपत्ति",
+            "कष्ट"
+        ]
+    },
+    {
+        "root": "मुसीबत",
+        "root_english": [
+            "Trouble",
+            "Crisis"
+        ],
+        "root_synonyms": [
+            "विपत्ति",
+            "कष्ट",
+            "संकट"
+        ]
+    },
+    {
+        "root": "विपत्ति",
+        "root_english": [
+            "Trouble",
+            "Crisis"
+        ],
+        "root_synonyms": [
+            "कष्ट",
+            "मुसीबत",
+            "संकट"
+        ]
+    },
+    {
+        "root": "कष्ट",
+        "root_english": [
+            "Trouble",
+            "Crisis"
+        ],
+        "root_synonyms": [
+            "विपत्ति",
+            "मुसीबत",
+            "संकट"
+        ]
+    },
+    {
+        "root": "सम्मान",
+        "root_english": [
+            "Respect"
+        ],
+        "root_synonyms": [
+            "आदर",
+            "इज़्ज़त"
+        ]
+    },
+    {
+        "root": "आदर",
+        "root_english": [
+            "Respect"
+        ],
+        "root_synonyms": [
+            "सम्मान",
+            "इज़्ज़त"
+        ]
+    },
+    {
+        "root": "इज़्ज़त",
+        "root_english": [
+            "Respect"
+        ],
+        "root_synonyms": [
+            "सम्मान",
+            "आदर"
+        ]
+    },
+    {
+        "root": "सतह",
+        "root_english": [
+            "Surface"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "समर्थन",
+        "root_english": [
+            "Support"
+        ],
+        "root_synonyms": [
+            "साथ"
+        ]
+    },
+    {
+        "root": "साथ",
+        "root_english": [
+            "Support"
+        ],
+        "root_synonyms": [
+            "समर्थन"
+        ]
+    },
+    {
+        "root": "सवेरा",
+        "root_english": [
+            "Morning"
+        ],
+        "root_synonyms": [
+            "प्रातः",
+            "सुबह",
+            "भोर"
+        ]
+    },
+    {
+        "root": "सजावट",
+        "root_english": [
+            "Decoration"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "समाज",
+        "root_english": [
+            "Society"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "संदेह",
+        "root_english": [
+            "Doubt"
+        ],
+        "root_synonyms": [
+            "शक",
+            "शंका",
+            "संशय"
+        ]
+    },
+    {
+        "root": "शक",
+        "root_english": [
+            "Doubt"
+        ],
+        "root_synonyms": [
+            "संदेह",
+            "संशय",
+            "शंका"
+        ]
+    },
+    {
+        "root": "शंका",
+        "root_english": [
+            "Doubt"
+        ],
+        "root_synonyms": [
+            "शक",
+            "संदेह",
+            "संशय"
+        ]
+    },
+    {
+        "root": "संशय",
+        "root_english": [
+            "Doubt"
+        ],
+        "root_synonyms": [
+            "शक",
+            "संदेह",
+            "शंका"
+        ]
+    },
+    {
+        "root": "सहायता",
+        "root_english": [
+            "Help",
+            "Assistance"
+        ],
+        "root_synonyms": [
+            "मदद",
+            "सहयोग"
+        ]
+    },
+    {
+        "root": "मदद",
+        "root_english": [
+            "Help",
+            "Assistance"
+        ],
+        "root_synonyms": [
+            "सहयोग",
+            "सहायता"
+        ]
+    },
+    {
+        "root": "सहयोग",
+        "root_english": [
+            "Help",
+            "Assistance"
+        ],
+        "root_synonyms": [
+            "सहायता",
+            "मदद"
+        ]
+    },
+    {
+        "root": "आश्रय",
+        "root_english": [
+            "Shelter",
+            "Refuge"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "आसरा",
+        "root_english": [
+            "Support"
+        ],
+        "root_synonyms": [
+            "सहारा",
+            "भरोसा"
+        ]
+    },
+    {
+        "root": "सहारा",
+        "root_english": [
+            "Support"
+        ],
+        "root_synonyms": [
+            "भरोसा",
+            "आसरा"
+        ]
+    },
+    {
+        "root": "सीख",
+        "root_english": [
+            "Learning",
+            "Lesson"
+        ],
+        "root_synonyms": [
+            "सबक"
+        ]
+    },
+    {
+        "root": "सबक",
+        "root_english": [
+            "Learning",
+            "Lesson"
+        ],
+        "root_synonyms": [
+            "सीख"
+        ]
+    },
+    {
+        "root": "साल",
+        "root_english": [
+            "Year"
+        ],
+        "root_synonyms": [
+            "वर्ष"
+        ]
+    },
+    {
+        "root": "वर्ष",
+        "root_english": [
+            "Year"
+        ],
+        "root_synonyms": [
+            "साल"
+        ]
+    },
+    {
+        "root": "स्वादिष्ट",
+        "root_english": [
+            "Delicious"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "स्वस्थ्",
+        "root_english": [
+            "Healthy"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "स्वास्थ्य",
+        "root_english": [
+            "Health"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "स्वीकार",
+        "root_english": [
+            "Accept"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "स्वागत",
+        "root_english": [
+            "Welcome"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "सार्थक",
+        "root_english": [
+            "Meaningful"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "निरर्थक",
+        "root_english": [
+            "Useless"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "स्वीकृति",
+        "root_english": [
+            "Acceptance"
+        ],
+        "root_synonyms": [
+            "मंजूरी",
+            "सहमति"
+        ]
+    },
+    {
+        "root": "मंजूरी",
+        "root_english": [
+            "Acceptance"
+        ],
+        "root_synonyms": [
+            "स्वीकृति",
+            "सहमति"
+        ]
+    },
+    {
+        "root": "सहमति",
+        "root_english": [
+            "Acceptance"
+        ],
+        "root_synonyms": [
+            "मंजूरी",
+            "स्वीकृति"
+        ]
+    },
+    {
+        "root": "सुरक्षा",
+        "root_english": [
+            "Security",
+            "Safety",
+            "Protection"
+        ],
+        "root_synonyms": [
+            "बचाव"
+        ]
+    },
+    {
+        "root": "बचाव",
+        "root_english": [
+            "Security",
+            "Safety",
+            "Protection"
+        ],
+        "root_synonyms": [
+            "सुरक्षा"
+        ]
+    },
+    {
+        "root": "रखवाला",
+        "root_english": [
+            "Guard"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "सर्व",
+        "root_english": [
+            "All"
+        ],
+        "root_synonyms": [
+            "समस्त",
+            "सभी"
+        ]
+    },
+    {
+        "root": "समस्त",
+        "root_english": [
+            "All"
+        ],
+        "root_synonyms": [
+            "सर्व",
+            "सभी"
+        ]
+    },
+    {
+        "root": "सभी",
+        "root_english": [
+            "All"
+        ],
+        "root_synonyms": [
+            "समस्त",
+            "सर्व"
+        ]
+    },
+    {
+        "root": "सार्वजनिक",
+        "root_english": [
+            "Public"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "सस्ता",
+        "root_english": [
+            "Cheap"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "संस्कृति",
+        "root_english": [
+            "Culture",
+            "Civilization"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "संवाद",
+        "root_english": [
+            "Dialogues"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "स्थान",
+        "root_english": [
+            "Place"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "खत्म",
+        "root_english": [
+            "End"
+        ],
+        "root_synonyms": [
+            "समाप्त",
+            "अंत"
+        ]
+    },
+    {
+        "root": "सिंचाई",
+        "root_english": [
+            "Irrigation"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "सिंहासन",
+        "root_english": [
+            "Throne"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "संसार",
+        "root_english": [
+            "World"
+        ],
+        "root_synonyms": [
+            "जग",
+            "दुनिया",
+            "जगत",
+            "विश्व"
+        ]
+    },
+    {
+        "root": "जग",
+        "root_english": [
+            "World"
+        ],
+        "root_synonyms": [
+            "संसार",
+            "विश्व",
+            "जगत",
+            "दुनिया"
+        ]
+    },
+    {
+        "root": "दुनिया",
+        "root_english": [
+            "World"
+        ],
+        "root_synonyms": [
+            "संसार",
+            "विश्व",
+            "जगत",
+            "जग"
+        ]
+    },
+    {
+        "root": "जगत",
+        "root_english": [
+            "World"
+        ],
+        "root_synonyms": [
+            "संसार",
+            "विश्व",
+            "दुनिया",
+            "जग"
+        ]
+    },
+    {
+        "root": "विश्व",
+        "root_english": [
+            "World"
+        ],
+        "root_synonyms": [
+            "संसार",
+            "जगत",
+            "दुनिया",
+            "जग"
+        ]
+    },
+    {
+        "root": "स्वच्छ",
+        "root_english": [
+            "Clean"
+        ],
+        "root_synonyms": [
+            "साफ",
+            "निर्मल"
+        ]
+    },
+    {
+        "root": "सेहत",
+        "root_english": [
+            "Health"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "समस्या",
+        "root_english": [
+            "Problem",
+            "Difficulty"
+        ],
+        "root_synonyms": [
+            "कठिनाई",
+            "बाधा",
+            "परेशानी"
+        ]
+    },
+    {
+        "root": "बाधा",
+        "root_english": [
+            "Problem",
+            "Difficulty"
+        ],
+        "root_synonyms": [
+            "परेशानी",
+            "कठिनाई",
+            "समस्या"
+        ]
+    },
+    {
+        "root": "परेशानी",
+        "root_english": [
+            "Problem",
+            "Difficulty"
+        ],
+        "root_synonyms": [
+            "बाधा",
+            "कठिनाई",
+            "समस्या"
+        ]
+    },
+    {
+        "root": "संतोष",
+        "root_english": [
+            "Satisfaction"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "सीधा",
+        "root_english": [
+            "Straight",
+            "Simple"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "सम्बन्ध",
+        "root_english": [
+            "Relationship"
+        ],
+        "root_synonyms": [
+            "रिश्ता"
+        ]
+    },
+    {
+        "root": "रिश्ता",
+        "root_english": [
+            "Relationship"
+        ],
+        "root_synonyms": [
+            "सम्बन्ध"
+        ]
+    },
+    {
+        "root": "स्वर",
+        "root_english": [
+            "Sound"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "स्वभाव",
+        "root_english": [
+            "Behavior",
+            "Nature"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "शांत",
+        "root_english": [
+            "Calm",
+            "Quiet",
+            "Peaceful"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "शोर",
+        "root_english": [
+            "Noise"
+        ],
+        "root_synonyms": [
+            "कोलाहल",
+            "हल्ला"
+        ]
+    },
+    {
+        "root": "कोलाहल",
+        "root_english": [
+            "Noise"
+        ],
+        "root_synonyms": [
+            "हल्ला",
+            "शोर"
+        ]
+    },
+    {
+        "root": "हल्ला",
+        "root_english": [
+            "Noise"
+        ],
+        "root_synonyms": [
+            "कोलाहल",
+            "शोर"
+        ]
+    },
+    {
+        "root": "शरारत",
+        "root_english": [
+            "Naughtiness",
+            "Mischief"
+        ],
+        "root_synonyms": [
+            "बदमाशी"
+        ]
+    },
+    {
+        "root": "बदमाशी",
+        "root_english": [
+            "Naughtiness",
+            "Mischief"
+        ],
+        "root_synonyms": [
+            "शरारत"
+        ]
+    },
+    {
+        "root": "शाकाहारी",
+        "root_english": [
+            "Vegetarian"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "शक्ति",
+        "root_english": [
+            "Power",
+            "Force",
+            "Strength"
+        ],
+        "root_synonyms": [
+            "बल",
+            "ताकत"
+        ]
+    },
+    {
+        "root": "बल",
+        "root_english": [
+            "Power",
+            "Force",
+            "Strength"
+        ],
+        "root_synonyms": [
+            "शक्ति",
+            "ताकत"
+        ]
+    },
+    {
+        "root": "ताकत",
+        "root_english": [
+            "Power",
+            "Force",
+            "Strength"
+        ],
+        "root_synonyms": [
+            "शक्ति",
+            "बल"
+        ]
+    },
+    {
+        "root": "शिकार",
+        "root_english": [
+            "Hunting"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "शीर्षक",
+        "root_english": [
+            "Title",
+            "Headline"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "शिक्षक",
+        "root_english": [
+            "Teacher"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "शिविर",
+        "root_english": [
+            "Camp"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "शिकायत",
+        "root_english": [
+            "Complaint"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "शान",
+        "root_english": [
+            "Pride",
+            "Swag"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "हरियाली",
+        "root_english": [
+            "Greenery"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "हृदय",
+        "root_english": [
+            "Heart"
+        ],
+        "root_synonyms": [
+            "दिल",
+            "कलेजा"
+        ]
+    },
+    {
+        "root": "दिल",
+        "root_english": [
+            "Heart"
+        ],
+        "root_synonyms": [
+            "हृदय",
+            "कलेजा"
+        ]
+    },
+    {
+        "root": "कलेजा",
+        "root_english": [
+            "Heart"
+        ],
+        "root_synonyms": [
+            "दिल",
+            "हृदय"
+        ]
+    },
+    {
+        "root": "हसीन",
+        "root_english": [
+            "Beautiful"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "हड़ताल",
+        "root_english": [
+            "Strike",
+            "Walkout"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "होनहार",
+        "root_english": [
+            "Promising"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "हैरानी",
+        "root_english": [
+            "Surprise"
+        ],
+        "root_synonyms": [
+            "ताज्जुब",
+            "अचंभा",
+            "आश्चर्य"
+        ]
+    },
+    {
+        "root": "ताज्जुब",
+        "root_english": [
+            "Surprise"
+        ],
+        "root_synonyms": [
+            "हैरानी",
+            "अचंभा",
+            "आश्चर्य"
+        ]
+    },
+    {
+        "root": "अचंभा",
+        "root_english": [
+            "Surprise"
+        ],
+        "root_synonyms": [
+            "हैरानी",
+            "आश्चर्य",
+            "ताज्जुब"
+        ]
+    },
+    {
+        "root": "आश्चर्य",
+        "root_english": [
+            "Surprise"
+        ],
+        "root_synonyms": [
+            "हैरानी",
+            "अचंभा",
+            "ताज्जुब"
+        ]
+    },
+    {
+        "root": "हैसियत",
+        "root_english": [
+            "Status",
+            "Capacity"
+        ],
+        "root_synonyms": [
+            "औकात"
+        ]
+    },
+    {
+        "root": "औकात",
+        "root_english": [
+            "Status",
+            "Capacity"
+        ],
+        "root_synonyms": [
+            "हैसियत"
+        ]
+    },
+    {
+        "root": "हिचकिचाहट",
+        "root_english": [
+            "Hesitation"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "हिंसक",
+        "root_english": [
+            "Violent"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "हिम",
+        "root_english": [
+            "Ice"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "हिमनद",
+        "root_english": [
+            "Glacier"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "ऋषि",
+        "root_english": [
+            "Sage"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "ऋतु",
+        "root_english": [
+            "Season"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "आधार",
+        "root_english": [
+            "Foundation",
+            "Basis"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "अभिनय",
+        "root_english": [
+            "Acting"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "अभिनेता",
+        "root_english": [
+            "Actor"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "अभिनेत्री",
+        "root_english": [
+            "Actress"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "अचम्भा",
+        "root_english": [
+            "Wonder",
+            "Surprise"
+        ],
+        "root_synonyms": [
+            "ताज्जुब",
+            "अचरज",
+            "आश्चर्य"
+        ]
+    },
+    {
+        "root": "अचरज",
+        "root_english": [
+            "Wonder",
+            "Surprise"
+        ],
+        "root_synonyms": [
+            "ताज्जुब",
+            "आश्चर्य",
+            "अचम्भा"
+        ]
+    },
+    {
+        "root": "आय",
+        "root_english": [
+            "Income"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "आयकर",
+        "root_english": [
+            "Income Tax"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "अमृत",
+        "root_english": [
+            "Nectar",
+            "Elixir"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "इज़्ज़त",
+        "root_english": [
+            "Respect"
+        ],
+        "root_synonyms": [
+            "आदर"
+        ]
+    },
+    {
+        "root": "निरादर",
+        "root_english": [
+            "Disrespect"
+        ],
+        "root_synonyms": [
+            "दुत्कार",
+            "अपमान",
+            "अनादर",
+            "बेइज़्ज़ती"
+        ]
+    },
+    {
+        "root": "दुत्कार",
+        "root_english": [
+            "Disrespect"
+        ],
+        "root_synonyms": [
+            "अपमान",
+            "बेइज़्ज़ती",
+            "निरादर",
+            "अनादर"
+        ]
+    },
+    {
+        "root": "अनादर",
+        "root_english": [
+            "Disrespect"
+        ],
+        "root_synonyms": [
+            "अपमान",
+            "दुत्कार",
+            "निरादर",
+            "बेइज़्ज़ती"
+        ]
+    },
+    {
+        "root": "बेइज़्ज़ती",
+        "root_english": [
+            "Disrespect"
+        ],
+        "root_synonyms": [
+            "अपमान",
+            "दुत्कार",
+            "निरादर",
+            "अनादर"
+        ]
+    },
+    {
+        "root": "सत्कार",
+        "root_english": [
+            "Respect",
+            "Honor",
+            "Hospitality"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "अहंकार",
+        "root_english": [
+            "Ego",
+            "Arrogance"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "घमंडी",
+        "root_english": [
+            "Arrogant",
+            "Show-Off"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "दम्भ",
+        "root_english": [
+            "Arrogance",
+            "Snobbery"
+        ],
+        "root_synonyms": [
+            "अहंकार",
+            "घमंड"
+        ]
+    },
+    {
+        "root": "घमंड",
+        "root_english": [
+            "Arrogance",
+            "Snobbery"
+        ],
+        "root_synonyms": [
+            "दम्भ",
+            "अहंकार"
+        ]
+    },
+    {
+        "root": "अभिमान",
+        "root_english": [
+            "Arrogance",
+            "Pride"
+        ],
+        "root_synonyms": [
+            "घमंड"
+        ]
+    },
+    {
+        "root": "सामर्थ्य",
+        "root_english": [
+            "Capacity"
+        ],
+        "root_synonyms": [
+            "क्षमता"
+        ]
+    },
+    {
+        "root": "जुल्म",
+        "root_english": [
+            "Atrocity",
+            "Tyranny",
+            "Oppression"
+        ],
+        "root_synonyms": [
+            "शोषण",
+            "अन्याय",
+            "अत्याचार"
+        ]
+    },
+    {
+        "root": "शोषण",
+        "root_english": [
+            "Atrocity",
+            "Tyranny",
+            "Oppression"
+        ],
+        "root_synonyms": [
+            "जुल्म",
+            "अन्याय",
+            "अत्याचार"
+        ]
+    },
+    {
+        "root": "आश्रम",
+        "root_english": [
+            "Hermitage",
+            "Monastery"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "अनुभव",
+        "root_english": [
+            "Experience"
+        ],
+        "root_synonyms": [
+            "तजुर्बा"
+        ]
+    },
+    {
+        "root": "तजुर्बा",
+        "root_english": [
+            "Experience"
+        ],
+        "root_synonyms": [
+            "अनुभव"
+        ]
+    },
+    {
+        "root": "अक्सर",
+        "root_english": [
+            "Often",
+            "Frequently"
+        ],
+        "root_synonyms": [
+            "प्रायः",
+            "बहुधा",
+            "बार-बार"
+        ]
+    },
+    {
+        "root": "प्रायः",
+        "root_english": [
+            "Often",
+            "Frequently"
+        ],
+        "root_synonyms": [
+            "बहुधा",
+            "अक्सर",
+            "बार-बार"
+        ]
+    },
+    {
+        "root": "बहुधा",
+        "root_english": [
+            "Often",
+            "Frequently"
+        ],
+        "root_synonyms": [
+            "अक्सर",
+            "बार-बार",
+            "प्रायः"
+        ]
+    },
+    {
+        "root": "बार-बार",
+        "root_english": [
+            "Often",
+            "Frequently"
+        ],
+        "root_synonyms": [
+            "बहुधा",
+            "अक्सर",
+            "प्रायः"
+        ]
+    },
+    {
+        "root": "लगातार",
+        "root_english": [
+            "Continuously"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "इत्यादि",
+        "root_english": [
+            "Et Cetera"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "इंसाफ",
+        "root_english": [
+            "Justice"
+        ],
+        "root_synonyms": [
+            "न्याय"
+        ]
+    },
+    {
+        "root": "उपचार",
+        "root_english": [
+            "Treatment",
+            "Remedy"
+        ],
+        "root_synonyms": [
+            "इलाज"
+        ]
+    },
+    {
+        "root": "इलाज",
+        "root_english": [
+            "Treatment",
+            "Remedy"
+        ],
+        "root_synonyms": [
+            "उपचार"
+        ]
+    },
+    {
+        "root": "उपलब्धि",
+        "root_english": [
+            "Achievement",
+            "Accomplishment"
+        ],
+        "root_synonyms": [
+            "सफलता"
+        ]
+    },
+    {
+        "root": "उत्सुक",
+        "root_english": [
+            "Curious",
+            "Anxious"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "उपलक्ष्य",
+        "root_english": [
+            "Celebration",
+            "Occasion"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "उद्घाटन",
+        "root_english": [
+            "Opening",
+            "Inauguration"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "कराह",
+        "root_english": [
+            "Groan"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "काल्पनिक",
+        "root_english": [
+            "Imaginary"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "कारीगर",
+        "root_english": [
+            "Artisan"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "खातिरदारी",
+        "root_english": [
+            "Hospitality"
+        ],
+        "root_synonyms": [
+            "सत्कार",
+            "सेवा"
+        ]
+    },
+    {
+        "root": "सेवा",
+        "root_english": [
+            "Hospitality"
+        ],
+        "root_synonyms": [
+            "खातिरदारी",
+            "सत्कार"
+        ]
+    },
+    {
+        "root": "खातिर",
+        "root_english": [
+            "Respect"
+        ],
+        "root_synonyms": [
+            "आदर",
+            "सम्मान"
+        ]
+    },
+    {
+        "root": "ज्यादा",
+        "root_english": [
+            "More"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "द्वितीय",
+        "root_english": [
+            "Second"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "तृतीय",
+        "root_english": [
+            "Third"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "चतुर्थ",
+        "root_english": [
+            "Fourth"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "चंचल",
+        "root_english": [
+            "Playful"
+        ],
+        "root_synonyms": [
+            "नटखट"
+        ]
+    },
+    {
+        "root": "नटखट",
+        "root_english": [
+            "Playful"
+        ],
+        "root_synonyms": [
+            "चंचल"
+        ]
+    },
+    {
+        "root": "छाप",
+        "root_english": [
+            "Impression"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "चौंकना",
+        "root_english": [
+            "Startled",
+            "Surprised"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "हक्का-बक्का",
+        "root_english": [
+            "Bewildered"
+        ],
+        "root_synonyms": [
+            "हैरान",
+            "भौचक्का"
+        ]
+    },
+    {
+        "root": "भौचक्का",
+        "root_english": [
+            "Bewildered"
+        ],
+        "root_synonyms": [
+            "हैरान",
+            "हक्का-बक्का"
+        ]
+    },
+    {
+        "root": "जोश",
+        "root_english": [
+            "Excitement",
+            "Enthusiasm"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "जाँच",
+        "root_english": [
+            "Checking"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "जाँच-पड़ताल",
+        "root_english": [
+            "Investigation"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "झट-पट",
+        "root_english": [
+            "Quickly"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "पता",
+        "root_english": [
+            "Address",
+            "Whereabouts"
+        ],
+        "root_synonyms": [
+            "ठिकाना",
+            "स्थान"
+        ]
+    },
+    {
+        "root": "ठहर",
+        "root_english": [
+            "Stop",
+            "Stay"
+        ],
+        "root_synonyms": [
+            "रुकना"
+        ]
+    },
+    {
+        "root": "रुकना",
+        "root_english": [
+            "Stop",
+            "Stay"
+        ],
+        "root_synonyms": [
+            "ठहर"
+        ]
+    },
+    {
+        "root": "प्रतीक्षा",
+        "root_english": [
+            "Wait"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "निवास",
+        "root_english": [
+            "Residence",
+            "Home"
+        ],
+        "root_synonyms": [
+            "घर"
+        ]
+    },
+    {
+        "root": "घर",
+        "root_english": [
+            "Residence",
+            "Home"
+        ],
+        "root_synonyms": [
+            "निवास"
+        ]
+    },
+    {
+        "root": "ठिठुर",
+        "root_english": [
+            "Shivering"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "ठहराव",
+        "root_english": [
+            "Pause"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "ठहाका",
+        "root_english": [
+            "Laughter"
+        ],
+        "root_synonyms": [
+            "जोरदार-हंसी"
+        ]
+    },
+    {
+        "root": "जोरदार-हंसी",
+        "root_english": [
+            "Laughter"
+        ],
+        "root_synonyms": [
+            "ठहाका"
+        ]
+    },
+    {
+        "root": "ठिठक",
+        "root_english": [
+            "Stop",
+            "Stutter"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "ध्येय",
+        "root_english": [
+            "Aim",
+            "Goal"
+        ],
+        "root_synonyms": [
+            "लक्ष्य",
+            "उद्देश्य"
+        ]
+    },
+    {
+        "root": "उद्देश्य",
+        "root_english": [
+            "Aim",
+            "Goal"
+        ],
+        "root_synonyms": [
+            "ध्येय",
+            "लक्ष्य"
+        ]
+    },
+    {
+        "root": "निरुद्देश्य",
+        "root_english": [
+            "Aimless"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "गंतव्य",
+        "root_english": [
+            "Destination"
+        ],
+        "root_synonyms": [
+            "मंजिल"
+        ]
+    },
+    {
+        "root": "मंजिल",
+        "root_english": [
+            "Destination"
+        ],
+        "root_synonyms": [
+            "गंतव्य"
+        ]
+    },
+    {
+        "root": "खुशहालि",
+        "root_english": [
+            "Prosperity"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "चबूतरा",
+        "root_english": [
+            "Platform"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "संस्मरण",
+        "root_english": [
+            "Memoir"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "स्मरण",
+        "root_english": [
+            "Remember"
+        ],
+        "root_synonyms": [
+            "याद"
+        ]
+    },
+    {
+        "root": "याद",
+        "root_english": [
+            "Remember"
+        ],
+        "root_synonyms": [
+            "स्मरण"
+        ]
+    },
+    {
+        "root": "स्मृति",
+        "root_english": [
+            "Memory"
+        ],
+        "root_synonyms": [
+            "याददाश्त"
+        ]
+    },
+    {
+        "root": "याददाश्त",
+        "root_english": [
+            "Memory"
+        ],
+        "root_synonyms": [
+            "स्मृति"
+        ]
+    },
+    {
+        "root": "घटना",
+        "root_english": [
+            "Event"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "दुर्घटना",
+        "root_english": [
+            "Accident"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "ढुलकना",
+        "root_english": [
+            "Rolling"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "डील-डौल",
+        "root_english": [
+            "Physique",
+            "Physical Appearance",
+            "Build"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "कद काठी",
+        "root_english": [
+            "Physique",
+            "Build"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "तरल",
+        "root_english": [
+            "Liquid"
+        ],
+        "root_synonyms": [
+            "द्रव"
+        ]
+    },
+    {
+        "root": "द्रव",
+        "root_english": [
+            "Liquid"
+        ],
+        "root_synonyms": [
+            "तरल"
+        ]
+    },
+    {
+        "root": "तय",
+        "root_english": [
+            "Fixed"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "योजना",
+        "root_english": [
+            "Scheme",
+            "Method"
+        ],
+        "root_synonyms": [
+            "जुगाड़",
+            "उपाय",
+            "तरकीब"
+        ]
+    },
+    {
+        "root": "जुगाड़",
+        "root_english": [
+            "Scheme",
+            "Method"
+        ],
+        "root_synonyms": [
+            "उपाय",
+            "योजना",
+            "तरकीब"
+        ]
+    },
+    {
+        "root": "तुच्छ",
+        "root_english": [
+            "Insignificant"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "थोपना",
+        "root_english": [
+            "Impose"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "दोहा",
+        "root_english": [
+            "Poem"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "दोबारा",
+        "root_english": [
+            "Again"
+        ],
+        "root_synonyms": [
+            "पुनः",
+            "फिर-से"
+        ]
+    },
+    {
+        "root": "पुनः",
+        "root_english": [
+            "Again"
+        ],
+        "root_synonyms": [
+            "फिर-से",
+            "दोबारा"
+        ]
+    },
+    {
+        "root": "फिर-से",
+        "root_english": [
+            "Again"
+        ],
+        "root_synonyms": [
+            "पुनः",
+            "दोबारा"
+        ]
+    },
+    {
+        "root": "दीन",
+        "root_english": [
+            "Poor"
+        ],
+        "root_synonyms": [
+            "गरीब",
+            "निर्धन",
+            "दुखी"
+        ]
+    },
+    {
+        "root": "गरीब",
+        "root_english": [
+            "Poor"
+        ],
+        "root_synonyms": [
+            "निर्धन",
+            "दुखी",
+            "दीन"
+        ]
+    },
+    {
+        "root": "दुखी",
+        "root_english": [
+            "Poor"
+        ],
+        "root_synonyms": [
+            "निर्धन",
+            "दीन",
+            "गरीब"
+        ]
+    },
+    {
+        "root": "असहाय",
+        "root_english": [
+            "Powerless",
+            "Helpless"
+        ],
+        "root_synonyms": [
+            "लाचार"
+        ]
+    },
+    {
+        "root": "लाचार",
+        "root_english": [
+            "Powerless",
+            "Helpless"
+        ],
+        "root_synonyms": [
+            "असहाय"
+        ]
+    },
+    {
+        "root": "दशा",
+        "root_english": [
+            "State"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "दीप",
+        "root_english": [
+            "Small Lamp"
+        ],
+        "root_synonyms": [
+            "दीया"
+        ]
+    },
+    {
+        "root": "दीया",
+        "root_english": [
+            "Small Lamp"
+        ],
+        "root_synonyms": [
+            "दीप"
+        ]
+    },
+    {
+        "root": "दीपक",
+        "root_english": [
+            "Lamp"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "दूब",
+        "root_english": [
+            "Grass"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "दोषी",
+        "root_english": [
+            "Guilty"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "द्वार",
+        "root_english": [
+            "Gate"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "प्रवेश",
+        "root_english": [
+            "Entry"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "पाठ",
+        "root_english": [
+            "Lesson"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "विनिमय",
+        "root_english": [
+            "Exchange"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "परिक्रमा",
+        "root_english": [
+            "Circle"
+        ],
+        "root_synonyms": [
+            "चक्कर"
+        ]
+    },
+    {
+        "root": "जनता",
+        "root_english": [
+            "Public"
+        ],
+        "root_synonyms": [
+            "प्रजा"
+        ]
+    },
+    {
+        "root": "प्रजा",
+        "root_english": [
+            "Public"
+        ],
+        "root_synonyms": [
+            "जनता"
+        ]
+    },
+    {
+        "root": "सुनहरा",
+        "root_english": [
+            "Golden"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "तट",
+        "root_english": [
+            "Shore",
+            "Bank",
+            "Coast"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "दिलचस्पी",
+        "root_english": [
+            "Interest",
+            "Curiosity"
+        ],
+        "root_synonyms": [
+            "रुचि",
+            "अभिरुचि"
+        ]
+    },
+    {
+        "root": "रुचि",
+        "root_english": [
+            "Interest",
+            "Curiosity"
+        ],
+        "root_synonyms": [
+            "दिलचस्पी",
+            "अभिरुचि"
+        ]
+    },
+    {
+        "root": "अभिरुचि",
+        "root_english": [
+            "Interest",
+            "Curiosity"
+        ],
+        "root_synonyms": [
+            "रुचि",
+            "दिलचस्पी"
+        ]
+    },
+    {
+        "root": "शौक",
+        "root_english": [
+            "Hobby"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "भाप",
+        "root_english": [
+            "Steam"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "झुर्री",
+        "root_english": [
+            "Wrinkle"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "झिलमिलाना",
+        "root_english": [
+            "Flicker"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "अधमरा",
+        "root_english": [
+            "Half-Dead"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "सिकुड़",
+        "root_english": [
+            "Shrink"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "संकुचित",
+        "root_english": [
+            "Tight"
+        ],
+        "root_synonyms": [
+            "compressed"
+        ]
+    },
+    {
+        "root": "compressed",
+        "root_english": [
+            "Tight"
+        ],
+        "root_synonyms": [
+            "संकुचित"
+        ]
+    },
+    {
+        "root": "संकरा",
+        "root_english": [
+            "Narrow",
+            "Tight"
+        ],
+        "root_synonyms": [
+            "तंग"
+        ]
+    },
+    {
+        "root": "तंग",
+        "root_english": [
+            "Narrow",
+            "Tight"
+        ],
+        "root_synonyms": [
+            "संकरा"
+        ]
+    },
+    {
+        "root": "भाग्य",
+        "root_english": [
+            "Luck",
+            "Fate"
+        ],
+        "root_synonyms": [
+            "किस्मत",
+            "तकदीर",
+            "नसीब"
+        ]
+    },
+    {
+        "root": "किस्मत",
+        "root_english": [
+            "Luck",
+            "Fate"
+        ],
+        "root_synonyms": [
+            "भाग्य",
+            "नसीब",
+            "तकदीर"
+        ]
+    },
+    {
+        "root": "तकदीर",
+        "root_english": [
+            "Luck",
+            "Fate"
+        ],
+        "root_synonyms": [
+            "किस्मत",
+            "भाग्य",
+            "नसीब"
+        ]
+    },
+    {
+        "root": "नसीब",
+        "root_english": [
+            "Luck",
+            "Fate"
+        ],
+        "root_synonyms": [
+            "किस्मत",
+            "भाग्य",
+            "तकदीर"
+        ]
+    },
+    {
+        "root": "दुर्भाग्य",
+        "root_english": [
+            "Misfortune",
+            "Bad Luck"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "सौभाग्य",
+        "root_english": [
+            "Fortune",
+            "Good Luck"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "रेंगना",
+        "root_english": [
+            "Crawl"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "सुगंध",
+        "root_english": [
+            "Fragrance",
+            "Smell"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "दुर्गन्ध",
+        "root_english": [
+            "Stink"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "चोट",
+        "root_english": [
+            "Injury"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "घाव",
+        "root_english": [
+            "Wound"
+        ],
+        "root_synonyms": [
+            "जख्म"
+        ]
+    },
+    {
+        "root": "जख्म",
+        "root_english": [
+            "Wound"
+        ],
+        "root_synonyms": [
+            "घाव"
+        ]
+    },
+    {
+        "root": "आघात",
+        "root_english": [
+            "Storke"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "हाँफना",
+        "root_english": [
+            "Panting"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "टपकना",
+        "root_english": [
+            "Dripping",
+            "Falling"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "दरार",
+        "root_english": [
+            "Crack"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "सीलन",
+        "root_english": [
+            "Dampness"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "शून्य",
+        "root_english": [
+            "Zero",
+            "Nothing"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "लकीर",
+        "root_english": [
+            "Line"
+        ],
+        "root_synonyms": [
+            "रेखा"
+        ]
+    },
+    {
+        "root": "रेखा",
+        "root_english": [
+            "Line"
+        ],
+        "root_synonyms": [
+            "लकीर"
+        ]
+    },
+    {
+        "root": "चतुर",
+        "root_english": [
+            "Clever"
+        ],
+        "root_synonyms": [
+            "बुद्धिमान",
+            "होशियार"
+        ]
+    },
+    {
+        "root": "बुद्धिमान",
+        "root_english": [
+            "Clever"
+        ],
+        "root_synonyms": [
+            "चतुर",
+            "होशियार"
+        ]
+    },
+    {
+        "root": "होशियार",
+        "root_english": [
+            "Clever"
+        ],
+        "root_synonyms": [
+            "बुद्धिमान",
+            "चतुर"
+        ]
+    },
+    {
+        "root": "चालाक",
+        "root_english": [
+            "Cunning"
+        ],
+        "root_synonyms": [
+            "धूर्त"
+        ]
+    },
+    {
+        "root": "रहस्य",
+        "root_english": [
+            "Mystery",
+            "Secret"
+        ],
+        "root_synonyms": [
+            "राज़",
+            "भेद"
+        ]
+    },
+    {
+        "root": "राज़",
+        "root_english": [
+            "Mystery",
+            "Secret"
+        ],
+        "root_synonyms": [
+            "भेद",
+            "रहस्य"
+        ]
+    },
+    {
+        "root": "भेद",
+        "root_english": [
+            "Mystery",
+            "Secret"
+        ],
+        "root_synonyms": [
+            "रहस्य",
+            "राज़"
+        ]
+    },
+    {
+        "root": "स्वतंत्रता",
+        "root_english": [
+            "Liberty",
+            "Independence"
+        ],
+        "root_synonyms": [
+            "आज़ादी"
+        ]
+    },
+    {
+        "root": "आज़ादी",
+        "root_english": [
+            "Liberty",
+            "Independence"
+        ],
+        "root_synonyms": [
+            "स्वतंत्रता"
+        ]
+    },
+    {
+        "root": "मुक्ति",
+        "root_english": [
+            "Freedom"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "निडर",
+        "root_english": [
+            "Fearless"
+        ],
+        "root_synonyms": [
+            "निर्भय",
+            "साहसी"
+        ]
+    },
+    {
+        "root": "निर्भय",
+        "root_english": [
+            "Fearless"
+        ],
+        "root_synonyms": [
+            "निडर",
+            "साहसी"
+        ]
+    },
+    {
+        "root": "साहसी",
+        "root_english": [
+            "Fearless"
+        ],
+        "root_synonyms": [
+            "निडर",
+            "निर्भय"
+        ]
+    },
+    {
+        "root": "ग्रह",
+        "root_english": [
+            "Planet"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "उपग्रह",
+        "root_english": [
+            "Satellite"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "दलदल",
+        "root_english": [
+            "Swamp"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "रेगिस्तान",
+        "root_english": [
+            "Desert"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "बेहोश",
+        "root_english": [
+            "Unconscious",
+            "Fainted"
+        ],
+        "root_synonyms": [
+            "मूर्छित"
+        ]
+    },
+    {
+        "root": "मूर्छित",
+        "root_english": [
+            "Unconscious",
+            "Fainted"
+        ],
+        "root_synonyms": [
+            "बेहोश"
+        ]
+    },
+    {
+        "root": "अलविदा",
+        "root_english": [
+            "Goodbye"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "खरोंच",
+        "root_english": [
+            "Scratch"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "चिंता",
+        "root_english": [
+            "Worry"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "गुस्सा",
+        "root_english": [
+            "Anger"
+        ],
+        "root_synonyms": [
+            "क्रोध"
+        ]
+    },
+    {
+        "root": "चित्रण",
+        "root_english": [
+            "Illustration",
+            "Depiction"
         ],
         "root_synonyms": []
     }
