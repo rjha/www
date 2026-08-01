@@ -98,6 +98,16 @@ def _store_hindi_hindi_map(conn: psycopg.Connection, source_uuid: str, target_uu
         cur.execute(query, (source_uuid, target_uuid))
 
 
+def print_root_words():
+    db_conn_string = _get_database_conn_string()
+    with psycopg.connect(db_conn_string) as conn:
+        with conn.cursor() as cur:
+            cur.execute('SELECT token FROM hindi_master ORDER BY token COLLATE "hi-x-icu" ;')
+            # Loop through the rows directly and print the words
+            for row in cur:
+                print(row[0])
+
+         
 def store_word_list(word_list):
     db_conn_string = _get_database_conn_string()
     with psycopg.connect(db_conn_string) as conn:
@@ -194,6 +204,7 @@ def do_main():
     AppConfig.init_logging(log_file=log_config.log_file, log_level=log_config.log_level)
     logger.info(f"Hindi words program loaded...")
     process_file("words.txt", store_in_db=True, dump_json=True)
+    print_root_words()
 
 if __name__ == "__main__":
     do_main()
