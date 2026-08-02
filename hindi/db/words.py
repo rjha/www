@@ -114,7 +114,50 @@ def _store_hindi_hindi_map(conn: psycopg.Connection, source_uuid: str, target_uu
         cur.execute(query, (source_uuid, target_uuid))
 
 
+def _store_root_word_wrapper(conn, line_no, root_word, english_words, root_synonyms):
+    try:
+        root_uuid = _store_root_word(conn, root_word)
+        # debug 
+        print(f" line: {line_no}, root: {root_word}, {root_uuid}")
+        english_uuids = []
 
+        for english_word in english_words:
+            english_uuid = _store_english_word(conn, english_word)
+            # debug 
+            print(f"\t [e] {english_word}, english_uuid:{english_uuid}")
+            _store_hindi_english_map(conn, root_uuid, english_uuid)
+            english_uuids.append(english_uuid)
+
+        synonym_set = set()
+        for synonym in root_synonyms:
+            synonym_uuid = _store_root_synonym(conn, synonym)
+            # debug 
+            print(f"\t [s] synonym_uuid:{synonym_uuid}, {synonym}")
+            # every synonym inherits the english words      
+            for re_uuid in english_uuids:
+                _store_hindi_english_map(conn, synonym_uuid, re_uuid)
+                print(f" \t [s][e] {synonym_uuid} re_uuid: {re_uuid}")
+
+            synonym_set.add(synonym_uuid)
+
+        # for storing hindi-hindi synonym pairs 
+        # we should consider the root word as well
+        synonym_set.add(root_uuid)
+
+        for item_uuid in synonym_set:
+            map_set = set(synonym_set)
+            # remove self pairing for hindi_hindi map
+            map_set.discard(item_uuid)
+            for pair_uuid in map_set:
+                _store_hindi_hindi_map(conn, item_uuid, pair_uuid)
+
+        conn.commit()
+        
+    except Exception as e:
+        conn.rollback()
+        logger.exception(f"error happened for {root_word}...")
+        raise e 
+    
 def _get_root_words(db_conn_string):
     words = []
     with psycopg.connect(db_conn_string) as conn:
@@ -224,49 +267,7 @@ def store_in_database(file_name, skip_lines=0):
                     # Hindi Synonyms (Converted to Array)
                     raw_synonyms = parts[2].strip() if len(parts) > 2 else ""
                     root_synonyms = [item.strip() for item in raw_synonyms.split(',') if item.strip()] if raw_synonyms else []
-                    
-                    try:
-                        root_uuid = _store_root_word(conn, root_word)
-                        # debug 
-                        print(f" line: {line_no}, root: {root_word}, {root_uuid}")
-                        english_uuids = []
-
-                        for english_word in english_words:
-                            english_uuid = _store_english_word(conn, english_word)
-                            # debug 
-                            print(f"\t [e] {english_word}, english_uuid:{english_uuid}")
-                            _store_hindi_english_map(conn, root_uuid, english_uuid)
-                            english_uuids.append(english_uuid)
-
-                        synonym_set = set()
-                        for synonym in root_synonyms:
-                            synonym_uuid = _store_root_synonym(conn, synonym)
-                            # debug 
-                            print(f"\t [s] synonym_uuid:{synonym_uuid}, {synonym}")
-                            # every synonym inherits the english words      
-                            for re_uuid in english_uuids:
-                                _store_hindi_english_map(conn, synonym_uuid, re_uuid)
-                                print(f" \t [s][e] {synonym_uuid} re_uuid: {re_uuid}")
-
-                            synonym_set.add(synonym_uuid)
-
-                        # for storing hindi-hindi synonym pairs 
-                        # we should consider the root word as well
-                        synonym_set.add(root_uuid)
-
-                        for item_uuid in synonym_set:
-                            map_set = set(synonym_set)
-                            # remove self pairing for hindi_hindi map
-                            map_set.discard(item_uuid)
-                            for pair_uuid in map_set:
-                                _store_hindi_hindi_map(conn, item_uuid, pair_uuid)
-
-                        conn.commit()
-                        
-                    except Exception as e:
-                        conn.rollback()
-                        logger.exception(f"error happened for {root_word}...")
-                        raise e 
+                    _store_root_word_wrapper(conn, line_no, root_word, english_words, root_synonyms)
                     
 
 def do_main():
