@@ -171,7 +171,7 @@ def _get_root_words(db_conn_string):
     words = []
     with psycopg.connect(db_conn_string) as conn:
         with conn.cursor() as cur:
-            cur.execute('SELECT hindi_uuid, token, level FROM hindi_master ORDER BY token COLLATE "hi-x-icu" ;')
+            cur.execute('SELECT hindi_uuid, token, w_level FROM hindi_master ORDER BY token COLLATE "hi-x-icu" ;')
             for row in cur:
                 words.append((row[0], row[1], row[2]))
     return words 
@@ -311,8 +311,8 @@ def do_main():
     AppConfig.init_logging(log_file=log_config.log_file, log_level=log_config.log_level)
     logger.info(f"Hindi words program loaded...")
     # store_in_database("words01.txt", skip_lines=0)
-    set_word_level("level01.csv")
-     # dump_json()
+    # set_word_level("level01.csv")
+    dump_json()
 
 if __name__ == "__main__":
     do_main()
