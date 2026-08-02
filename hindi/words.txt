@@ -1,6 +1,5 @@
 ﻿असफलता; Failure 
 अचानक ; Suddenly
-आवाज़ ; Sound
 आकार ; Figure, Shape 
 आराम ; Rest, Relief
 विश्राम ; Rest
@@ -13,7 +12,7 @@
 आकर्षक  ; attractive
 अभ्यास ; practice, exercise
 अतीत ; past 
-विगत ; gone, past ; बीता हुआ, समाप्त, गत
+विगत ; gone, past ; बीता-हुआ, समाप्त, गत
 भविष्य; future
 आदेश ; Order 
 आसमान ; Sky 
@@ -27,8 +26,9 @@
 आंसू ; Tears 
 अगल-बगल ; Nearby place
 अतिथि ; Guest
-अर्थ ; meaning, money ; अभिप्राय, मतलब
-आर्थिक ; economical, money-matters
+अर्थ ; meaning ; अभिप्राय, मतलब
+अर्थ(२): money
+आर्थिक ; economical, money-matter
 आंदोलन ; Revolution, Agitation
 परिवर्तन ; change 
 सुधार; improvement 
@@ -40,23 +40,24 @@
 आत्मविश्वास ; self-confidence 
 आत्मसम्मान ; self-respect 
 अंकुश ;  control ; नियंत्रण, रोक, पाबंदी
+अंकुश(२) ; Elephant Hook
 निरंकुश; Without control ; तानाशाह 
 अगुवा ; leader 
 अगुवाई ; leadership 
 अस्तबल ; Horse stable
 अंत ; end
 आदि ; start 
-अत्याचार ; atrocity, tyranny
 अध्यापक ; teacher 
 अध्ययन ; studies 
 अपाहिज ; disabled 
 अवसर ; occasion, opportunity; मौका, ठीक समय
-अजीबोगरीब ; weird, strange; विचित्र, अद्भुत, अनोखा
+अजीबोगरीब ; weird, strange; विचित्र
 आदान-प्रदान ; exchange 
 औपचारिक ; formal 
 अनौपचारिक ; informal 
 असमानता ; inequality, unlike
-अलग ; different, apart; भिन्न, पृथक, जुदा 
+अलग ; different, separate; भिन्न, जुदा 
+पृथक ; separate 
 अलावा ; apart from; अतिरिक्त, छोड़कर, सिवाय
 अधिकार ; rights 
 आनंद ; pleasure 
@@ -78,7 +79,8 @@
 उलटना ; Flip, overturn, roll 
 उद्देशय ; purpose, aim ; लक्ष्य
 इरादा; intention; मंशा
-उत्तर ; answer, A direction 
+उत्तर ; answer
+उत्तर(२): North 
 उदाहरण ; example
 उत्पाद ; produce   
 उत्पादन ; production  
@@ -95,7 +97,8 @@
 कौशल ; skill, talent, ability 
 कुशलता ; skill, Well-being  ; योग्यता
 कुशल ; skilled, proficient ; योग्य
-कर ; Tax, Hand; हाथ 
+कर ; Tax
+कर(२) ; Hand 
 कर्त्तव्य ; duty, responsibility ; जिम्मेदारी
 कल्पना  ; Imagination
 कारखाना  ; Factory
@@ -114,14 +117,14 @@
 कठोर ; hard 
 कठिनाई ; problems, hardships
 केंद्र  ; center, focus  
-केंद्रित ; focused on
+केंद्रित ; focused
 केंद्रिय ; central 
 क़तार ; line ; पंक्ति
-कीमत ; price ; मोल;भाव 
+कीमत ; price ; मोल, भाव 
 कीमती ; expensive, pricey
 बेशकीमती; priceless, valuable ; दुर्लभ, मूल्यवान, बहुमूल्य
-किनारा ; edge, river bank
-खट्टा-मीठा ; sweet & sour 
+किनारा ; edge, river-bank, coast
+खट्टा-मीठा ; sweet-sour 
 खदान ; Mine 
 ख़ुशी ; happiness ; आनंद, प्रसन्नता, हर्ष, उल्लास
 खुशहाल; happy 
@@ -134,7 +137,7 @@
 गीला; Wet, soggy ; भींगा 
 सूखा; Dry 
 गद्य; prose
-गति; speed, motion, pace
+गति; speed, motion
 रफ़्तार ; speed 
 गवाह; witness 
 गवाही; evidence, testimony
@@ -169,27 +172,22 @@
 छाया; shadow 
 झटका; shock, Jerk 
 झुण्ड; crowd, group, pack 
-जंजीर; shackles
-हथकड़ी ; handcuff 
+जंजीर; Chains, shackles
+हथकड़ी ; Handcuff 
 ज्योति; Light 
 जानकारी; Information 
 जिज्ञासा; curiosity 
-ठिकाना; destination, hideout
 ठोस; Solid 
 ढोना; To carry, to suffer
 ढूंढ; search 
 खोज; discover, search ; तलाश
 त्यौहार; Festival
 तरीका ; way, method
-तर्क ; argument, logic
 तैयार ; ready 
-तीखा ; spicy
-मीठा; sweet 
-तीखा ; sharp
-तीखा जवाब  ; savage reply
-तर्क ; logic, reasoning, argument 
+तीखा ; spicy, sharp 
+तर्क ; logic, argument 
 तारीफ़ ; praise, compliment; प्रशंसा, सराहना 
-तोहफा ; gift, present ;भेंट , सौगात
+तोहफा ; gift, present ; भेंट, सौगात
 तुलना ; comparison
 तनख्वाह ; salary ; वेतन
 तीव्र ; fast , rapid ; तेज  
@@ -202,10 +200,10 @@
 दृश्य  ; scene, visual ; नज़ारा
 दुःखी ; sad,  unhappy; उदास 
 दल ; group , party ; समूह
-दंग ; stunned, astonished, amazed ; हैरान, चकित
+दंग ; stunned, astonished ; हैरान, चकित
 दरबार ; court 
-दरबारी ; courtier, person in king’s court
-दाग ; stains, bloat ;  धब्बा 
+दरबारी ; courtier
+दाग ; stain, bloat ;  धब्बा 
 दृष्टि ; sight, eyesight, vision ; नजर 
 दिवस ; day ; दिन
 दिशा ; direction
@@ -234,28 +232,26 @@
 निश्चय ; decision, determination 
 निश्चित ; sure, decided
 निश्चिंत ; carefree, worryless; बेफिक्र
-निर्दोष ; innocent ;बेकसूर, बेगुनाह, मासूम
 नर्म ; soft ; मुलायम, कोमल 
-नज़र ; vision, keep an eye on
+नज़र ; vision, monitor
 नक़ल ; copy 
 नकली ; fake 
 निर्णय ; decision ; फैसला
 पथ; road, ; राह, रास्ता; मार्ग 
 पद्य; poem 
 पछतावा; regret, remorse ; पश्चात्ताप, अफ़सोस
+पग; foot 
 पग-डंडी; walkway
 डंडी; stick 
 परीक्षा; Exam ; इम्तिहान
 पश्चात; afterwards, after, subsequently
-प्रथम; First 
 प्रयोग; use ; उपयोग 
-क्षमता; capacity 
+क्षमता; capacity ; सामर्थ्य
 प्रसन्न; happy; खुश, हर्षित
 प्रेम; love 
 पत्थर; stone, rock ; शिला 
 प्रतिभा; talent 
 प्रतियोगिता; competition 
-परिवर्तन; change 
 प्रारम्भ; Beginning, start;  आरम्भ, शुरू 
 पालकी; Palanquin 
 पकवान; Nice food 
@@ -271,17 +267,15 @@
 रात्रि ; Night ; रात 
 प्रातःकाल; morning
 प्रतीक; Symbol, Sign 
-चिह्न; sign 
+चिह्न; sign, Mark 
 आकृति; shape, figure 
 प्रगति; Progress; बनावट
 शक्ल; Face 
 पंक्ति; Line
-पृष्ठभूमि - Background
+पृष्ठभूमि; Background
 पृष्ठ; backside 
-पृष्ठ; page 
-पूर्व; East
+पृष्ठ(२); page 
 पश्चिम; west 
-उत्तर; North
 दक्षिण; south 
 पवित्र; pure
 अपवित्र; impure  
@@ -300,16 +294,16 @@
 फैसला; decision; निर्णय, निश्चय
 प्राचीन; ancient ; पुराना, पुरातन 
 आधुनिक; modern; नया, नवीन
-प्रिय; favorite, loved one ;प्यारा
+प्रिय; favorite, loved-one ;प्यारा
 शर्म; shame
 बिक्री; sales ; विक्रय, बेचना
 बूँद ; drop 
 बुद्धि ; brains, intelligence
 बुढ़ापा ; old age ; वृद्धावस्था 
 बाजू;  side
-बाजु ; Arm ; बाँह, भुजा
+बाजु(2) ; Arm ; बाँह, भुजा
 भोजन ; Food, meal ; खाना, आहार 
-भजन - Devotional song , prayer
+भजन; Devotional song , prayer
 भंडार ; storage ; गोदाम
 भट्ठी; furnace 
 भोला; innocent ; सीधा-सादा, मासूम, सरल
@@ -348,8 +342,6 @@
 रोगी; Patient, sick; मरीज़, बीमार, अस्वस्थ
 रास्ता; Road 
 राह; road, path; रास्ता, पथ
-रात्रि; night 
-काल ; time, period ; समय 
 रोजमर्रा; daily 
 रूचि; interest 
 अरुचि;  disinterest, dislike
@@ -397,9 +389,6 @@
 सहायता; help, assistance; मदद, सहयोग
 आश्रय; shelter, refuge 
 आसरा; support ; सहारा, भरोसा
-भरोसा; Trust 
-सूखा; dry
-गीला; wet 
 सीख; Learning, Lesson; सबक
 साल; Year; वर्ष 
 स्वादिष्ट; delicious 
@@ -408,7 +397,7 @@
 स्वीकार; accept 
 स्वागत; welcome
 सार्थक; meaningful
-निरर्थक; useless 
+निरर्थक; useless, futile  
 स्वीकृति; acceptance ; मंजूरी, सहमति 
 सुरक्षा; security, safety, protection ; बचाव
 रखवाला; guard 
@@ -430,6 +419,8 @@
 सीधा;  straight, simple 
 सम्बन्ध; relationship; रिश्ता 
 स्वर; sound 
+आवाज़ ; sound
+ध्वनि;  sound
 स्वभाव; behavior, nature
 शांत; calm, quiet, peaceful
 शोर; Noise; कोलाहल, हल्ला 
@@ -442,7 +433,6 @@
 शिविर; camp 
 शिकायत; complaint 
 शान; pride, swag 
-शर्म; shame 
 हरियाली; Greenery 
 हृदय; Heart ; दिल, कलेजा 
 हसीन; Beautiful 
@@ -474,7 +464,6 @@
 दम्भ; arrogance, snobbery; अहंकार, घमंड
 घमंड; arrogance, pride; अभिमान
 औकात; status, capacity; क्षमता, हैसियत
-क्षमता; capacity ; सामर्थ्य
 सामर्थ्य; strength; क्षमता, शक्ति
 अत्याचार; atrocity, Tyranny, oppression; अन्याय, जुल्म, शोषण
 आश्रम; Hermitage, Monastery 
@@ -489,10 +478,9 @@
 उपलक्ष्य; Celebration, Occasion
 उद्घाटन; Opening, Inauguration
 कराह; Groan
-कल्पना; imagination
 काल्पनिक; Imaginary 
 कारीगर; artisan 
-खातिरदारी; hospitality;  सत्कार, सेवा 
+खातिरदारी; hospitality;  सत्कार, सेवा
 खातिर; respect; आदर, सम्मान
 ज्यादा; More 
 प्रथम ; first 
@@ -500,7 +488,6 @@
 तृतीय ; third 
 चतुर्थ ; fourth 
 चंचल; playful; नटखट
-चिह्न; mark, sign
 छाप; impression 
 चौंकना; startled, surprised
 हक्का-बक्का; Bewildered;  हैरान, भौचक्का 
@@ -509,7 +496,8 @@
 जाँच; checking
 जाँच-पड़ताल; investigation 
 झट-पट; quickly  
-ठिकाना; address, whereabouts ;स्थान, पता
+ठिकाना(२): Address, destination
+ठिकाना; hideout, whereabouts ;स्थान, पता
 ठहर; stop, stay ; रुकना
 प्रतीक्षा; wait 
 निवास; residence, home ; घर
@@ -534,7 +522,6 @@
 डील-डौल; Physique, physical appearance, build
 कद काठी; Physique, build
 तरल; Liquid; द्रव
-ठोस ; solid 
 तय; fixed 
 तरकीब; scheme, method;  उपाय, योजना, जुगाड़
 तुच्छ; insignificant 
@@ -543,12 +530,11 @@
 दोबारा; again;  पुनः, फिर-से
 दीन; poor; गरीब, निर्धन, दुखी
 असहाय; powerless, helpless; लाचार
-दशा; state
 दीप; small lamp; दीया
 दीपक ; lamp 
 दूब; Grass
 दोषी; Guilty
-निर्दोष; innocent 
+निर्दोष ; innocent ;बेकसूर, बेगुनाह, मासूम
 द्वार; Gate
 प्रवेश; Entry 
 पाठ; lesson 
@@ -557,7 +543,6 @@
 जनता; public ; प्रजा 
 सुनहरा ; golden 
 तट; shore, bank, coast 
-खुदाई; Digging 
 दिलचस्पी; Interest, Curiosity ; रुचि, अभिरुचि
 शौक; Hobby 
 भाप; steam 
@@ -565,7 +550,7 @@
 झिलमिलाना ; Flicker 
 अधमरा ; Half-dead
 सिकुड़ ; shrink
-संकुचित; tight; compressed 
+संकुचित; tight, compressed 
 संकरा ; Narrow, tight ; तंग
 भाग्य ; Luck, Fate ; किस्मत, तकदीर, नसीब
 दुर्भाग्य ; misfortune, bad luck 
@@ -575,7 +560,6 @@
 दुर्गन्ध ; stink 
 चोट ; injury
 घाव; wound ; जख्म 
-आघात; storke 
 हाँफना ; panting 
 टपकना ; dripping , falling 
 दरार; crack
@@ -592,10 +576,131 @@
 उपग्रह ; satellite 
 दलदल ; swamp 
 रेगिस्तान ; desert 
-दया; mercy 
 बेहोश ; unconscious, fainted; मूर्छित
 अलविदा; Goodbye
 खरोंच ; scratch 
 चिंता ; worry 
 गुस्सा;  Anger; क्रोध
-चित्रण ; illustration 
+चित्रण ; illustration , depiction 
+निशान; Mark ; चिह्न, पहचान
+निराशा; Disappointment ; हताशा, मायूसी
+उदासी; sadness 
+निंदा; criticism, scolding 
+नर; Male 
+निरंतर; Continuous ; लगातार
+निगरानी; monitoring, Supervision, watch ; देखरेख
+नेकी; Goodness, Kindness ; भलाई
+उपकार; help, Favor 
+परोपकार; Help, Charity
+बदी; bad; बुराई
+निखार; Polish, shine 
+लज्जा; shame ; शर्म, लाज
+संकोच; hesitation; हिचकिचाहट, झिझक
+निर्लज्ज; shameless 
+निर्णायक; crucial, decisive 
+निर्देश; instruction 
+निर्देशक;  Director 
+नहर; canal 
+नियत; appointed,  fixed
+नीयत; intention, motive ; इरादा, मंशा
+नुस्खा; recipe, trick  
+नम्र; humble, polite ; विनीत, विनम्र 
+विनम्र ; polite
+द्वारा; By, from
+दशा;  situation, state ; हालत, स्थिति, अवस्था
+अवस्था; age ; उम्र 
+चरण ; feet 
+दूषित; Polluted, contaminated ; अशुद्ध, खराब
+अपनापन; love, kinship ; आत्मीयता
+उतावला; impatient, restless ; बेसब्र , आतुर
+औद्योगिक; Industrial 
+कलंक ; stigma, blot ; दाग, अपयश 
+धब्बा; smear
+यश ; fame 
+बदनाम; infamous 
+गतिविधि; Activities
+गतिशील; moving
+गूंज; echo, buzz
+गुण; quality, talent
+झील; Lake 
+दुर्लभ; Rare, Priceless, ; अद्वितीय
+अनूठा; Unique
+अनोखा; Unique 
+अद्वितीय;  Rare, Peerless 
+दृढ; firm ; मजबूत, पक्का 
+मजबूत; strong 
+आंकना; measure, estimate; अनुमान 
+अनुमान ; estimate , guess 
+अद्भुत; wonderful, amazing
+टिप्पणी; comment, remark 
+तरक्की; progress, advancement 
+जुलूस; march, parade, procession
+झुंझलाहट; frustration, irritation ; चिड़चिड़ाहट, खीज, चिढ़
+झूमना; swinging 
+लड़खड़ाना; falter 
+काँपना; vibrate , tremble 
+फुदकना; Hopping  
+फड़फड़ाना; flapping, fluttering  
+जगमगाना; To Sparkle
+कंपन; Vibration 
+दंडवत; Bow down
+आघात; Injury, Stroke
+विश्वासघात; Betrayal
+कण; particle 
+धूल; dust 
+धारा; stream 
+निहारना; see, stare ; ताकना
+निपुण; skilled ; कुशल, माहिर
+निर्माण; construction, manufacturing  
+निर्माता; manufacturer, creator; बनाने वाला
+निहायत; extremely, very
+पद्धति; method, system 
+पुरस्कार; reward
+प्रेरणा; inspiration
+प्रयत्न; Effort
+प्रबंध; arrangement, management; बंदोबस्त 
+प्रभाव; effect, impact
+परख; test; जांच
+पूर्व; earlier
+पूर्व(२): East
+प्रसिद्ध; famous
+प्रवीण; Proficient, Skilled
+पक्ष; Party, side  
+प्रायश्चित; atonement 
+परिणाम; result, outcome, consequence 
+प्रायः;  Frequently, often
+पुनः; again ; दोबारा
+अंग; part
+प्रशंसा; Praise 
+प्रशंसक; Fan 
+प्रहार; attack, strike
+प्रोत्साहन; encouragement 
+प्रमाण; evidence; सबूत 
+पुष्प; Flower 
+पेचीदा; Complicated, tricky
+परिवहन; Transportation 
+परिभाषा; Definition
+प्रकट; Reveal
+परिश्रम; hard work, labor
+प्रकाशित;  published
+प्रचार; publicity 
+प्रचलन; in-use, fashion 
+फुर्सत; free-time
+ऐंठना; twisting 
+फेरना; shuffle 
+फरियाद; plea, request; गुहार
+बेहद; extremely, very ; निहायत
+लोभ; greed; लालच
+संग्रह ; collection 
+स्थिति; situation 
+कड़वा; bitter 
+संयोग; chance, coincidence  
+मूर्छा; faint 
+मास; month
+अदभुत; amazing 
+धोखा; cheating, fraud ; छल, विश्वासघात 
+भ्रम ; confusion 
+करुणा; compassion ; दया
+सहानुभूति; sympathy
+अनुभूति; feeling; अहसास
+शेष; remaining 
