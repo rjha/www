@@ -1,6 +1,7 @@
 import logging
 import os 
 import json
+import csv
 import psycopg
 from config import AppConfig, get_logger_config
 from config import DatabaseType, get_database_config
@@ -244,6 +245,43 @@ def dump_json():
     print(f"wrote to file words.json")
 
 
+
+def split_json_file(input_file_path: str):
+    """
+    Reads a master JSON file once and splits all records into separate
+    files based on their 'level' property within the same directory.
+    """
+    # Resolve paths in the same directory
+    directory = os.path.dirname(os.path.abspath(input_file_path))
+    
+    # Group records by level dynamically using lists
+    grouped_data = defaultdict(list)
+    
+    # Read the master file once to save memory and I/O time
+    with open(input_file_path, "r", encoding="utf-8") as file:
+        data = json.load(file)
+        
+        if isinstance(data, list):
+            for item in data:
+                # Default to 0 if 'level' is missing or null
+                level = item.get("level", 0)
+                grouped_data[level].append(item)
+                
+    # 3. Iterate through found levels and write split files
+    for level, records in grouped_data.items():
+        # Zero-pad the level (e.g., 1 -> 01, 12 -> 12)
+        padded_level = f"{level:02d}"
+        output_filename = f"words{padded_level}.json"
+        full_output_path = os.path.join(directory, output_filename)
+        
+        # Write individual files out
+        with open(full_output_path, "w", encoding="utf-8") as outfile:
+            # ensure_ascii=False ensures native Devanagari Hindi text stays readable
+            json.dump(records, outfile, ensure_ascii=False, indent=4)
+            
+        print(f"Generated: {output_filename} ({len(records)} records)")
+
+
 def set_word_level(file_name, skip_lines=0):
     line_no = 0
     db_conn_string = _get_database_conn_string()
@@ -269,6 +307,32 @@ def set_word_level(file_name, skip_lines=0):
                 if parts[1].strip():
                     int_level = int(parts[1].strip())
                     _update_word_level(conn, token, int_level)
+
+
+def dump_word_level(output_file_path: str = "word_level.csv"):
+    """
+    Fetches token and w_level from hindi_master, sorted by w_level in 
+    ascending order, and logs them directly to a CSV file.
+    """
+    # SQL query updated with your new column name and ascending sort order
+    query = "SELECT token, w_level FROM hindi_master ORDER BY w_level ASC;"
+    db_conn_string = _get_database_conn_string()
+
+    # Open file with UTF-8 to protect Devanagari script strings
+    with open(output_file_path, mode="w", encoding="utf-8", newline="") as file:
+        writer = csv.writer(file, delimiter=",")
+        
+        # Write clean, matching CSV column headers
+        writer.writerow(["token", "w_level"])
+        
+        with psycopg.connect(db_conn_string) as conn:
+            with conn.cursor() as cur:
+                cur.execute(query)
+                for row in cur:
+                    writer.writerow(row)
+                    
+    print(f"exported word levels to {output_file_path}")
+
 
 
 def store_in_database(file_name, skip_lines=0):
@@ -312,7 +376,9 @@ def do_main():
     logger.info(f"Hindi words program loaded...")
     # store_in_database("words01.txt", skip_lines=0)
     # set_word_level("level01.csv")
-    dump_json()
+    # dump_json()
+    # split_json_file("words.json")
+    dump_word_level()
 
 if __name__ == "__main__":
     do_main()
