@@ -157,7 +157,16 @@ def _store_root_word_wrapper(conn, line_no, root_word, english_words, root_synon
         conn.rollback()
         logger.exception(f"error happened for {root_word}...")
         raise e 
-    
+
+def _update_word_level(conn: psycopg.Connection, token: str, int_level):
+    query = """
+            UPDATE HINDI_MASTER  SET w_level = %s , updated_at = now()
+            WHERE token = %s 
+        """
+    with conn.cursor() as cur:
+        cur.execute(query, (int_level, token))
+
+
 def _get_root_words(db_conn_string):
     words = []
     with psycopg.connect(db_conn_string) as conn:
@@ -169,7 +178,6 @@ def _get_root_words(db_conn_string):
 
 
 def _get_hindi_english_map(db_conn_string):
-
     hindi_to_english_map = defaultdict(list)
     with psycopg.connect(db_conn_string) as conn:
         with conn.cursor() as cur:
@@ -234,8 +242,34 @@ def dump_json():
     with open("words.json", 'w', encoding='utf-8') as json_file:
         json.dump(word_list, json_file, ensure_ascii=False, indent=4)
     print(f"wrote to file words.json")
-    
-    
+
+
+def set_word_level(file_name, skip_lines=0):
+    line_no = 0
+    db_conn_string = _get_database_conn_string()
+
+    with psycopg.connect(db_conn_string) as conn:
+        with open(file_name, 'r', encoding='utf-8') as file:
+            for line in file:
+                line_no += 1
+                if not line.strip() or ',' not in line:
+                    print(f"skip empty or without comma line {line_no} ...")
+                    continue
+                
+                if(skip_lines > 0 and line_no <= skip_lines):
+                    print(f"user wants to skip line {line_no} ...")
+                    continue
+
+                if(line.strip().startswith('#')):
+                    print(f"skip commented line {line_no} ...")
+                    continue
+
+                parts = line.split(',')
+                token = parts[0].strip()
+                if parts[1].strip():
+                    int_level = int(parts[1].strip())
+                    _update_word_level(conn, token, int_level)
+
 
 def store_in_database(file_name, skip_lines=0):
     line_no = 0
@@ -276,9 +310,9 @@ def do_main():
     log_config = get_logger_config("global")
     AppConfig.init_logging(log_file=log_config.log_file, log_level=log_config.log_level)
     logger.info(f"Hindi words program loaded...")
-    # process_file("words.txt")
-    # store_in_database("words.txt", skip_lines=0)
-    dump_json()
+    # store_in_database("words01.txt", skip_lines=0)
+    set_word_level("level01.csv")
+     # dump_json()
 
 if __name__ == "__main__":
     do_main()
