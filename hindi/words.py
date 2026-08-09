@@ -216,7 +216,7 @@ def _get_hindi_hindi_map(db_conn_string):
 
 
 
-def dump_json():
+def dump_json(output_file_path: str):
 
     word_list = []
     line_no = 0 
@@ -240,9 +240,9 @@ def dump_json():
         })
 
     
-    with open("words.json", 'w', encoding='utf-8') as json_file:
+    with open(output_file_path, 'w', encoding='utf-8') as json_file:
         json.dump(word_list, json_file, ensure_ascii=False, indent=4)
-    print(f"wrote to file words.json")
+    print(f"wrote to file {output_file_path}")
 
 
 
@@ -309,7 +309,7 @@ def set_word_level(file_name, skip_lines=0):
                     _update_word_level(conn, token, int_level)
 
 
-def dump_word_level(output_file_path: str = "word_level.csv"):
+def dump_word_level(output_file_path: str = "level_out.csv"):
     """
     Fetches token and w_level from hindi_master, sorted by w_level in 
     ascending order, and logs them directly to a CSV file.
@@ -334,29 +334,66 @@ def dump_word_level(output_file_path: str = "word_level.csv"):
     print(f"exported word levels to {output_file_path}")
 
 
+def print_new_words(file_name, output_file="new-words.txt"):
+    line_no = 0
+    stored_tokens = []
+    new_tokens = []
+
+    db_conn_string = _get_database_conn_string()
+    root_words = _get_root_words(db_conn_string)
+    for hindi_uuid, token, level in root_words:
+        stored_tokens.append(token)
+
+    with open(file_name, 'r', encoding='utf-8') as file:
+        for line in file:
+            line_no += 1
+            if not line.strip():
+                continue 
+            token = line.strip()
+            if token in stored_tokens:
+                print(f"{line_no} {token} exists...")
+            else:
+                print(f"{line_no} new token: {token}")
+                new_tokens.append(token)
+
+    with open(output_file, "w", encoding="utf-8") as outfile:
+        for new_token in new_tokens:
+            outfile.write(new_token + "\n")
+
+
 
 def store_in_database(file_name, skip_lines=0):
     line_no = 0
+    stored_tokens = []
+
     db_conn_string = _get_database_conn_string()
+    root_words = _get_root_words(db_conn_string)
+    for hindi_uuid, token, level in root_words:
+        stored_tokens.append(token)
+    
     with psycopg.connect(db_conn_string) as conn:
+        
         with open(file_name, 'r', encoding='utf-8') as file:
                 for line in file:
                     line_no += 1
                     if not line.strip() or ';' not in line:
-                        print(f"skip empty or without ; line {line_no} ...")
+                        print(f"{line_no} skip empty or without ; line...")
                         continue
                     
                     if(skip_lines > 0 and line_no <= skip_lines):
-                        print(f"user wants to skip line {line_no} ...")
+                        print(f"{line_no} user wants to skip...")
                         continue
 
                     if(line.strip().startswith('#')):
-                        print(f"skip commented line {line_no} ...")
+                        print(f"{line_no} skip commented line...")
                         continue
                     
                     parts = line.split(';')
                     # Hindi source Word (Single string)
                     root_word = parts[0].strip()
+                    if root_word in stored_tokens:
+                        print(f"{line_no} skip stored word {root_word}...")
+                        continue
                     
                     # English equivalent words (Converted to Array)
                     raw_english = parts[1].strip() if len(parts) > 1 else ""
@@ -374,11 +411,12 @@ def do_main():
     log_config = get_logger_config("global")
     AppConfig.init_logging(log_file=log_config.log_file, log_level=log_config.log_level)
     logger.info(f"Hindi words program loaded...")
-    # store_in_database("words01.txt", skip_lines=0)
-    # set_word_level("level01.csv")
-    # dump_json()
-    # split_json_file("words.json")
-    dump_word_level()
+    # store_in_database("words03.txt", skip_lines=0)
+    # set_word_level("level02_in.csv")
+    # dump_json("out/words.json")
+    split_json_file("out/words.json")
+    # dump_word_level()
+    # print_new_words("words04.txt")
 
 if __name__ == "__main__":
     do_main()
