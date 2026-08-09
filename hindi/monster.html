@@ -209,7 +209,7 @@
                 // Fetch the vocabulary words JSON corresponding to active level key
                 const response = await fetch(fileToFetch);
                 allWords = await response.json();
-                alienImg.src = 'monster.svg';
+                alienImg.src = 'assets/ufo_01.png';
                 restartInvadersGame();
 
             } catch (err) {
@@ -548,14 +548,30 @@
                 }
 
                 // Render Hindi Target Word inside/under UFO
+                const textVal = currentItem ? currentItem.root : "";
+                ctx.font = "bold 20px sans-serif";
+                const textWidth = ctx.measureText(textVal).width;
+
+                ctx.fillStyle = "rgba(2, 6, 23, 0.85)"; // High-contrast dark slate
+                ctx.strokeStyle = "#22d3ee";            // Cyan border
+                ctx.lineWidth = 1.5;
+
+                ctx.beginPath();
+                ctx.roundRect(-textWidth / 2 - 8, 2, textWidth + 16, 26, 6);
+                ctx.fill();
+                ctx.stroke();
+
+                // 3. Render Hindi Target Word
+                // ctx.fillStyle = "#fef08a"; // Bright yellow
                 ctx.fillStyle = "#ffffff";
-                ctx.shadowColor = "black";
-                ctx.shadowBlur = 8;
-                ctx.font = "bold 22px sans-serif";
                 ctx.textAlign = "center";
                 ctx.textBaseline = "middle";
-                ctx.fillText(currentItem ? currentItem.root : "", 0, 15);
-                ctx.restore();
+                ctx.fillText(textVal, 0, 15);  
+
+
+                ctx.restore(); 
+
+                
 
                 // Draw Base Weapon Defense Turret Gun Emplacement Matrix Platform
                 ctx.fillStyle = "#1e293b";
@@ -657,7 +673,8 @@
                 });
             }
 
-            alienImg.src = 'monster.svg';
+            alienImg.src = 'assets/ufo_01.png';
+
 
         </script>
     </body>
