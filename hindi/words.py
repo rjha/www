@@ -309,15 +309,20 @@ def set_word_level(file_name, skip_lines=0):
                     _update_word_level(conn, token, int_level)
 
 
-def dump_word_level(output_file_path: str = "level_out.csv"):
+def dump_word_level(output_file_path: str, w_level:int = -1):
     """
     Fetches token and w_level from hindi_master, sorted by w_level in 
     ascending order, and logs them directly to a CSV file.
     """
-    # SQL query updated with your new column name and ascending sort order
-    query = "SELECT token, w_level FROM hindi_master ORDER BY w_level ASC;"
-    db_conn_string = _get_database_conn_string()
 
+    # SQL query to get words in ascending sort order
+    if w_level >= 0:
+        query = f"SELECT token, w_level FROM hindi_master where w_level = {w_level} ORDER BY w_level ASC;"
+    else:
+        query = "SELECT token, w_level FROM hindi_master ORDER BY w_level ASC;"
+
+
+    db_conn_string = _get_database_conn_string()
     # Open file with UTF-8 to protect Devanagari script strings
     with open(output_file_path, mode="w", encoding="utf-8", newline="") as file:
         writer = csv.writer(file, delimiter=",")
@@ -414,8 +419,8 @@ def do_main():
     # store_in_database("words03.txt", skip_lines=0)
     # set_word_level("level02_in.csv")
     # dump_json("out/words.json")
-    split_json_file("out/words.json")
-    # dump_word_level()
+    # split_json_file("out/words.json")
+    dump_word_level("out/level0.csv", 0)
     # print_new_words("words04.txt")
 
 if __name__ == "__main__":
