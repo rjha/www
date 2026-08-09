@@ -106,6 +106,10 @@
         let activeRocket = null;
         let particleExplosions = [];
 
+        let screenShakeTimer = 0;
+        let deflectionFlashTimer = 0;
+
+    
         // --- Retro Starfield Background Data ---
         const stars = Array.from({ length: 25 }, () => ({
             x: Math.random() * 600,
@@ -115,6 +119,14 @@
             alpha: Math.random() * 0.7 + 0.3
         }));
 
+        function triggerScreenShake(duration = 10) {
+            screenShakeTimer = duration;
+        }
+
+        function triggerDeflectionFlash(duration = 12) {
+            deflectionFlashTimer = duration;
+        }
+        
 
         // --- Sound Engine ---
         function initAudio() {
@@ -368,11 +380,18 @@
 
                     if (activeRocket.y <= ufo.y + ufo.height && activeRocket.y >= ufo.y) {
                         if (activeRocket.x >= ufo.x && activeRocket.x <= ufo.x + ufo.width) {
+
+                            // Process Right or Wrong Answer 
+
                             if (currentItem.root_english.includes(activeRocket.text)) {
                                 score += 5;
                                 document.getElementById('score-val').innerText = score;
                                 playClapSound();
                                 createExplosion(activeRocket.x, activeRocket.y, '#10b981');
+                                
+                                // --- Trigger Screen Shake on Hit ---
+                                triggerScreenShake(12);
+
                                 nextTargetWave();
                             } else {
                                 score -= 2;
@@ -380,10 +399,14 @@
                                 playDisappointingSound();
                                 createExplosion(activeRocket.x, activeRocket.y, '#ef4444');
                                 
+                                // --- Trigger Red Deflection Flash on Deflect ---
+                                triggerDeflectionFlash(15);
+
                                 activeRocket.isDeflected = true;
                                 activeRocket.deflectVx = (Math.random() > 0.5 ? 4 : -4);
                                 activeRocket.deflectVy = 5;
                             }
+                            
                         }
                     }
 
@@ -409,6 +432,14 @@
                 // 1. Draw Animated Retro CRT Warp Starfield & Cyber Grid
                 ctx.save();
                 
+                // --- Apply Screen Shake Offset ---
+                if (screenShakeTimer > 0) {
+                    const shakeX = (Math.random() - 0.5) * 10;
+                    const shakeY = (Math.random() - 0.5) * 10;
+                    ctx.translate(shakeX, shakeY);
+                    screenShakeTimer--;
+                }
+
                 // Draw Warp Speed Stars with Neon Cyan Glow
                 stars.forEach(s => {
                     ctx.fillStyle = `rgba(34, 211, 238, ${s.alpha})`; // Cyan neon glow
@@ -436,6 +467,19 @@
                     ctx.moveTo(centerX, vanishingY);
                     ctx.lineTo(x, canvas.height);
                     ctx.stroke();
+                }
+
+                // --- Draw Red Deflection Flash Overlay on Border ---
+                if (deflectionFlashTimer > 0) {
+                    const alpha = (deflectionFlashTimer / 15) * 0.4; // Fades out
+                    ctx.strokeStyle = `rgba(239, 68, 68, ${alpha})`;
+                    ctx.lineWidth = 10;
+                    ctx.strokeRect(0, 0, canvas.width, canvas.height);
+                    
+                    ctx.fillStyle = `rgba(239, 68, 68, ${alpha * 0.3})`;
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    
+                    deflectionFlashTimer--;
                 }
 
                 ctx.restore();
