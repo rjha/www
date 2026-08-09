@@ -312,6 +312,7 @@
         }
 
         function updateGamePhysics() {
+
             if (Math.abs(ufo.x - ufo.targetX) < 5) {
                 ufo.targetX = Math.random() * (canvas.width - ufo.width);
             }
@@ -322,7 +323,27 @@
                 if (p.alpha <= 0) particleExplosions.splice(idx, 1);
             });
 
+         
             if (activeRocket) {
+
+                const flameColors = activeRocket.isDeflected 
+                    ? ['#ef4444', '#b91c1c', '#6b7280'] // Red & Smoke for deflected rockets
+                    : ['#f59e0b', '#eab308', '#ef4444']; // Orange, Yellow, Red fire for normal rockets
+
+                for (let i = 0; i < 3; i++) {
+                    particleExplosions.push({
+                        x: activeRocket.x + (Math.random() - 0.5) * 6,
+                        y: activeRocket.y + 10, // Spawn just below rocket head
+                        vx: (Math.random() - 0.5) * 1.5,
+                        vy: activeRocket.isDeflected ? (Math.random() - 0.5) * 2 : Math.random() * 3 + 1, // Trail downward
+                        radius: Math.random() * 3.5 + 1.5,
+                        alpha: 0.9,
+                        decay: Math.random() * 0.05 + 0.03,
+                        color: flameColors[Math.floor(Math.random() * flameColors.length)]
+                    });
+                }
+
+
                 if (!activeRocket.isDeflected) {
                     activeRocket.y -= activeRocket.speed;
 
@@ -364,6 +385,7 @@
 
             
             function drawGameGraphics() {
+
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
 
                 // 1. Draw deep space background stars twinkling matrix profile
@@ -404,18 +426,86 @@
                 ctx.fillStyle = "#64748b";
                 ctx.fillRect(canvas.width / 2 - 6, canvas.height - 35, 12, 25);
 
-                // 5. Draw Launched Projectile Missile Engine Flare Core Profile
+                
+                // 5. Draw Arcade Rocket Silhouette with Thruster Glow
                 if (activeRocket) {
-                    ctx.fillStyle = activeRocket.isDeflected ? "#ef4444" : "#eab308";
+                    ctx.save();
+                    
+                    // Center origin on rocket position
+                    ctx.translate(activeRocket.x, activeRocket.y);
+                    
+                    // Rotate rocket facing down if deflected, facing up if active
+                    if (activeRocket.isDeflected) {
+                        ctx.rotate(Math.atan2(activeRocket.deflectVy, activeRocket.deflectVx) - Math.PI / 2);
+                    }
+
+                    const glowColor = activeRocket.isDeflected ? "#ef4444" : "#22d3ee"; // Red if deflected, Cyan if flying
+                    const bodyColor = activeRocket.isDeflected ? "#991b1b" : "#0f172a"; // Dark red body / Dark slate body
+
+                    // Neon Thruster Glow Aura
+                    ctx.shadowBlur = 15;
+                    ctx.shadowColor = glowColor;
+
+                    // --- Rocket Fins (Left & Right) ---
+                    ctx.fillStyle = glowColor;
+                    // Left Fin
                     ctx.beginPath();
-                    ctx.arc(activeRocket.x, activeRocket.y, 8, 0, Math.PI * 2);
+                    ctx.moveTo(-6, 8);
+                    ctx.lineTo(-12, 14);
+                    ctx.lineTo(-6, 14);
+                    ctx.closePath();
+                    ctx.fill();
+                    // Right Fin
+                    ctx.beginPath();
+                    ctx.moveTo(6, 8);
+                    ctx.lineTo(12, 14);
+                    ctx.lineTo(6, 14);
+                    ctx.closePath();
                     ctx.fill();
 
-                    // Projectile Meaning Data Text Flag String banner tracking overlay
+                    // --- Main Rocket Fuselage Body ---
+                    ctx.fillStyle = bodyColor;
+                    ctx.strokeStyle = glowColor;
+                    ctx.lineWidth = 2;
+
+                    ctx.beginPath();
+                    ctx.moveTo(0, -16);              // Rocket Nose Tip
+                    ctx.quadraticCurveTo(8, -4, 6, 12); // Right Curve
+                    ctx.lineTo(-6, 12);               // Base
+                    ctx.quadraticCurveTo(-8, -4, 0, -16); // Left Curve
+                    ctx.closePath();
+                    ctx.fill();
+                    ctx.stroke();
+
+                    // --- Glowing Nose Cone Cap ---
+                    ctx.fillStyle = glowColor;
+                    ctx.beginPath();
+                    ctx.moveTo(0, -16);
+                    ctx.quadraticCurveTo(4, -10, 4, -8);
+                    ctx.lineTo(-4, -8);
+                    ctx.quadraticCurveTo(-4, -10, 0, -16);
+                    ctx.closePath();
+                    ctx.fill();
+
+                    // --- Hot Engine Nozzle Core ---
+                    ctx.fillStyle = "#ffffff";
+                    ctx.beginPath();
+                    ctx.arc(0, 12, 3, 0, Math.PI * 2);
+                    ctx.fill();
+
+                    ctx.restore();
+
+                    // --- Floating Meaning Text Above Rocket ---
+                    ctx.save();
+                    ctx.shadowBlur = 6;
+                    ctx.shadowColor = "black";
                     ctx.fillStyle = "#f8fafc";
-                    ctx.font = "12px sans-serif";
-                    ctx.fillText(activeRocket.text, activeRocket.x, activeRocket.y - 16);
+                    ctx.font = "bold 13px sans-serif";
+                    ctx.textAlign = "center";
+                    ctx.fillText(activeRocket.text, activeRocket.x, activeRocket.y - 24);
+                    ctx.restore();
                 }
+
 
                 // 6. Render Active Explosive Micro Particle Fields
                 particleExplosions.forEach(p => {
