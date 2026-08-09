@@ -134,16 +134,15 @@
         const sfx = {
             clap_01: new Audio('sfx/clap_01.mp3'),
             crash_01: new Audio('sfx/crash_01.mp3'),
-            hit_01: new Audio('sfx/hit_01.ogg'),
-            miss_01: new Audio('sfx/miss_01.ogg'),
-            miss_02: new Audio('sfx/miss_02.ogg'),
+            hit_01: new Audio('sfx/hit_03.ogg'),
+            miss_01: new Audio('sfx/miss_02.ogg'),
             loading_01: new Audio('sfx/loading_01.wav')
         };
 
         // Set volume levels
-        sfx.loading_01.volume = 0.35;
-        sfx.hit_01.volume = 0.55;
-        sfx.miss_02.volume = 0.45;
+        sfx.loading_01.volume = 0.15;
+        sfx.hit_01.volume = 0.40;
+        sfx.miss_01.volume = 0.40;
 
         // Helper function for zero-lag overlapping SFX playback
         function playSfx(key) {
@@ -162,7 +161,7 @@
         }
 
         function playDisappointingSound() {
-            playSfx('miss_02');
+            playSfx('miss_01');
         }
 
         function playLoadingSound() {
@@ -313,7 +312,7 @@
                     loadedIndex = idx;
                     
                     if (loadedIndex !== null && !activeRocket) {
-                        playLoadingSound();
+                        // playLoadingSound();
                         activeRocket = {
                             x: canvas.width / 2,
                             y: canvas.height - 30,
