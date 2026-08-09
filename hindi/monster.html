@@ -15,46 +15,6 @@
         .loaded-slot { transform: scale(1.05); }
 
         
-        /* Level Selector Button Styles */
-        .level-btn {
-            background-color: #020617; /* slate-950 */
-            border-width: 2px;
-            border-color: #334155; /* slate-700 */
-            padding: 0.75rem; /* p-3 */
-            border-radius: 0.75rem; /* rounded-xl */
-            transition-property: color, background-color, border-color;
-            transition-duration: 150ms;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-            text-align: left;
-        }
-
-        .level-btn:hover {
-            background-color: #1e293b; /* slate-800 */
-            border-color: #22d3ee; /* cyan-400 */
-        }
-
-        .level-btn .btn-title {
-            font-weight: 800; /* font-extrabold */
-            color: #67e8f9; /* cyan-300 */
-        }
-
-        .level-btn .btn-title-all {
-            font-weight: 800;
-            color: #facc15; /* yellow-400 */
-        }
-
-        .level-btn .btn-sub {
-            font-size: 0.75rem; /* text-xs */
-            color: #94a3b8; /* slate-400 */
-        }
-
-        .level-btn:hover .btn-sub {
-            color: #e2e8f0; /* slate-200 */
-        }
-
     </style>
 </head>
 <body class="bg-slate-950 min-h-screen flex flex-col items-center justify-center font-sans p-4 text-white overflow-hidden">
@@ -99,21 +59,21 @@
                 <p class="text-sm text-slate-400 mb-6 font-semibold">Choose word difficulty level to launch</p>
                 
                 <div id="level-buttons" class="grid grid-cols-1 gap-3">
-                    <button data-source="level1" class="level-btn">
-                        <span class="btn-title">Level 1</span>
-                        <span class="btn-sub">Easy Peasy Words</span>
+                    <button data-source="level1" class="bg-slate-950 border-2 border-slate-700 hover:border-cyan-400 hover:bg-slate-800 p-3 rounded-xl transition flex justify-between items-center cursor-pointer text-left group">
+                        <span class="font-extrabold text-cyan-300">Level 1</span>
+                        <span class="text-xs text-slate-400 group-hover:text-slate-200">Easy Peasy Words</span>
                     </button>
-                    <button data-source="level2" class="level-btn">
-                        <span class="btn-title">Level 2</span>
-                        <span class="btn-sub">A little grunt </span>
+                    <button data-source="level2" class="bg-slate-950 border-2 border-slate-700 hover:border-cyan-400 hover:bg-slate-800 p-3 rounded-xl transition flex justify-between items-center cursor-pointer text-left group">
+                        <span class="font-extrabold text-cyan-300">Level 2</span>
+                        <span class="text-xs text-slate-400 group-hover:text-slate-200">A little grunt</span>
                     </button>
-                    <button data-source="level3" class="level-btn">
-                        <span class="btn-title">Level 3</span>
-                        <span class="btn-sub">Some Heavy Lifting</span>
+                    <button data-source="level3" class="bg-slate-950 border-2 border-slate-700 hover:border-cyan-400 hover:bg-slate-800 p-3 rounded-xl transition flex justify-between items-center cursor-pointer text-left group">
+                        <span class="font-extrabold text-cyan-300">Level 3</span>
+                        <span class="text-xs text-slate-400 group-hover:text-slate-200">Some Heavy Lifting</span>
                     </button>
-                    <button data-source="all" class="level-btn">
-                        <span class="btn-title-all">All Levels</span>
-                        <span class="btn-sub">All that you need </span>
+                    <button data-source="all" class="bg-slate-950 border-2 border-slate-700 hover:border-cyan-400 hover:bg-slate-800 p-3 rounded-xl transition flex justify-between items-center cursor-pointer text-left group">
+                        <span class="font-extrabold text-yellow-400">All Levels</span>
+                        <span class="text-xs text-slate-400 group-hover:text-slate-200">All that you need</span>
                     </button>
                 </div>
             </div>
