@@ -106,6 +106,16 @@
         let activeRocket = null;
         let particleExplosions = [];
 
+        // --- Retro Starfield Background Data ---
+        const stars = Array.from({ length: 25 }, () => ({
+            x: Math.random() * 600,
+            y: Math.random() * 320,
+            speed: Math.random() * 2 + 0.8,
+            length: Math.random() * 4 + 2,
+            alpha: Math.random() * 0.7 + 0.3
+        }));
+
+
         // --- Sound Engine ---
         function initAudio() {
             if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
@@ -313,6 +323,15 @@
 
         function updateGamePhysics() {
 
+            // --- Animate Warp Starfield Motion ---
+            stars.forEach(s => {
+                s.y += s.speed;
+                if (s.y > canvas.height) {
+                    s.y = 0;
+                    s.x = Math.random() * canvas.width;
+                }
+            });
+
             if (Math.abs(ufo.x - ufo.targetX) < 5) {
                 ufo.targetX = Math.random() * (canvas.width - ufo.width);
             }
@@ -387,13 +406,40 @@
             function drawGameGraphics() {
 
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
+                // 1. Draw Animated Retro CRT Warp Starfield & Cyber Grid
+                ctx.save();
+                
+                // Draw Warp Speed Stars with Neon Cyan Glow
+                stars.forEach(s => {
+                    ctx.fillStyle = `rgba(34, 211, 238, ${s.alpha})`; // Cyan neon glow
+                    ctx.fillRect(s.x, s.y, 2, s.length + s.speed); // Speed-stretched trails
+                });
 
-                // 1. Draw deep space background stars twinkling matrix profile
-                ctx.fillStyle = "rgba(255, 255, 255, 0.15)";
-                for (let i = 0; i < 15; i++) {
-                    let sX = (Math.sin(Date.now() * 0.001 + i) * 0.5 + 0.5) * canvas.width;
-                    ctx.fillRect(sX, (i * 22) % canvas.height, 2, 2);
+                // Draw Perspective Cyber Grid lines at canvas base
+                const gridY = canvas.height - 70;
+                ctx.strokeStyle = "rgba(6, 182, 212, 0.15)"; // Subdued cyan
+                ctx.lineWidth = 1;
+
+                // Horizontal Grid lines
+                for (let y = gridY; y <= canvas.height; y += 12) {
+                    ctx.beginPath();
+                    ctx.moveTo(0, y);
+                    ctx.lineTo(canvas.width, y);
+                    ctx.stroke();
                 }
+
+                // Perspective Vanishing Vertical Grid lines
+                const centerX = canvas.width / 2;
+                const vanishingY = gridY - 20;
+                for (let x = -200; x <= canvas.width + 200; x += 40) {
+                    ctx.beginPath();
+                    ctx.moveTo(centerX, vanishingY);
+                    ctx.lineTo(x, canvas.height);
+                    ctx.stroke();
+                }
+
+                ctx.restore();
+
 
                 // 2. Render the Retro SVG Arcade Alien Ship Matrix
                 // ADDED: Check naturalWidth to safely skip if the file is missing or broken
