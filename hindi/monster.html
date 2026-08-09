@@ -13,6 +13,48 @@
         .hidden-fallback { display: none !important; }
         .ammo-slot { transition: all 0.15s ease; }
         .loaded-slot { transform: scale(1.05); }
+
+        
+        /* Level Selector Button Styles */
+        .level-btn {
+            background-color: #020617; /* slate-950 */
+            border-width: 2px;
+            border-color: #334155; /* slate-700 */
+            padding: 0.75rem; /* p-3 */
+            border-radius: 0.75rem; /* rounded-xl */
+            transition-property: color, background-color, border-color;
+            transition-duration: 150ms;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .level-btn:hover {
+            background-color: #1e293b; /* slate-800 */
+            border-color: #22d3ee; /* cyan-400 */
+        }
+
+        .level-btn .btn-title {
+            font-weight: 800; /* font-extrabold */
+            color: #67e8f9; /* cyan-300 */
+        }
+
+        .level-btn .btn-title-all {
+            font-weight: 800;
+            color: #facc15; /* yellow-400 */
+        }
+
+        .level-btn .btn-sub {
+            font-size: 0.75rem; /* text-xs */
+            color: #94a3b8; /* slate-400 */
+        }
+
+        .level-btn:hover .btn-sub {
+            color: #e2e8f0; /* slate-200 */
+        }
+
     </style>
 </head>
 <body class="bg-slate-950 min-h-screen flex flex-col items-center justify-center font-sans p-4 text-white overflow-hidden">
@@ -20,10 +62,21 @@
     <!-- GAME BOARD INTERFACE CONTAINER -->
     <div class="bg-slate-900 border-4 border-cyan-500 rounded-3xl shadow-2xl p-6 max-w-2xl w-full flex flex-col items-center">
         
+       
         <!-- Score Dashboard Header -->
-        <div class="w-full flex justify-between items-center mb-4 border-b border-slate-800 pb-3">
+        <div class="w-full flex justify-between items-center mb-4 border-b border-slate-800 pb-3 gap-2">
+            <!-- Left: Score -->
             <span class="text-xl font-black text-cyan-400 tracking-wider">SCORE: <span id="score-val">0</span></span>
-            <span class="text-xs text-slate-400 font-bold tracking-widest bg-slate-950 px-3 py-1 rounded-md border border-slate-800">GAME MODE: INVADERS</span>
+            
+            <!-- Right: Active Level Badge & Change Level Switcher -->
+            <div class="flex items-center gap-2">
+                <span class="text-xs text-slate-400 font-bold tracking-widest bg-slate-950 px-3 py-1 rounded-md border border-slate-800 uppercase">
+                    <span id="current-level-val" class="text-yellow-400 font-extrabold">ALL</span>
+                </span>
+                <button id="btn-change-level" class="text-xs bg-slate-800 hover:bg-cyan-500 hover:text-slate-950 text-cyan-400 font-extrabold px-2.5 py-1 rounded-md border border-slate-700 transition cursor-pointer">
+                    CHANGE
+                </button>
+            </div>
         </div>
 
         <!-- 2D Canvas Target Display Arena -->
@@ -37,6 +90,33 @@
         <!-- Weapons Bay Configuration Bar -->
         <div id="weapons-bay" class="grid grid-cols-2 sm:grid-cols-4 gap-3 w-full">
             <!-- 4 Rocket silos dynamically mapped here -->
+        </div>
+
+       <!-- Level Selector Overlay Box -->
+        <div id="level-select-box" class="fixed inset-0 bg-black/85 backdrop-blur-sm flex flex-col items-center justify-center text-center p-4 z-50">
+            <div class="bg-slate-900 border-4 border-cyan-500 rounded-3xl p-8 max-w-md w-full shadow-2xl">
+                <h1 class="text-3xl font-black text-cyan-400 mb-1 tracking-wider">SELECT LEVEL</h1>
+                <p class="text-sm text-slate-400 mb-6 font-semibold">Choose word difficulty level to launch</p>
+                
+                <div id="level-buttons" class="grid grid-cols-1 gap-3">
+                    <button data-source="level1" class="level-btn">
+                        <span class="btn-title">Level 1</span>
+                        <span class="btn-sub">Easy Peasy Words</span>
+                    </button>
+                    <button data-source="level2" class="level-btn">
+                        <span class="btn-title">Level 2</span>
+                        <span class="btn-sub">A little grunt </span>
+                    </button>
+                    <button data-source="level3" class="level-btn">
+                        <span class="btn-title">Level 3</span>
+                        <span class="btn-sub">Some Heavy Lifting</span>
+                    </button>
+                    <button data-source="all" class="level-btn">
+                        <span class="btn-title-all">All Levels</span>
+                        <span class="btn-sub">All that you need </span>
+                    </button>
+                </div>
+            </div>
         </div>
 
         <!-- GameOver Overlay Box -->
@@ -98,25 +178,75 @@
 
         // Declare the global empty Image container registry object
         const alienImg = new Image();
+        // Map level identifiers to their corresponding JSON source files
+        const levelMap = {
+            'level1': 'db/words01.json',
+            'level2': 'db/words02.json',
+            'level3': 'db/words03.json',
+            'all': 'db/words.json'
+        };
 
-        // --- Initialize Engine ---
-        async function loadGameData() {
+        const levelNames = {
+            'level1': 'LEVEL 1',
+            'level2': 'LEVEL 2',
+            'level3': 'LEVEL 3',
+            'all': 'ALL'
+        };
+
+
+        let currentGameLevel = 'all';
+        let gameLoopRunning = false;
+
+        async function loadGameData(levelKey) {
+
             try {
-                // 1. Fetch the vocabulary words JSON
-                const response = await fetch('words.json');
+
+                if (levelKey && levelMap[levelKey]) {
+                    currentGameLevel = levelKey;
+                }
+
+                // Update the level indicator label in the HUD header
+                const levelValElem = document.getElementById('current-level-val');
+                if (levelValElem) {
+                    levelValElem.innerText = levelNames[currentGameLevel] || currentGameLevel.toUpperCase();
+                }
+
+                const fileToFetch = levelMap[currentGameLevel] || levelMap['all'];
+                // Fetch the vocabulary words JSON corresponding to active level key
+                const response = await fetch(fileToFetch);
                 allWords = await response.json();
-                
-                // 2. Set the image path source directly to point to your new file asset
-                // This lets the browser fetch and load it safely over your network port
                 alienImg.src = 'monster.svg';
-                
-                // 3. Kick off the setup configurations and run physics frame loop
                 restartInvadersGame();
-                requestAnimationFrame(gameLoop);
+
             } catch (err) {
                 console.error("Critical: Could not load game asset structures", err);
             }
         }
+
+        function selectLevel(levelKey) {
+            document.getElementById('level-select-box').classList.add('hidden-fallback');
+            loadGameData(levelKey);
+            
+            if (!gameLoopRunning) {
+                gameLoopRunning = true;
+                requestAnimationFrame(gameLoop);
+            }
+        }
+
+        // Event listener using data-source attribute for level key mapping
+        document.getElementById('level-buttons').addEventListener('click', (e) => {
+            const btn = e.target.closest('[data-source]');
+            if (btn) {
+                const levelKey = btn.dataset.source; // e.g. "level1", "level2", "all"
+                selectLevel(levelKey);
+            }
+        });
+
+        // Event Listener: Change Level Button in HUD Header
+        document.getElementById('btn-change-level').addEventListener('click', () => {
+            // Re-open the level selection overlay box
+            document.getElementById('level-select-box').classList.remove('hidden-fallback');
+        });
 
         function restartInvadersGame() {
             score = 0;
@@ -340,7 +470,8 @@
             }
 
     
-            loadGameData();
+            // loadGameData();
+            alienImg.src = 'monster.svg';
 
         </script>
     </body>
