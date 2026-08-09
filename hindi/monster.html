@@ -108,7 +108,9 @@
 
         let screenShakeTimer = 0;
         let deflectionFlashTimer = 0;
-
+        // UFO Shield Aura 
+        let ufoWarpScale = 1.0;
+        let isWarpingIn = false;
     
         // --- Retro Starfield Background Data ---
         const stars = Array.from({ length: 25 }, () => ({
@@ -244,6 +246,10 @@
             activeRocket = null;
             loadedIndex = null;
             
+            // Reset and trigger UFO Warp-In Spawn Animation
+            ufoWarpScale = 0.05; // Start tiny
+            isWarpingIn = true;
+
             currentItem = allWords[Math.floor(Math.random() * allWords.length)];
             const correctMeaning = currentItem.root_english[Math.floor(Math.random() * currentItem.root_english.length)];
             
@@ -335,7 +341,7 @@
 
         function updateGamePhysics() {
 
-            // --- Animate Warp Starfield Motion ---
+            // Animate Warp Starfield Motion
             stars.forEach(s => {
                 s.y += s.speed;
                 if (s.y > canvas.height) {
@@ -343,6 +349,15 @@
                     s.x = Math.random() * canvas.width;
                 }
             });
+
+            // Animate UFO Warp-In Scale Expansion
+            if (isWarpingIn) {
+                ufoWarpScale += (1.0 - ufoWarpScale) * 0.15; // Smooth spring ease-out
+                if (ufoWarpScale >= 0.98) {
+                    ufoWarpScale = 1.0;
+                    isWarpingIn = false;
+                }
+            }
 
             if (Math.abs(ufo.x - ufo.targetX) < 5) {
                 ufo.targetX = Math.random() * (canvas.width - ufo.width);
@@ -382,17 +397,15 @@
                         if (activeRocket.x >= ufo.x && activeRocket.x <= ufo.x + ufo.width) {
 
                             // Process Right or Wrong Answer 
-
                             if (currentItem.root_english.includes(activeRocket.text)) {
                                 score += 5;
                                 document.getElementById('score-val').innerText = score;
                                 playClapSound();
                                 createExplosion(activeRocket.x, activeRocket.y, '#10b981');
-                                
-                                // --- Trigger Screen Shake on Hit ---
+                                // Trigger Screen Shake on Hit
                                 triggerScreenShake(12);
-
                                 nextTargetWave();
+
                             } else {
                                 score -= 2;
                                 document.getElementById('score-val').innerText = score;
@@ -429,10 +442,9 @@
             function drawGameGraphics() {
 
                 ctx.clearRect(0, 0, canvas.width, canvas.height);
-                // 1. Draw Animated Retro CRT Warp Starfield & Cyber Grid
                 ctx.save();
                 
-                // --- Apply Screen Shake Offset ---
+                // Apply Screen Shake Offset
                 if (screenShakeTimer > 0) {
                     const shakeX = (Math.random() - 0.5) * 10;
                     const shakeY = (Math.random() - 0.5) * 10;
@@ -440,12 +452,14 @@
                     screenShakeTimer--;
                 }
 
+                // Draw Animated Retro CRT Warp Starfield & Cyber Grid
                 // Draw Warp Speed Stars with Neon Cyan Glow
                 stars.forEach(s => {
                     ctx.fillStyle = `rgba(34, 211, 238, ${s.alpha})`; // Cyan neon glow
                     ctx.fillRect(s.x, s.y, 2, s.length + s.speed); // Speed-stretched trails
                 });
 
+               
                 // Draw Perspective Cyber Grid lines at canvas base
                 const gridY = canvas.height - 70;
                 ctx.strokeStyle = "rgba(6, 182, 212, 0.15)"; // Subdued cyan
@@ -469,7 +483,7 @@
                     ctx.stroke();
                 }
 
-                // --- Draw Red Deflection Flash Overlay on Border ---
+                // Draw Red Deflection Flash Overlay on Border
                 if (deflectionFlashTimer > 0) {
                     const alpha = (deflectionFlashTimer / 15) * 0.4; // Fades out
                     ctx.strokeStyle = `rgba(239, 68, 68, ${alpha})`;
@@ -482,33 +496,47 @@
                     deflectionFlashTimer--;
                 }
 
-                ctx.restore();
+                ctx.restore();               
+                ctx.save();
+                
+                // Render Alien Ship with Pulsing Shield
+                // Set transformation origin to center of UFO
+                const ufoCenterX = ufo.x + (ufo.width / 2);
+                const ufoCenterY = ufo.y + (ufo.height / 2);
+                ctx.translate(ufoCenterX, ufoCenterY);
+                ctx.scale(ufoWarpScale, ufoWarpScale);
 
+                // Pulsing Energy Shield Aura
+                const pulse = Math.sin(Date.now() * 0.005) * 5 + 12; // Continuous wave pulse
+                ctx.shadowBlur = pulse;
+                ctx.shadowColor = "#a855f7"; // Neon Purple Shield Glow
 
-                // 2. Render the Retro SVG Arcade Alien Ship Matrix
-                // ADDED: Check naturalWidth to safely skip if the file is missing or broken
+                // Outer Shield Ellipse Ring
+                ctx.strokeStyle = "rgba(168, 85, 247, 0.6)";
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                ctx.ellipse(0, 0, (ufo.width / 2) + 8, (ufo.height / 2) + 8, 0, 0, Math.PI * 2);
+                ctx.stroke();
+
+                // Draw Alien Ship SVG or Neon Fallback Box
                 if (alienImg.complete && alienImg.naturalWidth !== 0) {
-                    ctx.drawImage(alienImg, ufo.x, ufo.y, ufo.width, ufo.height);
+                    ctx.drawImage(alienImg, -ufo.width / 2, -ufo.height / 2, ufo.width, ufo.height);
                 } else {
-                    // Simple neon fallback block in case image hasn't loaded yet
                     ctx.fillStyle = "#a855f7";
-                    ctx.fillRect(ufo.x, ufo.y, ufo.width, ufo.height);
+                    ctx.fillRect(-ufo.width / 2, -ufo.height / 2, ufo.width, ufo.height);
                 }
 
-                // 3. Print Central Target Display Word (Hindi prompt text shifted lower)
+                // Render Hindi Target Word inside/under UFO
                 ctx.fillStyle = "#ffffff";
                 ctx.shadowColor = "black";
-                ctx.shadowBlur = 6;
+                ctx.shadowBlur = 8;
                 ctx.font = "bold 22px sans-serif";
                 ctx.textAlign = "center";
                 ctx.textBaseline = "middle";
-                
-                // FIXED: Changed from (ufo.height / 2) to adding + 12 pixels to push text lower
-                ctx.fillText(currentItem ? currentItem.root : "", ufo.x + (ufo.width / 2), ufo.y + (ufo.height / 2) + 15);
-                ctx.shadowBlur = 0; // Turn off shadows for other game assets
+                ctx.fillText(currentItem ? currentItem.root : "", 0, 15);
+                ctx.restore();
 
-
-                // 4. Draw Base Weapon Defense Turret Gun Emplacement Matrix Platform
+                // Draw Base Weapon Defense Turret Gun Emplacement Matrix Platform
                 ctx.fillStyle = "#1e293b";
                 ctx.beginPath();
                 ctx.arc(canvas.width / 2, canvas.height + 10, 45, Math.PI, 0, false);
@@ -517,7 +545,7 @@
                 ctx.fillRect(canvas.width / 2 - 6, canvas.height - 35, 12, 25);
 
                 
-                // 5. Draw Arcade Rocket Silhouette with Thruster Glow
+                //  Draw Arcade Rocket Silhouette with Thruster Glow
                 if (activeRocket) {
                     ctx.save();
                     
@@ -536,7 +564,7 @@
                     ctx.shadowBlur = 15;
                     ctx.shadowColor = glowColor;
 
-                    // --- Rocket Fins (Left & Right) ---
+                    // Rocket Fins (Left & Right)
                     ctx.fillStyle = glowColor;
                     // Left Fin
                     ctx.beginPath();
@@ -553,7 +581,7 @@
                     ctx.closePath();
                     ctx.fill();
 
-                    // --- Main Rocket Fuselage Body ---
+                    // Main Rocket Fuselage Body
                     ctx.fillStyle = bodyColor;
                     ctx.strokeStyle = glowColor;
                     ctx.lineWidth = 2;
@@ -567,7 +595,7 @@
                     ctx.fill();
                     ctx.stroke();
 
-                    // --- Glowing Nose Cone Cap ---
+                    // Glowing Nose Cone Cap
                     ctx.fillStyle = glowColor;
                     ctx.beginPath();
                     ctx.moveTo(0, -16);
@@ -577,15 +605,14 @@
                     ctx.closePath();
                     ctx.fill();
 
-                    // --- Hot Engine Nozzle Core ---
+                    // Hot Engine Nozzle Core
                     ctx.fillStyle = "#ffffff";
                     ctx.beginPath();
                     ctx.arc(0, 12, 3, 0, Math.PI * 2);
                     ctx.fill();
-
                     ctx.restore();
 
-                    // --- Floating Meaning Text Above Rocket ---
+                    // Floating Meaning Text Above Rocket
                     ctx.save();
                     ctx.shadowBlur = 6;
                     ctx.shadowColor = "black";
@@ -597,7 +624,7 @@
                 }
 
 
-                // 6. Render Active Explosive Micro Particle Fields
+                // Render Active Explosive Micro Particle Fields
                 particleExplosions.forEach(p => {
                     ctx.save();
                     ctx.globalAlpha = p.alpha;
@@ -609,8 +636,6 @@
                 });
             }
 
-    
-            // loadGameData();
             alienImg.src = 'monster.svg';
 
         </script>
