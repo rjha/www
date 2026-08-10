@@ -1,0 +1,48 @@
+[
+    {
+        "root": "औद्योगिक",
+        "level": 4,
+        "root_english": [
+            "Industrial"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "जख्म",
+        "level": 4,
+        "root_english": [
+            "Wound"
+        ],
+        "root_synonyms": [
+            "घाव"
+        ]
+    },
+    {
+        "root": "तानाशाह",
+        "level": 4,
+        "root_english": [
+            "Without Control"
+        ],
+        "root_synonyms": [
+            "निरंकुश"
+        ]
+    },
+    {
+        "root": "संस्मरण",
+        "level": 4,
+        "root_english": [
+            "Memoir"
+        ],
+        "root_synonyms": []
+    },
+    {
+        "root": "स्मरण",
+        "level": 4,
+        "root_english": [
+            "Remember"
+        ],
+        "root_synonyms": [
+            "याद"
+        ]
+    }
+]
