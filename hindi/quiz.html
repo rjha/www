@@ -140,7 +140,7 @@
         // Fetch the external words.json file directly
         async function loadVocabulary() {
             try {
-                const response = await fetch('words.json');
+                const response = await fetch('db/words.json');
                 allWords = await response.json();
                 startNewRound();
             } catch (error) {
