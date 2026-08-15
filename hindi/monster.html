@@ -111,13 +111,18 @@
         // Parse query params initialized by index.html
         const urlParams = new URLSearchParams(window.location.search);
         let sessionUuid = urlParams.get('session_uuid');
-        let activeGameLevel = parseInt(urlParams.get('level') || "1", 10);
+        const PAGE_DEBUG = urlParams.get('page_debug') === '1';
 
+        // Define macro-like logging wrappers
+        const debugLog = PAGE_DEBUG ? console.log.bind(console, '[DEBUG]') : () => {};
+        
         // Guard clause: redirect if session_uuid isn't present
         if (!sessionUuid) {
             window.location.href = "/hindi/index.html";
         }
 
+        let gameActiveLevel = 1;
+        let gameCompletedLevels = [];
         let batchWords = [];
         let wordPointer = 0;
         let totalScore = 0;
@@ -214,32 +219,86 @@
         let gameLoopRunning = false;
         let wordsDictionary = {};
 
-        function selectLevel(levelKey) {
 
+        async function selectLevel(levelKey) {
             document.getElementById('level-select-box').classList.add('hidden-fallback');
             document.getElementById('gameover-box').classList.add('hidden-fallback');
 
             const rawVal = levelValues[levelKey] || "1";
-            activeGameLevel = parseInt(rawVal, 10);
+            debugLog("game level selection changed to: ", rawVal);
+            gameActiveLevel = parseInt(rawVal, 10);
 
             updateHudLevelBadge();
             totalScore = 0;
             document.getElementById('total-score-val').innerText = totalScore;
 
+            // Save newly selected level state to API
+            await saveGameState(gameActiveLevel, gameCompletedLevels);
             fetchNextBatchAndPlay();
 
             if (!gameLoopRunning) {
                 gameLoopRunning = true;
                 requestAnimationFrame(gameLoop);
             }
+        }
 
-        } 
+        async function loadGameState() {
+            try {
+                const res = await fetch('http://localhost:8000/game/state/get', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        session_uuid: sessionUuid,
+                        game_name: "MONSTER"
+                    })
+                });
 
-        
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data && data.game_data && data.game_data.currentLevel) {
+                        gameActiveLevel = parseInt(data.game_data.currentLevel, 10);
+                       // Hydrate doneLevels from DB, default to empty array if omitted
+                        gameCompletedLevels = Array.isArray(data.game_data.finishedLevels) ? data.game_data.finishedLevels : [];
+                        debugLog(`Load Game State: level=${gameActiveLevel}, completedLevels=`, gameCompletedLevels);
+                        return true;
+                    }
+                }
+            } catch (err) {
+                console.error("Failed to load game state:", err);
+            }
+
+            return false; // No valid saved state found
+        }
+
+        async function saveGameState(currentLevel, finishedLevels = gameCompletedLevels) {
+
+            try {
+                const res = await fetch('http://localhost:8000/game/state/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        session_uuid: sessionUuid,
+                        game_name: "MONSTER",
+                        game_data: {
+                            currentLevel: currentLevel,
+                            finishedLevels: finishedLevels
+                        }
+                    })
+                });
+
+                if (!res.ok) {
+                    console.error(`Failed to save game state. Status: ${res.status}`);
+                } else {
+                    debugLog(`Game state saved: currentLevel=${currentLevel}`);
+                }
+            } catch (err) {
+                console.error("Error calling /state/save API:", err);
+            }
+        }
+
+
         async function initGame() {
-
-            updateHudLevelBadge();
-
+            
             // load words.json dictionary
             if (Object.keys(wordsDictionary).length === 0) {
                 try {
@@ -251,12 +310,25 @@
                         map[item.root] = item;
                         return map;
                     }, {});
-                    console.log(`Dictionary indexed successfully: ${Object.keys(wordsDictionary).length} words.`);
+                    debugLog(`words.json loaded: ${Object.keys(wordsDictionary).length} words.`);
                 } catch (err) {
                     console.error("Failed to load words.json dictionary:", err);
-                    alert("Error loading vocabulary dictionary file.");
+                    alert("Error loading words.json dictionary file.");
                     return;
                 }
+            }
+
+            // 2. Fetch saved state
+            const hasSavedState = await loadGameState();
+
+            if (hasSavedState) {
+                // Hide overlay and automatically start level from saved state
+                document.getElementById('level-select-box').classList.add('hidden-fallback');
+                updateHudLevelBadge();
+                fetchNextBatchAndPlay();
+            } else {
+                // Show Level Select Overlay to force user choice
+                document.getElementById('level-select-box').classList.remove('hidden-fallback');
             }
 
             if (!gameLoopRunning) {
@@ -284,7 +356,7 @@
                     body: JSON.stringify({
                         session_uuid: sessionUuid,
                         game_name: "MONSTER",
-                        game_level: activeGameLevel,
+                        game_level: gameActiveLevel,
                         batch_size: BATCH_SIZE
                     })
                 });
@@ -299,7 +371,7 @@
 
                 // Handles empty array returned when a level is exhausted
                 if (!Array.isArray(rawTokens) || rawTokens.length === 0) {
-                    console.log("No more tokens returned from API. Level completed.");
+                    debugLog("Level complete: API returned zero new tokens");
                     isFetchingBatch = false;
                     batchWords = [];
                     showLevelOverMessage();
@@ -313,7 +385,7 @@
                 batchWords = data.tokens.map(token => {
                     return wordsDictionary[token] || {
                         root: token,
-                        level: activeGameLevel,
+                        level: gameActiveLevel,
                         root_english: ["Translation N/A"],
                         root_synonyms: []
                     };
@@ -350,8 +422,8 @@
         function updateHudLevelBadge() {
             const levelValElem = document.getElementById('current-level-val');
             if (levelValElem) {
-                const foundKey = Object.keys(levelValues).find(k => parseInt(levelValues[k], 10) === activeGameLevel);
-                levelValElem.innerText = levelNames[foundKey] || `LEVEL ${activeGameLevel}`;
+                const foundKey = Object.keys(levelValues).find(k => parseInt(levelValues[k], 10) === gameActiveLevel);
+                levelValElem.innerText = levelNames[foundKey] || `LEVEL ${gameActiveLevel}`;
             }
 
         }
@@ -405,7 +477,7 @@
             // for picking first english word in a deterministic fashion, 
             // use currentItem.root_english[0];
             targetEnglishToken = currentWord.root_english[Math.floor(Math.random() * currentWord.root_english.length)];
-            console.log("inisde displayNextWord, target english token is", targetEnglishToken);
+            debugLog("displayNextWord(), target english token => ", targetEnglishToken);
 
             // get 3 wrong answers from words.json 
             // pick words whose root_english does not include target english token 
@@ -568,9 +640,8 @@
                     if (activeRocket.y <= ufo.y + ufo.height && activeRocket.y >= ufo.y) {
                         if (activeRocket.x >= ufo.x && activeRocket.x <= ufo.x + ufo.width) {
 
-                            console.log("target english token", targetEnglishToken);
-                            console.log("active rocket text", activeRocket.text);
-
+                            debugLog("target english token: ", targetEnglishToken, "rocket text:", activeRocket.text);
+                            
                             // Process Right or Wrong Answer 
                             if (activeRocket.text === targetEnglishToken) {
                             
