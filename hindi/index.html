@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hindi Arcade Lander</title>
+    <script src="/assets/tailwind.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700;800;900&display=swap');
+        
+        body {
+            font-family: 'Chakra Petch', sans-serif;
+            background-color: #030712 !important;
+            color: #ffffff !important;
+        }
+
+        /* Cyber Grid Background Animation */
+        .bg-grid-pattern {
+            background-image: 
+                linear-gradient(to right, rgba(6, 182, 212, 0.12) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(6, 182, 212, 0.12) 1px, transparent 1px);
+            background-size: 36px 36px;
+        }
+
+        .game-card {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .game-card.selected {
+            border-color: #06b6d4 !important;
+            box-shadow: 0 0 25px rgba(6, 182, 212, 0.45);
+            transform: translateY(-4px) scale(1.02);
+        }
+
+        .game-card.selected .card-overlay {
+            opacity: 1 !important;
+        }
+
+        .glow-title {
+            text-shadow: 0 0 15px rgba(6, 182, 212, 0.6);
+        }
+
+        .hidden-fallback { display: none !important; }
+    </style>
+</head>
+<body class="bg-slate-950 min-h-screen flex flex-col items-center justify-center p-4 relative overflow-x-hidden bg-grid-pattern">
+
+    <!-- Ambient Glow Effects -->
+    <div class="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-cyan-500/15 rounded-full blur-3xl pointer-events-none"></div>
+    <div class="absolute bottom-10 right-10 w-72 h-72 bg-purple-600/15 rounded-full blur-3xl pointer-events-none"></div>
+
+    <div class="max-w-2xl w-full z-10 my-6">
+
+        <!-- Arcade Header -->
+        <div class="text-center mb-8">
+            <h1 class="text-4xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-amber-300 to-cyan-400 tracking-wider uppercase glow-title italic leading-tight">
+            HINDI LEARNING ARCADE
+            </h1>
+            <hr>
+            <h2 class="text-5xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-yellow-400 tracking-wider uppercase glow-title italic">
+                READY PLAYER 1
+            </h2>
+            <p class="text-sm sm:text-base text-slate-300 font-bold mt-2 tracking-wide">
+                Pick your mission, enter your callsign & unleash your vocabulary!
+            </p>
+        </div>
+
+        <form id="launcher-form" onsubmit="handleLaunch(event)" class="space-y-6">
+            
+            <!-- Player Login Callsign -->
+            <div class="bg-slate-900/90 border-2 border-slate-800 rounded-2xl p-5 shadow-xl backdrop-blur-md">
+                <label class="block text-xs font-black text-cyan-400 uppercase tracking-widest mb-2 flex items-center gap-2">
+                    <span>🎮</span>Who is playing?
+                </label>
+                <input type="text" id="input-login-name" required placeholder="ENTER YOUR CALLSIGN" 
+                    class="w-full bg-slate-950 border-2 border-slate-700 rounded-xl p-3.5 text-lg text-white font-extrabold focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/30 transition placeholder-slate-600">
+            </div>
+
+            <!-- Game Selection Grid -->
+            <div>
+                <label class="block text-xs font-black text-cyan-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+                    <span>🎯</span> CHOOSE YOUR GAME
+                </label>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                    <!-- Game 1: Space Invaders -->
+                    <div data-game="monster" data-url="monster.html" data-title="Space Invaders"
+                         onclick="selectGame(this)" 
+                         class="game-card selected cursor-pointer bg-slate-900 border-2 border-cyan-500 rounded-2xl overflow-hidden relative group shadow-lg">
+                        
+                        <!-- Badge -->
+                        <div class="absolute top-3 left-3 bg-cyan-500 text-slate-950 text-[10px] font-black px-2.5 py-0.5 rounded-full z-20 shadow-md">
+                            POPULAR
+                        </div>
+
+                        <!-- Card Image -->
+                        <div class="h-36 relative overflow-hidden bg-slate-950">
+                            <img src="assets/ufo_01.png" alt="Space Invaders" class="w-full h-full object-contain p-4 group-hover:scale-110 transition duration-300">
+                            <div class="card-overlay absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-80"></div>
+                        </div>
+
+                        <!-- Card Info -->
+                        <div class="p-4 border-t border-slate-800/80 bg-slate-900/90">
+                            <h3 class="text-xl font-black text-cyan-300 tracking-wide uppercase">Space Invaders</h3>
+                            <p class="text-xs text-slate-400 font-bold mt-1">Blast the UFO with correct word ammo!</p>
+                        </div>
+                    </div>
+
+                    <!-- Game 2: Akshar Catch (Future / Locked or Playable) -->
+                    <div data-game="akshar_catch" data-url="/akshar_catch.html" data-title="Akshar Catch"
+                         onclick="selectGame(this)" 
+                         class="game-card cursor-pointer bg-slate-900 border-2 border-slate-800 hover:border-slate-600 rounded-2xl overflow-hidden relative group shadow-lg opacity-85 hover:opacity-100">
+                        
+                        <!-- Badge -->
+                        <div class="absolute top-3 left-3 bg-yellow-400 text-slate-950 text-[10px] font-black px-2.5 py-0.5 rounded-full z-20 shadow-md">
+                            ARCADE CLASSIC
+                        </div>
+
+                        <!-- Card Image -->
+                        <div class="h-36 relative overflow-hidden bg-slate-950 flex items-center justify-center">
+                            <div class="text-6xl font-black text-cyan-400/40 group-hover:scale-110 transition duration-300 select-none">
+                                🪣
+                            </div>
+                            <div class="card-overlay opacity-0 absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent"></div>
+                        </div>
+
+                        <!-- Card Info -->
+                        <div class="p-4 border-t border-slate-800/80 bg-slate-900/90">
+                            <h3 class="text-xl font-black text-yellow-400 tracking-wide uppercase">Akshar Catch</h3>
+                            <p class="text-xs text-slate-400 font-bold mt-1">Catch falling Hindi letters into the right baskets!</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Hidden Inputs to track choices -->
+            <input type="hidden" id="selected-game-name" value="monster">
+            <input type="hidden" id="selected-game-url" value="monster.html">
+
+            <!-- Error Notification Banner -->
+            <div id="login-error" class="hidden-fallback text-red-400 text-xs font-black bg-red-950/60 p-3 rounded-xl border-2 border-red-800/80 text-center tracking-wide"></div>
+
+            <!-- Big Action Button -->
+            <button type="submit" id="btn-launch" 
+                    class="w-full bg-gradient-to-r from-cyan-400 via-teal-400 to-cyan-500 hover:from-cyan-300 hover:to-teal-300 text-slate-950 font-black text-xl py-4 rounded-2xl transition duration-200 cursor-pointer shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:shadow-[0_0_30px_rgba(6,182,212,0.7)] uppercase tracking-wider transform hover:-translate-y-0.5 active:translate-y-0">
+                🚀 LAUNCH SPACE INVADERS
+            </button>
+        </form>
+    </div>
+
+    <script>
+
+        const API_BASE_URL = "http://localhost:8000";
+
+        function selectGame(cardElement) {
+            // Remove selection class from all cards
+            document.querySelectorAll('.game-card').forEach(card => {
+                card.classList.remove('selected');
+                card.classList.remove('border-cyan-500');
+                card.classList.add('border-slate-800');
+            });
+
+            // Highlight chosen card
+            cardElement.classList.add('selected');
+            cardElement.classList.remove('border-slate-800');
+
+            // Save choice in hidden inputs
+            const gameName = cardElement.dataset.game;
+            const gameUrl = cardElement.dataset.url;
+            const gameTitle = cardElement.dataset.title;
+
+            document.getElementById('selected-game-name').value = gameName;
+            document.getElementById('selected-game-url').value = gameUrl;
+
+            // Update Launch Button Text
+            document.getElementById('btn-launch').innerText = `🚀 LAUNCH ${gameTitle.toUpperCase()}`;
+        }
+
+        async function handleLaunch(e) {
+            e.preventDefault();
+            
+            const loginName = document.getElementById('input-login-name').value.trim();
+            const gameName = document.getElementById('selected-game-name').value;
+            const targetUrl = document.getElementById('selected-game-url').value;
+
+            const errElem = document.getElementById('login-error');
+            const btn = document.getElementById('btn-launch');
+
+            if (!loginName) {
+                errElem.innerText = "PLEASE ENTER A CALLSIGN TO CONTINUE!";
+                errElem.classList.remove('hidden-fallback');
+                return;
+            }
+
+            errElem.classList.add('hidden-fallback');
+            btn.disabled = true;
+            btn.innerText = "INITIALIZING SESSION...";
+
+            try {
+
+                // 1. Authenticate / Start Session via API
+                const res = await fetch(`${API_BASE_URL}/game/session/start`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ login_name: loginName })
+                });
+
+                if (!res.ok) {
+                    const errData = await res.json();
+                    throw new Error(errData.detail || "Failed to launch session.");
+                }
+
+                const data = await res.json();
+                const sessionUuid = data.session_uuid;
+
+                // 2. Redirect to specific game file with query params
+                window.location.href = `${targetUrl}?session_uuid=${sessionUuid}&game=${gameName}`;
+
+            } catch (err) {
+                errElem.innerText = err.message.toUpperCase();
+                errElem.classList.remove('hidden-fallback');
+                btn.disabled = false;
+                btn.innerText = "🚀 RETRY LAUNCH";
+            }
+        }
+    </script>
+</body>
+</html>
