@@ -26,7 +26,7 @@
         <!-- Score Dashboard Header -->
         <div class="w-full flex justify-between items-center mb-4 border-b border-slate-800 pb-3 gap-2">
             <!-- Left: Score -->
-            <span class="text-xl font-black text-cyan-400 tracking-wider">SCORE: <span id="score-val">0</span></span>
+            <span class="text-xl font-black text-cyan-400 tracking-wider">SCORE: <span id="total-score-val">0</span></span>
             
             <!-- Right: Active Level Badge & Change Level Switcher -->
             <div class="flex items-center gap-2">
@@ -84,25 +84,65 @@
             </div>
         </div>
 
-        <!-- GameOver Overlay Box -->
+       <!-- GameOver / Level Complete Overlay Box -->
         <div id="gameover-box" class="hidden-fallback fixed inset-0 bg-black/80 backdrop-blur-sm flex flex-col items-center justify-center text-center p-4 z-50">
-            <div class="bg-slate-900 border-4 border-red-500 rounded-3xl p-8 max-w-sm w-full">
-                <h1 class="text-4xl font-black text-red-500 mb-2 tracking-tighter">MISSION OVER</h1>
+            <div class="bg-slate-900 border-4 border-yellow-500 rounded-3xl p-8 max-w-sm w-full">
+                <h1 id="gameover-title" class="text-4xl font-black text-yellow-400 mb-2 tracking-tighter">LEVEL OVER</h1>
+                <p id="gameover-subtitle" class="text-sm text-slate-400 mb-4 font-semibold">All words in this level completed!</p>
                 <p class="text-xl text-slate-300 mb-6">Final Score: <span id="final-score" class="font-bold text-cyan-400">0</span></p>
-                <button onclick="restartInvadersGame()" class="bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-extrabold text-lg py-3 px-8 rounded-xl shadow-lg cursor-pointer transition">
-                    Launch New Sortie
-                </button>
+                <div class="flex flex-col gap-3">
+                    <button onclick="restartInvadersGame()" class="bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-extrabold text-lg py-3 px-6 rounded-xl shadow-lg cursor-pointer transition">
+                        Play Level Again
+                    </button>
+                    <button onclick="openLevelSelect()" class="bg-slate-800 hover:bg-slate-700 text-cyan-400 font-extrabold text-md py-2 px-6 rounded-xl border border-slate-700 cursor-pointer transition">
+                        Select Different Level
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 
+
+
     <script>
-        let allWords = [];
-        let currentItem = null;
+
+
+        const BATCH_SIZE = 20;
+        // Parse query params initialized by index.html
+        const urlParams = new URLSearchParams(window.location.search);
+        let sessionUuid = urlParams.get('session_uuid');
+        let activeGameLevel = parseInt(urlParams.get('level') || "1", 10);
+
+        // Guard clause: redirect if session_uuid isn't present
+        if (!sessionUuid) {
+            window.location.href = "/hindi/index.html";
+        }
+
+        let batchWords = [];
+        let wordPointer = 0;
+        let totalScore = 0;
+        let targetEnglishToken = "";
+        let currentWord = null;
         let choiceOptions = [];
         let loadedIndex = null;
-        let score = 0;
-        let audioCtx = null;
+        let isFetchingBatch = false;
+
+        const levelNames = {
+            'level1': 'LEVEL 1',
+            'level2': 'LEVEL 2',
+            'level3': 'LEVEL 3',
+            'level4': 'LEVEL 4',
+            'all': 'ALL'
+        };
+
+         const levelValues = {
+            'level1': '1',
+            'level2': '2',
+            'level3': '3',
+            'level4': '4'
+            // @todo missing ALL 
+        };
+
 
         const canvas = document.getElementById('spaceCanvas');
         const ctx = canvas.getContext('2d');
@@ -168,72 +208,155 @@
         function playDisappointingSound() {
             playSfx('miss_01');
         }
-
-        function playLoadingSound() {
-            playSfx('loading_01');
-        }
-
         
         // Declare the global empty Image container registry object
         const alienImg = new Image();
-        // Map level identifiers to their corresponding JSON source files
-        const levelMap = {
-            'level1': 'db/words01.json',
-            'level2': 'db/words02.json',
-            'level3': 'db/words03.json',
-            'level4': 'db/words04.json',
-            'all': 'db/words.json'
-        };
-
-        const levelNames = {
-            'level1': 'LEVEL 1',
-            'level2': 'LEVEL 2',
-            'level3': 'LEVEL 3',
-            'level4': 'LEVEL 4',
-            'all': 'ALL'
-        };
-
-
-        let currentGameLevel = 'all';
         let gameLoopRunning = false;
-
-        async function loadGameData(levelKey) {
-
-            try {
-
-                if (levelKey && levelMap[levelKey]) {
-                    currentGameLevel = levelKey;
-                }
-
-                // Update the level indicator label in the HUD header
-                const levelValElem = document.getElementById('current-level-val');
-                if (levelValElem) {
-                    levelValElem.innerText = levelNames[currentGameLevel] || currentGameLevel.toUpperCase();
-                }
-
-                const fileToFetch = levelMap[currentGameLevel] || levelMap['all'];
-                // Fetch the vocabulary words JSON corresponding to active level key
-                const response = await fetch(fileToFetch);
-                allWords = await response.json();
-                alienImg.src = 'assets/ufo_01.png';
-                restartInvadersGame();
-
-            } catch (err) {
-                console.error("Critical: Could not load game asset structures", err);
-            }
-        }
+        let wordsDictionary = {};
 
         function selectLevel(levelKey) {
+
             document.getElementById('level-select-box').classList.add('hidden-fallback');
-            loadGameData(levelKey);
-            
+            document.getElementById('gameover-box').classList.add('hidden-fallback');
+
+            const rawVal = levelValues[levelKey] || "1";
+            activeGameLevel = parseInt(rawVal, 10);
+
+            updateHudLevelBadge();
+            totalScore = 0;
+            document.getElementById('total-score-val').innerText = totalScore;
+
+            fetchNextBatchAndPlay();
+
+            if (!gameLoopRunning) {
+                gameLoopRunning = true;
+                requestAnimationFrame(gameLoop);
+            }
+
+        } 
+
+        
+        async function initGame() {
+
+            updateHudLevelBadge();
+
+            // load words.json dictionary
+            if (Object.keys(wordsDictionary).length === 0) {
+                try {
+                    const res = await fetch('db/words.json');
+                    const wordsList = await res.json();
+                    
+                    // Transform array into a lookup map keyed by "root"
+                    wordsDictionary = wordsList.reduce((map, item) => {
+                        map[item.root] = item;
+                        return map;
+                    }, {});
+                    console.log(`Dictionary indexed successfully: ${Object.keys(wordsDictionary).length} words.`);
+                } catch (err) {
+                    console.error("Failed to load words.json dictionary:", err);
+                    alert("Error loading vocabulary dictionary file.");
+                    return;
+                }
+            }
+
             if (!gameLoopRunning) {
                 gameLoopRunning = true;
                 requestAnimationFrame(gameLoop);
             }
         }
 
-        // Event listener using data-source attribute for level key mapping
+        async function fetchNextBatchAndPlay() {
+
+            if (isFetchingBatch) {
+                console.warn("Fetch already in progress. Skipping duplicate request.");
+                return;
+            }
+
+            isFetchingBatch = true;
+            
+            
+            try {
+
+                // @todo get from API BASE URL 
+                const res = await fetch('http://localhost:8000/game/words/next', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        session_uuid: sessionUuid,
+                        game_name: "MONSTER",
+                        game_level: activeGameLevel,
+                        batch_size: BATCH_SIZE
+                    })
+                });
+
+                if (!res.ok) {
+                    const rawText = await res.text();
+                    throw new Error(`Server returned status ${res.status}: ${rawText}`);
+                }
+                
+                const data = await res.json(); 
+                const rawTokens = data.tokens;
+
+                // Handles empty array returned when a level is exhausted
+                if (!Array.isArray(rawTokens) || rawTokens.length === 0) {
+                    console.log("No more tokens returned from API. Level completed.");
+                    isFetchingBatch = false;
+                    batchWords = [];
+                    showLevelOverMessage();
+                    return;
+                }
+
+                
+                // for each token (sequence of chars) returned from the API,
+                // load the word (object having token, english words, and 
+                // hindi synonyms from words.json 
+                batchWords = data.tokens.map(token => {
+                    return wordsDictionary[token] || {
+                        root: token,
+                        level: activeGameLevel,
+                        root_english: ["Translation N/A"],
+                        root_synonyms: []
+                    };
+                });
+
+                // Lock release before firing wave
+                isFetchingBatch = false;
+                wordPointer = 0;
+                displayNextWord();
+
+            } catch (err) {
+                isFetchingBatch = false;
+                console.error("Fetch batch error:", err);
+                alert(`Error loading words: ${err.message}`);
+            }
+        }
+
+        function showLevelOverMessage() {
+            // 1. Wipe all rocket silo DOM elements
+            const bay = document.getElementById('weapons-bay');
+            if (bay) bay.innerHTML = "";
+
+            // 2. Hydrate and show the end-of-level modal overlay
+            document.getElementById('final-score').innerText = totalScore;
+            document.getElementById('gameover-box').classList.remove('hidden-fallback');
+        }
+
+        function openLevelSelect() {
+            document.getElementById('gameover-box').classList.add('hidden-fallback');
+            document.getElementById('level-select-box').classList.remove('hidden-fallback');
+        }
+
+
+        function updateHudLevelBadge() {
+            const levelValElem = document.getElementById('current-level-val');
+            if (levelValElem) {
+                const foundKey = Object.keys(levelValues).find(k => parseInt(levelValues[k], 10) === activeGameLevel);
+                levelValElem.innerText = levelNames[foundKey] || `LEVEL ${activeGameLevel}`;
+            }
+
+        }
+
+        // Event listener for level buttons
         document.getElementById('level-buttons').addEventListener('click', (e) => {
             const btn = e.target.closest('[data-source]');
             if (btn) {
@@ -249,41 +372,62 @@
         });
 
         function restartInvadersGame() {
-            score = 0;
+            totalScore = 0;
             activeRocket = null;
             loadedIndex = null;
             particleExplosions = [];
-            document.getElementById('score-val').innerText = score;
+            document.getElementById('total-score-val').innerText = totalScore;
             document.getElementById('gameover-box').classList.add('hidden-fallback');
-            nextTargetWave();
+            fetchNextBatchAndPlay();
+            // displayNextWord();
         }
 
-        function nextTargetWave() {
+        
+        function displayNextWord() {
+
+            // check against empty batch or bad word pointer 
+            if (!batchWords || batchWords.length === 0 || wordPointer >= batchWords.length) {
+                showLevelOverMessage();
+            }
+
+
             activeRocket = null;
             loadedIndex = null;
             
-            // Reset and trigger UFO Warp-In Spawn Animation
-            ufoWarpScale = 0.05; // Start tiny
+            ufoWarpScale = 0.05;
             isWarpingIn = true;
 
-            currentItem = allWords[Math.floor(Math.random() * allWords.length)];
-            const correctMeaning = currentItem.root_english[Math.floor(Math.random() * currentItem.root_english.length)];
-            
-            let wrongMeanings = allWords
-                .filter(item => item.root !== currentItem.root)
-                .map(item => item.root_english[Math.floor(Math.random() * item.root_english.length)]);
-            wrongMeanings = [...new Set(wrongMeanings)].sort(() => 0.5 - Math.random()).slice(0, 3);
-            
-            choiceOptions = [correctMeaning, ...wrongMeanings].sort(() => 0.5 - Math.random());
+            // selected Word Object 
+            currentWord = batchWords[wordPointer];
+
+            // Pick correct english token for current word 
+            // Math.random is to pick one out of multiple root_english tokens
+            // for picking first english word in a deterministic fashion, 
+            // use currentItem.root_english[0];
+            targetEnglishToken = currentWord.root_english[Math.floor(Math.random() * currentWord.root_english.length)];
+            console.log("inisde displayNextWord, target english token is", targetEnglishToken);
+
+            // get 3 wrong answers from words.json 
+            // pick words whose root_english does not include target english token 
+            const wrongAnswers = Object.values(wordsDictionary)
+                .filter(item => !item.root_english.includes(targetEnglishToken))
+                .flatMap(item => item.root_english)
+                .filter((value, index, self) => self.indexOf(value) === index)
+                .sort(() => 0.5 - Math.random())
+                .slice(0, 3);
+
+            //  Combine target token + 3 wrong answers and shuffle across 4 silos
+            choiceOptions = [targetEnglishToken, ...wrongAnswers].sort(() => 0.5 - Math.random());
             
             ufo.x = Math.random() * (canvas.width - ufo.width);
             ufo.targetX = Math.random() * (canvas.width - ufo.width);
-            
+
             renderWeaponsBayUi();
         }
 
     
        function renderWeaponsBayUi() {
+
             const bay = document.getElementById('weapons-bay');
             bay.innerHTML = "";
 
@@ -346,7 +490,7 @@
             });
         }
 
-        // --- Physics Engine & Core Render Loop ---
+        // Game Physics Engine & Core Render Loop
         function gameLoop() {
             updateGamePhysics();
             drawGameGraphics();
@@ -424,19 +568,31 @@
                     if (activeRocket.y <= ufo.y + ufo.height && activeRocket.y >= ufo.y) {
                         if (activeRocket.x >= ufo.x && activeRocket.x <= ufo.x + ufo.width) {
 
+                            console.log("target english token", targetEnglishToken);
+                            console.log("active rocket text", activeRocket.text);
+
                             // Process Right or Wrong Answer 
-                            if (currentItem.root_english.includes(activeRocket.text)) {
-                                score += 5;
-                                document.getElementById('score-val').innerText = score;
+                            if (activeRocket.text === targetEnglishToken) {
+                            
+                                totalScore += 5;
+                                document.getElementById('total-score-val').innerText = totalScore;
                                 playClapSound();
                                 createExplosion(activeRocket.x, activeRocket.y, '#10b981');
                                 // Trigger Screen Shake on Hit
                                 triggerScreenShake(12);
-                                nextTargetWave();
+                                wordPointer += 1 ;
+                                
+                                if (wordPointer >= batchWords.length) {
+                                    fetchNextBatchAndPlay();
+                                } else {
+                                    displayNextWord();
+                                }
+
+                               
 
                             } else {
-                                score -= 2;
-                                document.getElementById('score-val').innerText = score;
+                                totalScore -= 2;
+                                document.getElementById('total-score-val').innerText = totalScore;
                                 playDisappointingSound();
                                 
                                 createExplosion(activeRocket.x, activeRocket.y, '#ef4444');
@@ -528,6 +684,9 @@
                 
                 // Render Alien Ship with Pulsing Shield
                 // Set transformation origin to center of UFO
+                // Only draw UFO and Hindi word if batch is active
+                // if (currentItem && batchWords.length > 0 && wordPointer < batchWords.length) {
+
                 const ufoCenterX = ufo.x + (ufo.width / 2);
                 const ufoCenterY = ufo.y + (ufo.height / 2);
                 ctx.translate(ufoCenterX, ufoCenterY);
@@ -554,7 +713,7 @@
                 }
 
                 // Render Hindi Target Word inside/under UFO
-                const textVal = currentItem ? currentItem.root : "";
+                const textVal = currentWord ? currentWord.root : "";
                 ctx.font = "bold 20px sans-serif";
                 const textWidth = ctx.measureText(textVal).width;
 
@@ -574,10 +733,9 @@
                 ctx.textBaseline = "middle";
                 ctx.fillText(textVal, 0, 15);  
 
+                // }
 
                 ctx.restore(); 
-
-                
 
                 // Draw Base Weapon Defense Turret Gun Emplacement Matrix Platform
                 ctx.fillStyle = "#1e293b";
@@ -680,7 +838,8 @@
             }
 
             alienImg.src = 'assets/ufo_01.png';
-
+            // Run initialization on page load
+            window.addEventListener('DOMContentLoaded', initGame);
 
         </script>
     </body>
