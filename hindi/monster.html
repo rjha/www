@@ -84,24 +84,39 @@
             </div>
         </div>
 
-       <!-- GameOver / Level Complete Overlay Box -->
-        <div id="gameover-box" class="hidden-fallback fixed inset-0 bg-black/80 backdrop-blur-sm flex flex-col items-center justify-center text-center p-4 z-50">
-            <div class="bg-slate-900 border-4 border-yellow-500 rounded-3xl p-8 max-w-sm w-full">
-                <h1 id="gameover-title" class="text-4xl font-black text-yellow-400 mb-2 tracking-tighter">LEVEL OVER</h1>
-                <p id="gameover-subtitle" class="text-sm text-slate-400 mb-4 font-semibold">All words in this level completed!</p>
-                <p class="text-xl text-slate-300 mb-6">Final Score: <span id="final-score" class="font-bold text-cyan-400">0</span></p>
-                <div class="flex flex-col gap-3">
-                    <button onclick="restartInvadersGame()" class="bg-cyan-500 hover:bg-cyan-600 text-slate-950 font-extrabold text-lg py-3 px-6 rounded-xl shadow-lg cursor-pointer transition">
-                        Play Level Again
+    <!-- GameOver / Level Complete Overlay Box -->
+    <div id="gameover-box" class="hidden-fallback fixed inset-0 bg-black/85 backdrop-blur-sm flex flex-col items-center justify-center text-center p-4 z-50">
+        <div class="bg-slate-900 border-4 border-yellow-500 rounded-3xl p-8 max-w-sm w-full shadow-2xl">
+            <!-- Dynamic Level Title -->
+            <h1 id="gameover-title" class="text-3xl font-black text-yellow-400 mb-1 tracking-wider uppercase">LEVEL OVER</h1>
+            <p id="gameover-subtitle" class="text-xs text-slate-400 mb-4 font-semibold uppercase tracking-widest">All words completed!</p>
+            
+            <div class="bg-slate-950 border border-slate-800 rounded-2xl p-4 mb-6">
+                <p class="text-xs text-slate-400 font-bold uppercase tracking-wider mb-1">Final Score</p>
+                <p id="final-score" class="text-4xl font-black text-cyan-400">0</p>
+            </div>
+
+            <div class="flex flex-col gap-4">
+                 <!-- Safe Action: Change Level -->
+                <button onclick="openLevelSelect()" class="bg-slate-800 hover:bg-slate-700 text-cyan-400 font-extrabold text-sm py-3 px-6 rounded-xl border border-slate-700 cursor-pointer transition">
+                    SELECT LEVEL
+                </button>
+
+                <!-- Danger Action Group -->
+                <div class="flex flex-col gap-1.5">
+                    <button onclick="restartLevelWithReset()" class="bg-rose-600 hover:bg-rose-700 active:scale-95 text-white font-extrabold text-sm py-3 px-6 rounded-xl shadow-lg border border-rose-500/50 cursor-pointer transition flex items-center justify-center gap-2">
+                        PLAY AGAIN
                     </button>
-                    <button onclick="openLevelSelect()" class="bg-slate-800 hover:bg-slate-700 text-cyan-400 font-extrabold text-md py-2 px-6 rounded-xl border border-slate-700 cursor-pointer transition">
-                        Select Different Level
-                    </button>
+                    <!-- Warning Notice Subtext -->
+                    <p class="text-[12px] text-rose-400/90 font-medium leading-tight px-1">
+                        ⚠️ THIS WILL ERASE LEVEL DATA
+                    </p>
                 </div>
+                
+               
             </div>
         </div>
     </div>
-
 
 
     <script>
@@ -219,28 +234,51 @@
         let gameLoopRunning = false;
         let wordsDictionary = {};
 
-
         async function selectLevel(levelKey) {
-            document.getElementById('level-select-box').classList.add('hidden-fallback');
-            document.getElementById('gameover-box').classList.add('hidden-fallback');
-
             const rawVal = levelValues[levelKey] || "1";
             debugLog("game level selection changed to: ", rawVal);
             gameActiveLevel = parseInt(rawVal, 10);
 
             updateHudLevelBadge();
-            totalScore = 0;
-            document.getElementById('total-score-val').innerText = totalScore;
+            document.getElementById('level-select-box').classList.add('hidden-fallback');
 
             // Save newly selected level state to API
             await saveGameState(gameActiveLevel, gameCompletedLevels);
-            fetchNextBatchAndPlay();
+            // Resets score/pointers, hides gameover box, and starts batch
+            restartInvadersGame();
 
-            if (!gameLoopRunning) {
-                gameLoopRunning = true;
-                requestAnimationFrame(gameLoop);
+        }
+
+        async function restartLevelWithReset() {
+
+            debugLog("Resetting tracker words for session:", sessionUuid, "level:", gameActiveLevel);
+
+            try {
+
+                const res = await fetch('http://localhost:8000/game/level/reset', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        session_uuid: sessionUuid,
+                        game_name: "MONSTER",
+                        game_level: gameActiveLevel
+                    })
+                });
+
+                if (!res.ok) {
+                    const errText = await res.text();
+                    throw new Error(`Reset failed (${res.status}): ${errText}`);
+                }
+
+                debugLog("Progress reset successfully. Restarting level...");
+                restartInvadersGame();
+
+            } catch (err) {
+                console.error("Error resetting level progress:", err);
+                alert(`Failed to reset level progress: ${err.message}`);
             }
         }
+
 
         async function loadGameState() {
             try {
@@ -403,14 +441,24 @@
             }
         }
 
+      
+
         function showLevelOverMessage() {
-            // 1. Wipe all rocket silo DOM elements
+            // 1. Clear silos
             const bay = document.getElementById('weapons-bay');
             if (bay) bay.innerHTML = "";
 
-            // 2. Hydrate and show the end-of-level modal overlay
+            // 2. Set dynamic title (e.g., "LEVEL 3 OVER")
+            const titleElem = document.getElementById('gameover-title');
+            if (titleElem) {
+                titleElem.innerText = `LEVEL ${gameActiveLevel} OVER`;
+            }
+
+            // 3. Hydrate score and reveal overlay
             document.getElementById('final-score').innerText = totalScore;
             document.getElementById('gameover-box').classList.remove('hidden-fallback');
+            
+            debugLog("Level Over triggered for level:", gameActiveLevel);
         }
 
         function openLevelSelect() {
@@ -451,7 +499,6 @@
             document.getElementById('total-score-val').innerText = totalScore;
             document.getElementById('gameover-box').classList.add('hidden-fallback');
             fetchNextBatchAndPlay();
-            // displayNextWord();
         }
 
         
