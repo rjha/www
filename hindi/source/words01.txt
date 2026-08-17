@@ -27,7 +27,6 @@
 अगल-बगल ; Nearby place
 अतिथि ; Guest
 अर्थ ; meaning ; अभिप्राय, मतलब
-अर्थ(२): money
 आर्थिक ; economical, money-matter
 आंदोलन ; Revolution, Agitation
 परिवर्तन ; change 
@@ -80,7 +79,6 @@
 उद्देशय ; purpose, aim ; लक्ष्य
 इरादा; intention; मंशा
 उत्तर ; answer
-उत्तर(२): North 
 उदाहरण ; example
 उत्पाद ; produce   
 उत्पादन ; production  
@@ -412,7 +410,6 @@
 सिंहासन; throne
 संसार; world ; जग, दुनिया, जगत, विश्व
 स्वच्छ; clean ; साफ, निर्मल
-स्वयं - self
 सेहत; health 
 समस्या; problem, difficulty; कठिनाई, बाधा, परेशानी
 संतोष; satisfaction 
@@ -496,14 +493,12 @@
 जाँच; checking
 जाँच-पड़ताल; investigation 
 झट-पट; quickly  
-ठिकाना(२): Address, destination
 ठिकाना; hideout, whereabouts ;स्थान, पता
 ठहर; stop, stay ; रुकना
 प्रतीक्षा; wait 
 निवास; residence, home ; घर
 ठिठुर; shivering 
 ठहराव; pause
-ठोकर - stumble, bump 
 ठहाका; laughter; जोरदार-हंसी 
 ठिठक; stop, stutter 
 ध्येय; aim, goal ; लक्ष्य, उद्देश्य
@@ -662,7 +657,6 @@
 प्रभाव; effect, impact
 परख; test; जांच
 पूर्व; earlier
-पूर्व(२): East
 प्रसिद्ध; famous
 प्रवीण; Proficient, Skilled
 पक्ष; Party, side  
