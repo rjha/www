@@ -1,11 +1,13 @@
-import logging
+import sys 
 import os 
+import logging
 import json
 import csv
 import psycopg
 from config import AppConfig, get_logger_config
 from config import DatabaseType, get_database_config
 from collections import defaultdict
+import argparse 
 
 
 logger = logging.getLogger("main." + __name__)
@@ -339,28 +341,57 @@ def dump_word_level(output_file_path: str, w_level:int = -1):
     print(f"exported word levels to {output_file_path}")
 
 
-def print_new_words(file_name, output_file="new-words.txt"):
+def _guess_root_token(line):
+
+    if not line:
+        return None 
+    
+    if ';' in line:
+        parts = line.split(';')
+        return parts[0].strip()
+
+    if ',' in line:
+            parts = line.split(',')
+            return parts[0].strip()
+            
+    return line
+
+
+def print_new_words(file_name, output_file=None):
     line_no = 0
     stored_tokens = []
     new_tokens = []
 
     db_conn_string = _get_database_conn_string()
     root_words = _get_root_words(db_conn_string)
+
     for hindi_uuid, token, level in root_words:
-        stored_tokens.append(token)
+        stored_tokens.append(token.strip()) 
 
     with open(file_name, 'r', encoding='utf-8') as file:
         for line in file:
             line_no += 1
-            if not line.strip():
+            line = line.strip() 
+            if(line.startswith('#')):
+                print(f"{line_no} commented...")
                 continue 
-            token = line.strip()
+            
+            token = _guess_root_token(line)
+            if not token:
+                print(f"{line_no} No token found...")
+                continue 
+
             if token in stored_tokens:
                 print(f"{line_no} {token} exists...")
             else:
                 print(f"{line_no} new token: {token}")
                 new_tokens.append(token)
 
+    if output_file is None:
+        for new_token in new_tokens:
+            print(new_token)
+        return
+    
     with open(output_file, "w", encoding="utf-8") as outfile:
         for new_token in new_tokens:
             outfile.write(new_token + "\n")
@@ -410,18 +441,72 @@ def store_in_database(file_name, skip_lines=0):
                     _store_root_word_wrapper(conn, line_no, root_word, english_words, root_synonyms)
                     
 
+def setup_parser() -> argparse.ArgumentParser:
+    parser = argparse.ArgumentParser(
+        description="CLI tool to manage and process Hindi word datasets."
+    )
+    subparsers = parser.add_subparsers(dest="command", help="Available subcommands")
+
+    # Subcommand: store
+    store_parser = subparsers.add_parser("store", help="Store words in the database")
+    store_parser.add_argument("file_path", type=str, help="Path to input text file")
+    store_parser.add_argument("--skip-lines", type=int, default=0, help="Number of initial lines to skip")
+
+    # Subcommand: set-level
+    set_level_parser = subparsers.add_parser("set-level", help="Set word difficulty levels")
+    set_level_parser.add_argument("csv_path", type=str, help="Path to the CSV file with levels")
+
+    # Subcommand: dump-json
+    dump_json_parser = subparsers.add_parser("dump-json", help="Dump words to JSON format")
+    dump_json_parser.add_argument("output_json", type=str, help="Output JSON file path")
+
+    # Subcommand: split-json
+    split_parser = subparsers.add_parser("split-json", help="Split a JSON file into smaller chunks")
+    split_parser.add_argument("json_file", type=str, help="JSON file path to split")
+
+    # Subcommand: dump-level
+    dump_level_parser = subparsers.add_parser("dump-level", help="Dump word levels to CSV")
+    dump_level_parser.add_argument("input_file", type=str, help="Input file path")
+    dump_level_parser.add_argument("level", type=int, help="Target level (integer)")
+
+    # Subcommand: print-new
+    print_new_parser = subparsers.add_parser("print-new", help="Print new words from a file")
+    print_new_parser.add_argument("source_file", type=str, help="Path to source text file")
+    print_new_parser.add_argument(
+        "-o", "--output-file",
+        type=str,
+        default=None,
+        help="Path to output file (optional)"
+    )
+
+    return parser
+
+
 def do_main():
+
+    parser = setup_parser()
+    args = parser.parse_args()
 
     AppConfig.load()
     log_config = get_logger_config("global")
     AppConfig.init_logging(log_file=log_config.log_file, log_level=log_config.log_level)
     logger.info(f"Hindi words program loaded...")
-    # store_in_database("words03.txt", skip_lines=0)
-    # set_word_level("level02_in.csv")
-    # dump_json("out/words.json")
-    # split_json_file("out/words.json")
-    dump_word_level("out/level0.csv", 0)
-    # print_new_words("words04.txt")
+    # Route based on chosen command
+    if args.command == "store":
+        store_in_database(args.file_path, skip_lines=args.skip_lines)
+    elif args.command == "set-level":
+        set_word_level(args.csv_path)
+    elif args.command == "dump-json":
+        dump_json(args.output_json)
+    elif args.command == "split-json":
+        split_json_file(args.json_file)
+    elif args.command == "dump-level":
+        dump_word_level(args.input_file, args.level)
+    elif args.command == "print-new":
+        print_new_words(args.source_file, args.output_file)
+    else:
+        parser.print_help()
+        sys.exit(1)
 
 if __name__ == "__main__":
     do_main()
