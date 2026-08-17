@@ -152,8 +152,6 @@
 
     <script>
 
-        const API_BASE_URL = "http://localhost:8000";
-
         function selectGame(cardElement) {
             // Remove selection class from all cards
             document.querySelectorAll('.game-card').forEach(card => {
@@ -201,7 +199,7 @@
             try {
 
                 // 1. Authenticate / Start Session via API
-                const res = await fetch(`${API_BASE_URL}/game/session/start`, {
+                const res = await fetch(`/boa/v1/game/session/start`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ login_name: loginName })

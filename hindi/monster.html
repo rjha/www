@@ -255,7 +255,7 @@
 
             try {
 
-                const res = await fetch('/game/level/reset', {
+                const res = await fetch('/boa/v1/game/level/reset', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -282,7 +282,7 @@
 
         async function loadGameState() {
             try {
-                const res = await fetch('/game/state/get', {
+                const res = await fetch('/boa/v1/game/state/get', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -311,7 +311,7 @@
         async function saveGameState(currentLevel, finishedLevels = gameCompletedLevels) {
 
             try {
-                const res = await fetch('/game/state/save', {
+                const res = await fetch('/boa/v1/game/state/save', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -388,7 +388,7 @@
             try {
 
                 // @todo get from API BASE URL 
-                const res = await fetch('/game/words/next', {
+                const res = await fetch('/boa/v1/game/words/next', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
