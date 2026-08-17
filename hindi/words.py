@@ -5,32 +5,12 @@ import json
 import csv
 import psycopg
 from config import AppConfig, get_logger_config
-from config import DatabaseType, get_database_config
+from config import  get_postgres_conn_string
 from collections import defaultdict
 import argparse 
 
 
 logger = logging.getLogger("main." + __name__)
-
-
-def _get_database_conn_string():
-    logger = logging.getLogger("main." + __name__)
-    # 4. Resolve the targeted active runtime environment config block
-    env_mode = os.environ.get("XAPI_ENV_MODE", "DEV").upper()
-    db_type = DatabaseType.PRODUCTION if env_mode == "PRODUCTION" else DatabaseType.DEV
-    db_config = get_database_config(db_type)
-
-    # 5. Build positional format connection credentials
-    DB_URI = "postgresql://{0}:{1}@{2}:{3}/{4}".format(
-        db_config.db_user,
-        db_config.db_password,
-        db_config.db_host,
-        db_config.db_port,
-        db_config.db_name
-    )
-
-    logger.info("database URI -> " + DB_URI)
-    return DB_URI
 
 
 def _process_english_words(raw_string):
@@ -223,7 +203,7 @@ def dump_json(output_file_path: str):
     word_list = []
     line_no = 0 
 
-    db_conn_string = _get_database_conn_string()
+    db_conn_string = get_postgres_conn_string()
     root_words = _get_root_words(db_conn_string)
     hindi_english_map = _get_hindi_english_map(db_conn_string)
     hindi_hindi_map = _get_hindi_hindi_map(db_conn_string)
@@ -286,7 +266,7 @@ def split_json_file(input_file_path: str):
 
 def set_word_level(file_name, skip_lines=0):
     line_no = 0
-    db_conn_string = _get_database_conn_string()
+    db_conn_string = get_postgres_conn_string()
 
     with psycopg.connect(db_conn_string) as conn:
         with open(file_name, 'r', encoding='utf-8') as file:
@@ -324,7 +304,7 @@ def dump_word_level(output_file_path: str, w_level:int = -1):
         query = "SELECT token, w_level FROM hindi_master ORDER BY w_level ASC;"
 
 
-    db_conn_string = _get_database_conn_string()
+    db_conn_string = get_postgres_conn_string()
     # Open file with UTF-8 to protect Devanagari script strings
     with open(output_file_path, mode="w", encoding="utf-8", newline="") as file:
         writer = csv.writer(file, delimiter=",")
@@ -362,7 +342,7 @@ def print_new_words(file_name, output_file=None):
     stored_tokens = []
     new_tokens = []
 
-    db_conn_string = _get_database_conn_string()
+    db_conn_string = get_postgres_conn_string()
     root_words = _get_root_words(db_conn_string)
 
     for hindi_uuid, token, level in root_words:
@@ -402,7 +382,7 @@ def store_in_database(file_name, skip_lines=0):
     line_no = 0
     stored_tokens = []
 
-    db_conn_string = _get_database_conn_string()
+    db_conn_string = get_postgres_conn_string()
     root_words = _get_root_words(db_conn_string)
     for hindi_uuid, token, level in root_words:
         stored_tokens.append(token)
