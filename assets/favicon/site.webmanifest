@@ -1,0 +1,26 @@
+{
+  "name": "XStudio - Hindi Games & Tools",
+  "short_name": "XStudio",
+  "icons": [
+    {
+      "src": "/assets/favicon/favicon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/favicon/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/favicon/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    }
+  ],
+  "theme_color": "#0f172a",
+  "background_color": "#0f172a",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait"
+}
