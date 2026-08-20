@@ -54,8 +54,8 @@
                 ⚡ SCORE: <span id="match-score-display" class="text-white">0</span>
             </span>
 
-            <!-- Monster Game Level Selector Button -->
-            <button onclick="showLevelSelectOverlay()" class="text-xs font-bold text-emerald-400 bg-slate-900 border border-emerald-500/30 px-3 py-1.5 rounded-lg hover:bg-emerald-950/40 transition cursor-pointer flex items-center gap-1.5">
+            <!-- Level Selector Trigger Button -->
+            <button onclick="showLevelSelectGui()" class="text-xs font-bold text-emerald-400 bg-slate-900 border border-emerald-500/30 px-3 py-1.5 rounded-lg hover:bg-emerald-950/40 transition cursor-pointer flex items-center gap-1.5">
                 LEVEL: <span id="current-level-display" class="text-white font-extrabold">1</span> ⚙️
             </button>
 
@@ -83,23 +83,38 @@
         <div id="match-victory-screen" class="hidden mt-6 p-5 bg-slate-950 rounded-xl border-2 border-yellow-400 text-center glow-yellow">
             <h2 class="text-2xl font-black text-yellow-400 mb-1 uppercase tracking-wider">🎉 BOARD CLEARED!</h2>
             <p class="text-slate-300 text-xs font-semibold mb-4">ALL TILES MATCHED</p>
-            <button onclick="fetchNextBatchAndStartRound()" class="bg-yellow-400 hover:bg-yellow-300 text-slate-950 font-black py-2.5 px-6 rounded-lg border-b-4 border-yellow-600 active:border-b-0 uppercase tracking-wider transition cursor-pointer">
+            <button onclick="fetchNextBatchAndPlay()" class="bg-yellow-400 hover:bg-yellow-300 text-slate-950 font-black py-2.5 px-6 rounded-lg border-b-4 border-yellow-600 active:border-b-0 uppercase tracking-wider transition cursor-pointer">
                 NEXT BATCH
             </button>
         </div>
     </div>
 
-    <!-- MONSTER GAME LEVEL SELECTION OVERLAY -->
-    <div id="level-select-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden">
-        <div class="bg-slate-900 border-2 border-cyan-500 rounded-2xl p-6 max-w-sm w-full text-center glow-cyan shadow-2xl">
-            <h2 class="text-2xl font-black text-cyan-400 mb-1 uppercase tracking-wide">SELECT LEVEL</h2>
-            <p class="text-slate-400 text-xs font-semibold mb-6">Choose your difficulty level</p>
+    <!-- Level Selector Overlay Box -->
+    <div id="level-select-box" class="fixed inset-0 bg-black/85 backdrop-blur-sm flex flex-col items-center justify-center text-center p-4 z-50 hidden">
+        <div class="bg-slate-900 border-4 border-cyan-500 rounded-3xl p-8 max-w-md w-full shadow-2xl">
+            <h1 class="text-3xl font-black text-cyan-400 mb-1 tracking-wider">SELECT LEVEL</h1>
+            <p class="text-sm text-slate-400 mb-6 font-semibold">Choose word difficulty level to launch</p>
             
-            <div id="level-buttons-grid" class="grid grid-cols-3 gap-3 mb-6">
-                <!-- Dynamically rendered level buttons matching Monster Game aesthetic -->
+            <div id="level-buttons" class="grid grid-cols-1 gap-3 mb-4">
+                <button data-source="level1" class="bg-slate-950 border-2 border-slate-700 hover:border-cyan-400 hover:bg-slate-800 p-3 rounded-xl transition flex justify-between items-center cursor-pointer text-left group">
+                    <span class="font-extrabold text-cyan-300 flex items-center gap-2">Level 1 <span class="completed-badge"></span></span>
+                    <span class="text-xs text-slate-400 group-hover:text-slate-200">Easy Peasy Words</span>
+                </button>
+                <button data-source="level2" class="bg-slate-950 border-2 border-slate-700 hover:border-cyan-400 hover:bg-slate-800 p-3 rounded-xl transition flex justify-between items-center cursor-pointer text-left group">
+                    <span class="font-extrabold text-cyan-300 flex items-center gap-2">Level 2 <span class="completed-badge"></span></span>
+                    <span class="text-xs text-slate-400 group-hover:text-slate-200">A little grunt</span>
+                </button>
+                <button data-source="level3" class="bg-slate-950 border-2 border-slate-700 hover:border-cyan-400 hover:bg-slate-800 p-3 rounded-xl transition flex justify-between items-center cursor-pointer text-left group">
+                    <span class="font-extrabold text-cyan-300 flex items-center gap-2">Level 3 <span class="completed-badge"></span></span>
+                    <span class="text-xs text-slate-400 group-hover:text-slate-200">Some Heavy Lifting</span>
+                </button>
+                <button data-source="level4" class="bg-slate-950 border-2 border-slate-700 hover:border-cyan-400 hover:bg-slate-800 p-3 rounded-xl transition flex justify-between items-center cursor-pointer text-left group">
+                    <span class="font-extrabold text-cyan-300 flex items-center gap-2">Level 4 <span class="completed-badge"></span></span>
+                    <span class="text-xs text-slate-400 group-hover:text-slate-200">Master class</span>
+                </button>
             </div>
 
-            <button onclick="hideLevelSelectOverlay()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 rounded-lg border border-slate-600 transition uppercase tracking-wider text-xs cursor-pointer">
+            <button onclick="hideLevelSelectGui()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 rounded-xl border border-slate-600 transition uppercase tracking-wider text-xs cursor-pointer">
                 CANCEL
             </button>
         </div>
@@ -121,7 +136,7 @@
                 <button onclick="restartCurrentLevel()" class="w-full bg-yellow-400 hover:bg-yellow-300 text-slate-950 font-black py-2.5 rounded-lg border-b-4 border-yellow-600 active:border-b-0 uppercase tracking-wider transition cursor-pointer">
                     RESTART LEVEL
                 </button>
-                <button onclick="showLevelSelectOverlayFromGameOver()" class="w-full bg-slate-800 hover:bg-slate-700 text-cyan-400 font-bold py-2.5 rounded-lg border border-slate-600 uppercase tracking-wider transition cursor-pointer">
+                <button onclick="selectLevelFromGameOver()" class="w-full bg-slate-800 hover:bg-slate-700 text-cyan-400 font-bold py-2.5 rounded-lg border border-slate-600 uppercase tracking-wider transition cursor-pointer">
                     SELECT LEVEL
                 </button>
             </div>
@@ -139,7 +154,6 @@
 
         const GAME_NAME = "TILE_MATCH";
         const BATCH_SIZE = 6;
-        const TOTAL_LEVELS = 5;
 
         // Guard clause: redirect if session_uuid isn't present
         if (!sessionUuid) {
@@ -158,6 +172,9 @@
         // --- Step 1: Pre-load local db/words.json for dictionary lookup ---
         async function initGame() {
             try {
+                // Attach HTML level button click handlers
+                setupLevelButtonListeners();
+
                 const response = await fetch('db/words.json');
                 const rawJson = await response.json();
                 
@@ -169,16 +186,73 @@
                 debugLog("Dictionary loaded. Total entries:", Object.keys(wordDictionary).length);
 
                 // Restore saved state score or start fresh
-                await loadSavedGameState();
+                await loadGameState();
                 // Fetch first batch of 6 words from backend
-                await fetchNextBatchAndStartRound();
+                await fetchNextBatchAndPlay();
             } catch (error) {
                 console.error("Failed to initialize game dictionary:", error);
             }
         }
 
-        // --- Step 2: API Integration & Monster Game State ---
-        async function loadSavedGameState() {
+        // --- Level Selector HTML Button Wiring ---
+        function setupLevelButtonListeners() {
+            const buttons = document.querySelectorAll('#level-buttons button[data-source]');
+            buttons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    const dataSource = btn.getAttribute('data-source');
+                    // Extracts integer from data-source string, e.g. "level1" -> 1
+                    const levelNum = parseInt(dataSource.replace('level', ''), 10);
+                    if (!isNaN(levelNum)) {
+                        selectLevel(levelNum);
+                    }
+                });
+            });
+        }
+
+        function updateLevelSelectGui() {
+            const buttons = document.querySelectorAll('#level-buttons button[data-source]');
+            buttons.forEach(btn => {
+                const dataSource = btn.getAttribute('data-source');
+                const levelNum = parseInt(dataSource.replace('level', ''), 10);
+                const badgeSpan = btn.querySelector('.completed-badge');
+                
+                // Active level highlighting
+                if (levelNum === gameActiveLevel) {
+                    btn.classList.add('border-cyan-400', 'bg-slate-800');
+                } else {
+                    btn.classList.remove('border-cyan-400', 'bg-slate-800');
+                }
+
+                // Completed level badge
+                if (badgeSpan) {
+                    if (gameCompletedLevels.includes(levelNum)) {
+                        badgeSpan.innerHTML = `<span class="text-[10px] bg-emerald-950 text-emerald-400 border border-emerald-500/50 px-1.5 py-0.5 rounded font-black">✓ DONE</span>`;
+                    } else {
+                        badgeSpan.innerHTML = ``;
+                    }
+                }
+            });
+        }
+
+        function showLevelSelectGui() {
+            updateLevelSelectGui();
+            document.getElementById('level-select-box').classList.remove('hidden');
+        }
+
+        function hideLevelSelectGui() {
+            document.getElementById('level-select-box').classList.add('hidden');
+        }
+
+        async function selectLevel(levelNum) {
+            gameActiveLevel = levelNum;
+            updateHeaderUI();
+            hideLevelSelectGui();
+            await saveGameState(gameActiveLevel, matchScore);
+            await fetchNextBatchAndPlay();
+        }
+
+        // --- Step 2: API Integration & Game State ---
+        async function loadGameState() {
             try {
                 const response = await fetch('/boa/v1/game/state/get', {
                     method: 'POST',
@@ -196,6 +270,8 @@
                         debugLog("loaded game state, score:", matchScore, "level:", gameActiveLevel, "completedLevels:", gameCompletedLevels);
                     }
                 } else {
+                    // @todo: fix - show select level GUI 
+                    // we need to save a state first
                     gameActiveLevel = 1;
                     matchScore = 0;
                     gameCompletedLevels = [];
@@ -229,8 +305,10 @@
             }
         }
 
-        async function fetchNextBatchAndStartRound() {
+        async function fetchNextBatchAndPlay() {
+
             try {
+
                 document.getElementById('match-victory-screen').classList.add('hidden');
                 document.getElementById('game-over-overlay').classList.add('hidden');
                 
@@ -257,8 +335,10 @@
                         gameCompletedLevels.push(gameActiveLevel);
                         await saveGameState(gameActiveLevel, matchScore, gameCompletedLevels);
                     }
-                    showGameOverOverlay();
+
+                    showGameOverGui();
                     return;
+
                 }
 
                 startMatchingGameRound();
@@ -268,71 +348,62 @@
             }
         }
 
-        // --- Monster Game Level Select Overlay UI & Rendering ---
-        function renderLevelSelectGrid() {
-            const grid = document.getElementById('level-buttons-grid');
-            grid.innerHTML = "";
+        // called from GAME OVER SCREEN and user wants to play the level again. 
+        // we need to reset game state so we can bring in new words 
+        // we need to update game state 
+        // - set current level and remove completed levels 
 
-            for (let i = 1; i <= TOTAL_LEVELS; i++) {
-                const isCurrent = i === gameActiveLevel;
-                const isCompleted = gameCompletedLevels.includes(i);
+        async function restartCurrentLevel() {
 
-                const btn = document.createElement('button');
-                btn.onclick = () => selectGameLevel(i);
+            try {
 
-                let baseClasses = "relative font-black py-3 rounded-xl transition flex flex-col items-center justify-center border-2 cursor-pointer ";
-                
-                if (isCurrent) {
-                    baseClasses += "bg-cyan-950 text-cyan-300 border-cyan-400 glow-cyan";
-                } else if (isCompleted) {
-                    baseClasses += "bg-emerald-950/60 text-emerald-400 border-emerald-500 hover:bg-emerald-900/80";
-                } else {
-                    baseClasses += "bg-slate-950 text-slate-300 border-slate-700 hover:border-cyan-500 hover:text-cyan-400";
+                document.getElementById('game-over-overlay').classList.add('hidden');
+                const res = await fetch('/boa/v1/game/level/reset', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        session_uuid: sessionUuid,
+                        game_name: "TILE_MATCH",
+                        game_level: gameActiveLevel
+                    })
+                });
+
+                if (!res.ok) {
+                    const errText = await res.text();
+                    throw new Error(`Game RESET failed (${res.status}): ${errText}`);
                 }
 
-                btn.className = baseClasses;
-                btn.innerHTML = `
-                    <span>LVL ${i}</span>
-                    ${isCompleted ? '<span class="text-[10px] text-emerald-400 font-extrabold mt-0.5">✓ CLEAR</span>' : ''}
-                `;
+                debugLog("Game LEVEL RESET is successful...");
+                // Reset score and strip out active level from completed list
+                matchScore = 0;
+                gameCompletedLevels = gameCompletedLevels.filter(lvl => lvl !== gameActiveLevel);
+                // Save state with updated score and filtered levels
+                await saveGameState(gameActiveLevel, matchScore, gameCompletedLevels);
+                debugLog("Game state saved with RESET finished levels...");
+                
+                // play again 
+                fetchNextBatchAndPlay();
 
-                grid.appendChild(btn);
+            }catch (err) {
+                console.error("Error doing GAME RESET :", err);
+                alert(`Failed to reset game level: ${err.message}`);
             }
+            
         }
 
-        function showLevelSelectOverlay() {
-            renderLevelSelectGrid();
-            document.getElementById('level-select-modal').classList.remove('hidden');
-        }
-
-        function hideLevelSelectOverlay() {
-            document.getElementById('level-select-modal').classList.add('hidden');
-        }
-
-        async function selectGameLevel(levelNum) {
-            gameActiveLevel = levelNum;
-            updateHeaderUI();
-            hideLevelSelectOverlay();
-            await saveGameState(gameActiveLevel, matchScore);
-            await fetchNextBatchAndStartRound();
-        }
 
         // --- Game Over Overlay Controls ---
-        function showGameOverOverlay() {
+        function showGameOverGui() {
             document.getElementById('game-over-level-num').innerText = gameActiveLevel;
             document.getElementById('game-over-final-score').innerText = matchScore;
             document.getElementById('game-over-overlay').classList.remove('hidden');
-            playDisappointingSound();
+            // playDisappointingSound();
         }
 
-        function restartCurrentLevel() {
-            document.getElementById('game-over-overlay').classList.add('hidden');
-            fetchNextBatchAndStartRound();
-        }
 
-        function showLevelSelectOverlayFromGameOver() {
+        function selectLevelFromGameOver() {
             document.getElementById('game-over-overlay').classList.add('hidden');
-            showLevelSelectOverlay();
+            showLevelSelectGui();
         }
 
         function updateHeaderUI() {
