@@ -102,28 +102,19 @@
             </div>
 
             <div class="flex flex-col gap-4">
-                 <!-- Safe Action: Change Level -->
-                <button onclick="openLevelSelect()" class="bg-slate-800 hover:bg-slate-700 text-cyan-400 font-extrabold text-sm py-3 px-6 rounded-xl border border-slate-700 cursor-pointer transition">
+                <button onclick="restartCurrentLevel()" class="w-full bg-yellow-400 hover:bg-yellow-300 text-slate-950 font-black py-2.5 rounded-lg border-b-4 border-yellow-600 active:border-b-0 uppercase tracking-wider transition cursor-pointer">
+                    RESTART LEVEL
+                </button>
+                
+                <button onclick="openLevelSelect()" class="w-full bg-slate-800 hover:bg-slate-700 text-cyan-400 font-bold py-2.5 rounded-lg border border-slate-600 uppercase tracking-wider transition cursor-pointer">
                     SELECT LEVEL
                 </button>
-
-                <!-- Danger Action Group -->
-                <div class="flex flex-col gap-1.5">
-                    <button onclick="restartLevelWithReset()" class="bg-rose-600 hover:bg-rose-700 active:scale-95 text-white font-extrabold text-sm py-3 px-6 rounded-xl shadow-lg border border-rose-500/50 cursor-pointer transition flex items-center justify-center gap-2">
-                        PLAY AGAIN
-                    </button>
-                    <!-- Warning Notice Subtext -->
-                    <p class="text-[12px] text-rose-400/90 font-medium leading-tight px-1">
-                        ⚠️ THIS WILL ERASE LEVEL DATA
-                    </p>
-                </div>
-                
-               
             </div>
+
         </div>
     </div>
 
-
+    
     <script>
 
 
@@ -254,9 +245,14 @@
 
         }
 
-        async function restartLevelWithReset() {
+         // called from GAME OVER SCREEN and user wants to play the level again. 
+        // we need to reset game state so we can bring in new words 
+        // we need to update game state 
+        // - set current level and remove completed levels 
 
-            debugLog("Resetting tracker words for session:", sessionUuid, "level:", gameActiveLevel);
+        async function restartCurrentLevel() {
+
+            debugLog("RESET GAME LEVEL, session:", sessionUuid, "level:", gameActiveLevel);
 
             try {
 
@@ -272,10 +268,17 @@
 
                 if (!res.ok) {
                     const errText = await res.text();
-                    throw new Error(`Reset failed (${res.status}): ${errText}`);
+                    throw new Error(`GAME RESET failed (${res.status}): ${errText}`);
                 }
 
-                debugLog("Progress reset successfully. Restarting level...");
+                debugLog("Game LEVEL RESET is successful...");
+
+                // strip out active level from completed list
+                gameCompletedLevels = gameCompletedLevels.filter(lvl => lvl !== gameActiveLevel);
+                // Save state with play-again level and filtered levels
+                await saveGameState(gameActiveLevel, gameCompletedLevels);
+                debugLog("saved GAME STATE with modified finished levels...");
+                
                 restartInvadersGame();
 
             } catch (err) {
