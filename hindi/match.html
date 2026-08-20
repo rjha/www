@@ -271,13 +271,8 @@
                         debugLog("loaded game state, score:", matchScore, "level:", gameActiveLevel, "completedLevels:", gameCompletedLevels);
                     }
                 } else {
-                    // @todo: fix - show select level GUI 
-                    // we need to save a state first
-                    gameActiveLevel = 1;
-                    matchScore = 0;
-                    gameCompletedLevels = [];
-                    updateHeaderUI();
-                    debugLog("set initial state, score:", matchScore, "level:", gameActiveLevel);
+                    // No game state 
+                    showLevelSelectGui();
                 }
             } catch (e) {
                 debugLog("No existing state found or failed to load state:", e);
