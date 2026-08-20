@@ -19,7 +19,7 @@
 
     <style>
         body { background-color: #020617 !important; color: #ffffff !important; }
-        .hidden-fallback { display: none !important; }
+        .hidden { display: none !important; }
         .ammo-slot { transition: all 0.15s ease; }
         .loaded-slot { transform: scale(1.05); }
 
@@ -67,30 +67,51 @@
                 <h1 class="text-3xl font-black text-cyan-400 mb-1 tracking-wider">SELECT LEVEL</h1>
                 <p class="text-sm text-slate-400 mb-6 font-semibold">Choose word difficulty level to launch</p>
                 
+                <!-- Level buttons-->
                 <div id="level-buttons" class="grid grid-cols-1 gap-3">
                     <button data-source="level1" class="bg-slate-950 border-2 border-slate-700 hover:border-cyan-400 hover:bg-slate-800 p-3 rounded-xl transition flex justify-between items-center cursor-pointer text-left group">
-                        <span class="font-extrabold text-cyan-300">Level 1</span>
+                        <span class="font-extrabold text-cyan-300 flex items-center gap-2">
+                            Level 1 
+                            <span class="completed-badge"></span>
+                        </span>
                         <span class="text-xs text-slate-400 group-hover:text-slate-200">Easy Peasy Words</span>
                     </button>
+
                     <button data-source="level2" class="bg-slate-950 border-2 border-slate-700 hover:border-cyan-400 hover:bg-slate-800 p-3 rounded-xl transition flex justify-between items-center cursor-pointer text-left group">
-                        <span class="font-extrabold text-cyan-300">Level 2</span>
+                        <span class="font-extrabold text-cyan-300 flex items-center gap-2">
+                            Level 2 
+                            <span class="completed-badge"></span>
+                        </span>
                         <span class="text-xs text-slate-400 group-hover:text-slate-200">A little grunt</span>
                     </button>
+
                     <button data-source="level3" class="bg-slate-950 border-2 border-slate-700 hover:border-cyan-400 hover:bg-slate-800 p-3 rounded-xl transition flex justify-between items-center cursor-pointer text-left group">
-                        <span class="font-extrabold text-cyan-300">Level 3</span>
+                        <span class="font-extrabold text-cyan-300 flex items-center gap-2">
+                            Level 3 
+                            <span class="completed-badge"></span>
+                        </span>
                         <span class="text-xs text-slate-400 group-hover:text-slate-200">Some Heavy Lifting</span>
                     </button>
+
                     <button data-source="level4" class="bg-slate-950 border-2 border-slate-700 hover:border-cyan-400 hover:bg-slate-800 p-3 rounded-xl transition flex justify-between items-center cursor-pointer text-left group">
-                        <span class="font-extrabold text-cyan-300">Level 4</span>
+                        <span class="font-extrabold text-cyan-300 flex items-center gap-2">
+                            Level 4 
+                            <span class="completed-badge"></span>
+                        </span>
                         <span class="text-xs text-slate-400 group-hover:text-slate-200">Master class</span>
                     </button>
+
+                    <button onclick="hideLevelSelectGui()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 rounded-xl border border-slate-600 transition uppercase tracking-wider text-xs cursor-pointer">
+                        CANCEL
+                    </button>
+                </div>
 
                 </div>
             </div>
         </div>
 
     <!-- GameOver / Level Complete Overlay Box -->
-    <div id="gameover-box" class="hidden-fallback fixed inset-0 bg-black/85 backdrop-blur-sm flex flex-col items-center justify-center text-center p-4 z-50">
+    <div id="gameover-box" class="hidden fixed inset-0 bg-black/85 backdrop-blur-sm flex flex-col items-center justify-center text-center p-4 z-50">
         <div class="bg-slate-900 border-4 border-yellow-500 rounded-3xl p-8 max-w-sm w-full shadow-2xl">
             <!-- Dynamic Level Title -->
             <h1 id="gameover-title" class="text-3xl font-black text-yellow-400 mb-1 tracking-wider uppercase">LEVEL OVER</h1>
@@ -106,7 +127,7 @@
                     RESTART LEVEL
                 </button>
                 
-                <button onclick="openLevelSelect()" class="w-full bg-slate-800 hover:bg-slate-700 text-cyan-400 font-bold py-2.5 rounded-lg border border-slate-600 uppercase tracking-wider transition cursor-pointer">
+                <button onclick="selectLevelFromGameOver()" class="w-full bg-slate-800 hover:bg-slate-700 text-cyan-400 font-bold py-2.5 rounded-lg border border-slate-600 uppercase tracking-wider transition cursor-pointer">
                     SELECT LEVEL
                 </button>
             </div>
@@ -156,7 +177,6 @@
             'level2': '2',
             'level3': '3',
             'level4': '4'
-            // @todo missing ALL 
         };
 
 
@@ -231,15 +251,15 @@
         let wordsDictionary = {};
 
         async function selectLevel(levelKey) {
+
             const rawVal = levelValues[levelKey] || "1";
             debugLog("game level selection changed to: ", rawVal);
             gameActiveLevel = parseInt(rawVal, 10);
 
+            // BUG: Save newly selected level state to API
+            // await saveGameState(gameActiveLevel, gameCompletedLevels);
             updateHudLevelBadge();
-            document.getElementById('level-select-box').classList.add('hidden-fallback');
-
-            // Save newly selected level state to API
-            await saveGameState(gameActiveLevel, gameCompletedLevels);
+            hideLevelSelectGui();
             // Resets score/pointers, hides gameover box, and starts batch
             restartInvadersGame();
 
@@ -302,6 +322,8 @@
                 if (res.ok) {
                     const data = await res.json();
                     if (data && data.game_data && data.game_data.currentLevel) {
+                        // BUG: if current Level is part of completed Levels then GAME OVER 
+                        // 
                         gameActiveLevel = parseInt(data.game_data.currentLevel, 10);
                        // Hydrate doneLevels from DB, default to empty array if omitted
                         gameCompletedLevels = Array.isArray(data.game_data.finishedLevels) ? data.game_data.finishedLevels : [];
@@ -342,7 +364,7 @@
             }
         }
 
-
+        
         async function initGame() {
             
             // load words.json dictionary
@@ -364,17 +386,16 @@
                 }
             }
 
+            
             // 2. Fetch saved state
             const hasSavedState = await loadGameState();
 
             if (hasSavedState) {
-                // Hide overlay and automatically start level from saved state
-                document.getElementById('level-select-box').classList.add('hidden-fallback');
+                hideLevelSelectGui();
                 updateHudLevelBadge();
                 fetchNextBatchAndPlay();
             } else {
-                // Show Level Select Overlay to force user choice
-                document.getElementById('level-select-box').classList.remove('hidden-fallback');
+                showLevelSelectGui();
             }
 
             if (!gameLoopRunning) {
@@ -392,10 +413,8 @@
 
             isFetchingBatch = true;
             
-            
             try {
 
-                // @todo get from API BASE URL 
                 const res = await fetch('/boa/v1/game/words/next', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
@@ -415,11 +434,21 @@
                 const data = await res.json(); 
                 const rawTokens = data.tokens;
 
-                // Handles empty array returned when a level is exhausted
+                // The next batch did not return any tokens 
+                // That means we have completed the level 
+                // Push current Level to completedLevels 
                 if (!Array.isArray(rawTokens) || rawTokens.length === 0) {
                     debugLog("Level complete: API returned zero new tokens");
                     isFetchingBatch = false;
                     batchWords = [];
+
+                    // add active game level to completed levels 
+                    if (!gameCompletedLevels.includes(gameActiveLevel)) {
+                        gameCompletedLevels.push(gameActiveLevel);
+                        await saveGameState(gameActiveLevel, gameCompletedLevels);
+                        debugLog(`Marked Level ${gameActiveLevel} as COMPLETED:`, gameCompletedLevels);
+                    }
+
                     showLevelOverMessage();
                     return;
                 }
@@ -449,8 +478,58 @@
             }
         }
 
-      
+        
+       function updateLevelSelectGui() {
 
+            const buttons = document.querySelectorAll('#level-buttons button[data-source]');
+            
+            buttons.forEach(btn => {
+                const dataSource = btn.getAttribute('data-source');
+                const levelNum = parseInt(dataSource.replace('level', ''), 10);
+                const badgeSpan = btn.querySelector('.completed-badge');
+
+                const isCompleted = gameCompletedLevels.includes(levelNum);
+                const isActive = levelNum === gameActiveLevel;
+
+                // Reset base border & background states
+                btn.classList.remove('border-cyan-400', 'border-emerald-500', 'border-slate-700', 'bg-slate-800', 'bg-emerald-950/30');
+
+                // 1. Highlight active & completed states on the button borders
+                if (isActive) {
+                    btn.classList.add('border-cyan-400', 'bg-slate-800');
+                } else if (isCompleted) {
+                    btn.classList.add('border-emerald-500', 'bg-emerald-950/30');
+                } else {
+                    btn.classList.add('border-slate-700');
+                }
+
+                // Render Big Tick Icon for completed levels
+                if (badgeSpan) {
+                    if (isCompleted) {
+                        badgeSpan.innerHTML = `
+                            <span class="flex items-center justify-center w-7 h-7 bg-emerald-500/20 text-emerald-400 border-2 border-emerald-400 rounded-full shadow-md">
+                                <svg class="w-4 h-4 stroke-current" fill="none" stroke-width="3.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"></path>
+                                </svg>
+                            </span>`;
+                    } else {
+                        badgeSpan.innerHTML = ``;
+                    }
+                }
+            });
+        }
+
+        function showLevelSelectGui() {
+            // Show Level Select Overlay to force user choice
+            updateLevelSelectGui();
+            document.getElementById('level-select-box').classList.remove('hidden');
+        }
+
+        function hideLevelSelectGui() {
+            document.getElementById('level-select-box').classList.add('hidden');
+        }
+
+        
         function showLevelOverMessage() {
             // 1. Clear silos
             const bay = document.getElementById('weapons-bay');
@@ -464,16 +543,16 @@
 
             // 3. Hydrate score and reveal overlay
             document.getElementById('final-score').innerText = totalScore;
-            document.getElementById('gameover-box').classList.remove('hidden-fallback');
-            
+            document.getElementById('gameover-box').classList.remove('hidden');
             debugLog("Level Over triggered for level:", gameActiveLevel);
+
         }
 
-        function openLevelSelect() {
-            document.getElementById('gameover-box').classList.add('hidden-fallback');
-            document.getElementById('level-select-box').classList.remove('hidden-fallback');
+        function selectLevelFromGameOver() {
+            document.getElementById('gameover-box').classList.add('hidden');
+            showLevelSelectGui();
+            
         }
-
 
         function updateHudLevelBadge() {
             const levelValElem = document.getElementById('current-level-val');
@@ -496,7 +575,7 @@
         // Event Listener: Change Level Button in HUD Header
         document.getElementById('btn-change-level').addEventListener('click', () => {
             // Re-open the level selection overlay box
-            document.getElementById('level-select-box').classList.remove('hidden-fallback');
+            showLevelSelectGui();
         });
 
         function restartInvadersGame() {
@@ -505,7 +584,7 @@
             loadedIndex = null;
             particleExplosions = [];
             document.getElementById('total-score-val').innerText = totalScore;
-            document.getElementById('gameover-box').classList.add('hidden-fallback');
+            document.getElementById('gameover-box').classList.add('hidden');
             fetchNextBatchAndPlay();
         }
 
