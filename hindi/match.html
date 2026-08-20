@@ -37,19 +37,28 @@
         .glow-white {
             box-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
         }
+        .glow-red {
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
+        }
     </style>
 </head>
 
 <body class="bg-slate-950 text-slate-100 min-h-screen flex flex-col items-center justify-center font-sans p-4 select-none">
 
     <!-- ARCADE DASHBOARD CONTAINER -->
-    <div id="matching-game-card" class="bg-slate-900 rounded-2xl shadow-2xl p-6 max-w-xl w-full text-center border-2 border-slate-700 glow-cyan">
+    <div id="matching-game-card" class="bg-slate-900 rounded-2xl shadow-2xl p-6 max-w-xl w-full text-center border-2 border-slate-700 glow-cyan relative">
         
         <!-- Top Bar Status Row -->
         <div class="flex justify-between items-center mb-6 bg-slate-950 p-3 rounded-xl border border-slate-800">
             <span class="text-base font-extrabold text-yellow-400 bg-slate-900 border border-yellow-500/30 px-3 py-1 rounded-lg flex items-center gap-1.5">
                 ⚡ SCORE: <span id="match-score-display" class="text-white">0</span>
             </span>
+
+            <!-- Monster Game Level Selector Button -->
+            <button onclick="showLevelSelectOverlay()" class="text-xs font-bold text-emerald-400 bg-slate-900 border border-emerald-500/30 px-3 py-1.5 rounded-lg hover:bg-emerald-950/40 transition cursor-pointer flex items-center gap-1.5">
+                LEVEL: <span id="current-level-display" class="text-white font-extrabold">1</span> ⚙️
+            </button>
+
             <span class="text-sm font-bold text-cyan-400 bg-slate-900 border border-cyan-500/30 px-3 py-1 rounded-lg">
                 PAIRS: <span id="match-pairs-count" class="text-white">0</span> / 6
             </span>
@@ -80,9 +89,46 @@
         </div>
     </div>
 
-    <script>
-        
+    <!-- MONSTER GAME LEVEL SELECTION OVERLAY -->
+    <div id="level-select-modal" class="fixed inset-0 bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-slate-900 border-2 border-cyan-500 rounded-2xl p-6 max-w-sm w-full text-center glow-cyan shadow-2xl">
+            <h2 class="text-2xl font-black text-cyan-400 mb-1 uppercase tracking-wide">SELECT LEVEL</h2>
+            <p class="text-slate-400 text-xs font-semibold mb-6">Choose your difficulty level</p>
+            
+            <div id="level-buttons-grid" class="grid grid-cols-3 gap-3 mb-6">
+                <!-- Dynamically rendered level buttons matching Monster Game aesthetic -->
+            </div>
 
+            <button onclick="hideLevelSelectOverlay()" class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 rounded-lg border border-slate-600 transition uppercase tracking-wider text-xs cursor-pointer">
+                CANCEL
+            </button>
+        </div>
+    </div>
+
+    <!-- GAME OVER / LEVEL CLEARED OVERLAY -->
+    <div id="game-over-overlay" class="fixed inset-0 bg-slate-950/90 backdrop-blur-md flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-slate-900 border-2 border-red-500 rounded-2xl p-6 max-w-sm w-full text-center glow-red shadow-2xl">
+            <div class="text-5xl mb-2">🏆</div>
+            <h2 class="text-2xl font-black text-red-500 mb-1 uppercase tracking-wider">LEVEL CLEARED!</h2>
+            <p class="text-slate-300 text-xs font-semibold mb-4">No more words available for Level <span id="game-over-level-num">1</span>.</p>
+            
+            <div class="bg-slate-950 border border-slate-800 rounded-xl p-3 mb-6">
+                <span class="text-slate-400 text-xs font-bold uppercase block mb-1">Final Score</span>
+                <span id="game-over-final-score" class="text-2xl font-black text-yellow-400">0</span>
+            </div>
+
+            <div class="flex flex-col gap-2">
+                <button onclick="restartCurrentLevel()" class="w-full bg-yellow-400 hover:bg-yellow-300 text-slate-950 font-black py-2.5 rounded-lg border-b-4 border-yellow-600 active:border-b-0 uppercase tracking-wider transition cursor-pointer">
+                    RESTART LEVEL
+                </button>
+                <button onclick="showLevelSelectOverlayFromGameOver()" class="w-full bg-slate-800 hover:bg-slate-700 text-cyan-400 font-bold py-2.5 rounded-lg border border-slate-600 uppercase tracking-wider transition cursor-pointer">
+                    SELECT LEVEL
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
         // Parse query params initialized by index.html
         const urlParams = new URLSearchParams(window.location.search);
         let sessionUuid = urlParams.get('session_uuid');
@@ -93,6 +139,7 @@
 
         const GAME_NAME = "TILE_MATCH";
         const BATCH_SIZE = 6;
+        const TOTAL_LEVELS = 5;
 
         // Guard clause: redirect if session_uuid isn't present
         if (!sessionUuid) {
@@ -106,6 +153,7 @@
         let pairsFound = 0;
         let audioCtx = null;
         let gameActiveLevel = 1;
+        let gameCompletedLevels = [];
 
         // --- Step 1: Pre-load local db/words.json for dictionary lookup ---
         async function initGame() {
@@ -129,7 +177,7 @@
             }
         }
 
-        // --- Step 2: API Integration ---
+        // --- Step 2: API Integration & Monster Game State ---
         async function loadSavedGameState() {
             try {
                 const response = await fetch('/boa/v1/game/state/get', {
@@ -139,26 +187,27 @@
                 });
                 if (response.ok) {
                     const data = await response.json();
-                    if (data && data.game_data && data.game_data.currentLevel) {
-                        gameActiveLevel = parseInt(data.game_data.currentLevel, 10);
-                        matchScore = data.game_data.matchScore;
-                        document.getElementById('match-score-display').innerText = matchScore;
-                        debugLog("loaded game from API state, score:", matchScore, "level:", gameActiveLevel);
+                    if (data && data.game_data) {
+                        gameActiveLevel = parseInt(data.game_data.currentLevel, 10) || 1;
+                        matchScore = data.game_data.matchScore || 0;
+                        gameCompletedLevels = Array.isArray(data.game_data.finishedLevels) ? data.game_data.finishedLevels : [];
+                        
+                        updateHeaderUI();
+                        debugLog("loaded game state, score:", matchScore, "level:", gameActiveLevel, "completedLevels:", gameCompletedLevels);
                     }
-
-                } else{
+                } else {
                     gameActiveLevel = 1;
                     matchScore = 0;
-                    document.getElementById('match-score-display').innerText = matchScore;
-                    debugLog("set game state, score:", matchScore, "level:", gameActiveLevel);
+                    gameCompletedLevels = [];
+                    updateHeaderUI();
+                    debugLog("set initial state, score:", matchScore, "level:", gameActiveLevel);
                 }
-
             } catch (e) {
                 debugLog("No existing state found or failed to load state:", e);
             }
         }
 
-        async function saveGameState(currentLevel, currentScore) {
+        async function saveGameState(currentLevel, currentScore, finishedLevels = gameCompletedLevels) {
             try {
                 await fetch('/boa/v1/game/state/save', {
                     method: 'POST',
@@ -167,15 +216,14 @@
                         session_uuid: sessionUuid,
                         game_name: GAME_NAME,
                         game_data: {
-                            currentLevel : currentLevel,
-                            matchScore: currentScore
+                            currentLevel: currentLevel,
+                            matchScore: currentScore,
+                            finishedLevels: finishedLevels
                         }
-                        
                     })
                 });
 
-                debugLog("Saved state successfully, score:", currentScore, "level:", currentLevel);
-
+                debugLog("Saved state successfully, score:", currentScore, "level:", currentLevel, "finishedLevels:", finishedLevels);
             } catch (e) {
                 console.error("Error saving game state:", e);
             }
@@ -184,6 +232,7 @@
         async function fetchNextBatchAndStartRound() {
             try {
                 document.getElementById('match-victory-screen').classList.add('hidden');
+                document.getElementById('game-over-overlay').classList.add('hidden');
                 
                 const response = await fetch('/boa/v1/game/words/next', {
                     method: 'POST',
@@ -192,9 +241,8 @@
                         session_uuid: sessionUuid,
                         game_name: GAME_NAME,
                         batch_size: BATCH_SIZE,
-                        game_level: 1
+                        game_level: gameActiveLevel
                     })
-
                 });
 
                 if (!response.ok) throw new Error("API word fetch failed");
@@ -202,6 +250,17 @@
                 const data = await response.json();
                 activeBatchTokens = data.tokens || [];  
                 debugLog("Fetched new word batch from API:", activeBatchTokens);
+
+                // Game Over handling when level batch runs out
+                if (activeBatchTokens.length === 0) {
+                    if (!gameCompletedLevels.includes(gameActiveLevel)) {
+                        gameCompletedLevels.push(gameActiveLevel);
+                        await saveGameState(gameActiveLevel, matchScore, gameCompletedLevels);
+                    }
+                    showGameOverOverlay();
+                    return;
+                }
+
                 startMatchingGameRound();
 
             } catch (error) {
@@ -209,14 +268,83 @@
             }
         }
 
+        // --- Monster Game Level Select Overlay UI & Rendering ---
+        function renderLevelSelectGrid() {
+            const grid = document.getElementById('level-buttons-grid');
+            grid.innerHTML = "";
+
+            for (let i = 1; i <= TOTAL_LEVELS; i++) {
+                const isCurrent = i === gameActiveLevel;
+                const isCompleted = gameCompletedLevels.includes(i);
+
+                const btn = document.createElement('button');
+                btn.onclick = () => selectGameLevel(i);
+
+                let baseClasses = "relative font-black py-3 rounded-xl transition flex flex-col items-center justify-center border-2 cursor-pointer ";
+                
+                if (isCurrent) {
+                    baseClasses += "bg-cyan-950 text-cyan-300 border-cyan-400 glow-cyan";
+                } else if (isCompleted) {
+                    baseClasses += "bg-emerald-950/60 text-emerald-400 border-emerald-500 hover:bg-emerald-900/80";
+                } else {
+                    baseClasses += "bg-slate-950 text-slate-300 border-slate-700 hover:border-cyan-500 hover:text-cyan-400";
+                }
+
+                btn.className = baseClasses;
+                btn.innerHTML = `
+                    <span>LVL ${i}</span>
+                    ${isCompleted ? '<span class="text-[10px] text-emerald-400 font-extrabold mt-0.5">✓ CLEAR</span>' : ''}
+                `;
+
+                grid.appendChild(btn);
+            }
+        }
+
+        function showLevelSelectOverlay() {
+            renderLevelSelectGrid();
+            document.getElementById('level-select-modal').classList.remove('hidden');
+        }
+
+        function hideLevelSelectOverlay() {
+            document.getElementById('level-select-modal').classList.add('hidden');
+        }
+
+        async function selectGameLevel(levelNum) {
+            gameActiveLevel = levelNum;
+            updateHeaderUI();
+            hideLevelSelectOverlay();
+            await saveGameState(gameActiveLevel, matchScore);
+            await fetchNextBatchAndStartRound();
+        }
+
+        // --- Game Over Overlay Controls ---
+        function showGameOverOverlay() {
+            document.getElementById('game-over-level-num').innerText = gameActiveLevel;
+            document.getElementById('game-over-final-score').innerText = matchScore;
+            document.getElementById('game-over-overlay').classList.remove('hidden');
+            playDisappointingSound();
+        }
+
+        function restartCurrentLevel() {
+            document.getElementById('game-over-overlay').classList.add('hidden');
+            fetchNextBatchAndStartRound();
+        }
+
+        function showLevelSelectOverlayFromGameOver() {
+            document.getElementById('game-over-overlay').classList.add('hidden');
+            showLevelSelectOverlay();
+        }
+
+        function updateHeaderUI() {
+            document.getElementById('match-score-display').innerText = matchScore;
+            document.getElementById('current-level-display').innerText = gameActiveLevel;
+        }
 
         // --- Audio FX ---
         function initAudio() {
             if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         }
 
-       
-        // change audio Fx 
         function playTileClickSound() {
             initAudio();
             if (!audioCtx) return;
@@ -283,7 +411,7 @@
             pairsFound = 0;
             selectedCards = [];
 
-            document.getElementById('match-score-display').innerText = matchScore;
+            updateHeaderUI();
             document.getElementById('match-pairs-count').innerText = pairsFound;
 
             const cardsArray = [];
@@ -330,9 +458,6 @@
                     matchScore += 5;
                     pairsFound++;
                     playClapSound();
-                    
-                    // Log positive result to backend tracker
-                    // recordWordTracker(card1.data.token, true);
 
                     const hindiCard = card1.data.type === 'hindi' ? card1 : card2;
                     const englishCard = card1.data.type === 'english' ? card1 : card2;
@@ -342,11 +467,10 @@
                     hindiCard.element.innerText = `${hindiCard.data.text} = ${englishCard.data.text}`;
                     hindiCard.element.className = "game-btn bg-slate-900 text-emerald-400 border-2 border-emerald-500 rounded-xl p-3 font-black text-lg text-center shadow matched col-span-2 flex items-center justify-center min-h-[70px]";
 
-                    document.getElementById('match-score-display').innerText = matchScore;
+                    updateHeaderUI();
                     document.getElementById('match-pairs-count').innerText = pairsFound;
 
-                    if (pairsFound === BATCH_SIZE) {
-                        // hard coded game level 
+                    if (pairsFound === activeBatchTokens.length) {
                         saveGameState(gameActiveLevel, matchScore);
                         document.getElementById('match-victory-screen').classList.remove('hidden');
                     }
@@ -354,14 +478,9 @@
                     selectedCards = [];
 
                 } else {
-
                     // Match Incorrect
                     matchScore -= 2;
                     playDisappointingSound();
-
-                    // Log negative result for both attempted words
-                    // recordWordTracker(card1.data.token, false);
-                    // recordWordTracker(card2.data.token, false);
 
                     selectedCards.forEach(card => {
                         card.element.className = "game-btn bg-rose-950 text-rose-400 border-2 border-rose-600 rounded-xl p-3 font-bold text-center shadow flex items-center justify-center min-h-[70px]";
@@ -375,7 +494,7 @@
                     }, 800);
                 }
 
-                document.getElementById('match-score-display').innerText = matchScore;
+                updateHeaderUI();
             }
         }
 
