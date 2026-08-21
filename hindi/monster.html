@@ -138,7 +138,6 @@
     
     <script>
 
-
         const BATCH_SIZE = 20;
         // Parse query params initialized by index.html
         const urlParams = new URLSearchParams(window.location.search);
@@ -153,8 +152,11 @@
             window.location.href = "/hindi/index.html";
         }
 
-        let gameActiveLevel = 1;
-        let gameCompletedLevels = [];
+        // ==============================================
+        // STATE MACHINE VARIABLES 
+        // ===============================================
+
+        let wordsDictionary = {};
         let batchWords = [];
         let wordPointer = 0;
         let totalScore = 0;
@@ -163,6 +165,12 @@
         let choiceOptions = [];
         let loadedIndex = null;
         let isFetchingBatch = false;
+        let gameCompletedLevels = [];
+        let gameSavedState = null;
+        let gameStateInDatabase = false;
+        let gameSelectedLevel = 0;
+        let gameCurrentLevel = 0;
+
 
         const levelNames = {
             'level1': 'LEVEL 1',
@@ -179,7 +187,9 @@
             'level4': '4'
         };
 
-
+        // ==============================================
+        // GUI VARIABLES 
+        // ===============================================
         const canvas = document.getElementById('spaceCanvas');
         const ctx = canvas.getContext('2d');
         
@@ -202,15 +212,7 @@
             alpha: Math.random() * 0.7 + 0.3
         }));
 
-        function triggerScreenShake(duration = 10) {
-            screenShakeTimer = duration;
-        }
-
-        function triggerDeflectionFlash(duration = 12) {
-            deflectionFlashTimer = duration;
-        }
         
-
         // --- Sound Engine ---
         const sfx = {
             clap_01: new Audio('sfx/clap_01.mp3'),
@@ -225,54 +227,33 @@
         sfx.hit_01.volume = 0.40;
         sfx.miss_01.volume = 0.40;
 
-        // Helper function for zero-lag overlapping SFX playback
-        function playSfx(key) {
-            if (sfx[key]) {
-                const sound = sfx[key].cloneNode(true);
-                sound.volume = sfx[key].volume;
-                sound.play().catch(err => {
-                    // Catches potential browser autoplay restriction policy blocks
-                    console.warn(`Audio playback pending user interaction: ${key}`);
-                });
-            }
-        }
-        
-        function playClapSound() {
-            playSfx('hit_01');
-        }
-
-        function playDisappointingSound() {
-            playSfx('miss_01');
-        }
-        
-        // Declare the global empty Image container registry object
         const alienImg = new Image();
         let gameLoopRunning = false;
-        let wordsDictionary = {};
+        
+
+        // ==============================================
+        // DATA + STATE CHANGE  METHODS 
+        // ==============================================
 
         async function selectLevel(levelKey) {
 
-            const rawVal = levelValues[levelKey] || "1";
-            debugLog("game level selection changed to: ", rawVal);
-            gameActiveLevel = parseInt(rawVal, 10);
-
-            // BUG: Save newly selected level state to API
-            // await saveGameState(gameActiveLevel, gameCompletedLevels);
-            updateHudLevelBadge();
+            const rawVal = levelValues[levelKey];
+            gameSelectedLevel = parseInt(rawVal, 10);
+            debugLog("SELECT LEVEL, USER CHOICE: ", gameSelectedLevel);
             hideLevelSelectGui();
             // Resets score/pointers, hides gameover box, and starts batch
-            restartInvadersGame();
-
+            await resetPageCounters();
+            await fetchNextBatchAndPlay(); 
         }
 
-         // called from GAME OVER SCREEN and user wants to play the level again. 
-        // we need to reset game state so we can bring in new words 
-        // we need to update game state 
-        // - set current level and remove completed levels 
+        /**
+         * called from GAME OVER SCREEN and user wants to play the level again. 
+         * we need to reset word tracker and set current Level
+         */
 
         async function restartCurrentLevel() {
 
-            debugLog("RESET GAME LEVEL, session:", sessionUuid, "level:", gameActiveLevel);
+            debugLog("RESET GAME LEVEL, session:", sessionUuid, "level:", gameCurrentLevel);
 
             try {
 
@@ -282,7 +263,7 @@
                     body: JSON.stringify({
                         session_uuid: sessionUuid,
                         game_name: "MONSTER",
-                        game_level: gameActiveLevel
+                        game_level: gameCurrentLevel
                     })
                 });
 
@@ -292,14 +273,9 @@
                 }
 
                 debugLog("Game LEVEL RESET is successful...");
-
-                // strip out active level from completed list
-                gameCompletedLevels = gameCompletedLevels.filter(lvl => lvl !== gameActiveLevel);
-                // Save state with play-again level and filtered levels
-                await saveGameState(gameActiveLevel, gameCompletedLevels);
-                debugLog("saved GAME STATE with modified finished levels...");
-                
-                restartInvadersGame();
+                gameSelectedLevel = gameCurrentLevel;
+                await resetPageCounters();
+                await fetchNextBatchAndPlay();
 
             } catch (err) {
                 console.error("Error resetting level progress:", err);
@@ -309,6 +285,7 @@
 
 
         async function loadGameState() {
+
             try {
                 const res = await fetch('/boa/v1/game/state/get', {
                     method: 'POST',
@@ -322,20 +299,23 @@
                 if (res.ok) {
                     const data = await res.json();
                     if (data && data.game_data && data.game_data.currentLevel) {
-                        // BUG: if current Level is part of completed Levels then GAME OVER 
-                        // 
-                        gameActiveLevel = parseInt(data.game_data.currentLevel, 10);
-                       // Hydrate doneLevels from DB, default to empty array if omitted
-                        gameCompletedLevels = Array.isArray(data.game_data.finishedLevels) ? data.game_data.finishedLevels : [];
-                        debugLog(`Load Game State: level=${gameActiveLevel}, completedLevels=`, gameCompletedLevels);
-                        return true;
+                        gameSavedState = {
+                            lastPlayedLevel: parseInt(data.game_data.currentLevel, 10),
+                            finishedLevels: Array.isArray(data.game_data.finishedLevels) ? data.game_data.finishedLevels : []
+                        };
+
+                        debugLog("Load Game State:", gameSavedState);
+                        gameStateInDatabase = true; 
+                        return;
                     }
                 }
             } catch (err) {
                 console.error("Failed to load game state:", err);
             }
 
-            return false; // No valid saved state found
+            debugLog("No Game State found in Database");
+            gameStateInDatabase = false; 
+            return; // No valid saved state found
         }
 
         async function saveGameState(currentLevel, finishedLevels = gameCompletedLevels) {
@@ -355,18 +335,17 @@
                 });
 
                 if (!res.ok) {
-                    console.error(`Failed to save game state. Status: ${res.status}`);
+                    console.error("Failed to save game state. Status:", res.status);
                 } else {
-                    debugLog(`Game state saved: currentLevel=${currentLevel}`);
+                    debugLog("Game state saved: ", currentLevel, finishedLevels);
                 }
             } catch (err) {
                 console.error("Error calling /state/save API:", err);
             }
         }
 
-        
-        async function initGame() {
-            
+        async function loadDictionary() {
+
             // load words.json dictionary
             if (Object.keys(wordsDictionary).length === 0) {
                 try {
@@ -386,26 +365,76 @@
                 }
             }
 
-            
-            // 2. Fetch saved state
-            const hasSavedState = await loadGameState();
+        }
 
-            if (hasSavedState) {
-                hideLevelSelectGui();
-                updateHudLevelBadge();
-                fetchNextBatchAndPlay();
-            } else {
-                showLevelSelectGui();
-            }
-
+        async function initGame() {
+            // 1. Start game loop immediately 
+            // so canvas context is active
             if (!gameLoopRunning) {
                 gameLoopRunning = true;
                 requestAnimationFrame(gameLoop);
             }
+            
+            // 2. Load assets & state
+            await loadDictionary();
+            await loadGameState();
+
+            // 3. Trigger initial level startup
+            if (gameStateInDatabase) {
+                await resetPageCounters();
+                await fetchNextBatchAndPlay();
+            } else {
+                gameSavedState = null;
+                showLevelSelectGui();
+            }
+
         }
+
+        async function resetPageCounters() {
+
+            totalScore = 0;
+            activeRocket = null;
+            loadedIndex = null;
+            particleExplosions = [];
+            
+            // Level Resolution
+            if (gameSelectedLevel > 0) {
+                // Priority 1: Direct user selection from UI
+                // strip out active level from completed list
+                gameCurrentLevel = gameSelectedLevel;
+                gameCompletedLevels = gameCompletedLevels.filter(lvl => lvl !== gameCurrentLevel);
+                await saveGameState(gameCurrentLevel, gameCompletedLevels);
+
+            } else if (gameSavedState && gameSavedState.lastPlayedLevel > 0) {
+                // Priority 2: Last played level loaded from DB
+                gameCurrentLevel = gameSavedState.lastPlayedLevel;
+            } else {
+                // Error Guard: No valid level. show level selection GUI.
+                console.error("STATE ERROR: Unable to find a level...");
+                showLevelSelectGui();
+                return;
+            }
+
+            // Game finished levels 
+            if (gameSavedState && Array.isArray(gameSavedState.finishedLevels)) {
+                gameCompletedLevels = [...gameSavedState.finishedLevels];
+            } else {
+                gameCompletedLevels = [];
+            }
+
+            debugLog("RESET PAGE counters: current level: ", gameCurrentLevel, "completed:", gameCompletedLevels);
+            
+            // --- UI & State Sync ---
+            document.getElementById('total-score-val').innerText = totalScore;
+            document.getElementById('gameover-box').classList.add('hidden');
+            setLevelInTopBar();
+
+        }
+
 
         async function fetchNextBatchAndPlay() {
 
+            // @todo remove after tests 
             if (isFetchingBatch) {
                 console.warn("Fetch already in progress. Skipping duplicate request.");
                 return;
@@ -421,7 +450,7 @@
                     body: JSON.stringify({
                         session_uuid: sessionUuid,
                         game_name: "MONSTER",
-                        game_level: gameActiveLevel,
+                        game_level: gameCurrentLevel,
                         batch_size: BATCH_SIZE
                     })
                 });
@@ -443,10 +472,10 @@
                     batchWords = [];
 
                     // add active game level to completed levels 
-                    if (!gameCompletedLevels.includes(gameActiveLevel)) {
-                        gameCompletedLevels.push(gameActiveLevel);
-                        await saveGameState(gameActiveLevel, gameCompletedLevels);
-                        debugLog(`Marked Level ${gameActiveLevel} as COMPLETED:`, gameCompletedLevels);
+                    if (!gameCompletedLevels.includes(gameCurrentLevel)) {
+                        gameCompletedLevels.push(gameCurrentLevel);
+                        await saveGameState(gameCurrentLevel, gameCompletedLevels);
+                        debugLog(`Marked Level ${gameCurrentLevel} as COMPLETED:`, gameCompletedLevels);
                     }
 
                     showLevelOverMessage();
@@ -460,7 +489,7 @@
                 batchWords = data.tokens.map(token => {
                     return wordsDictionary[token] || {
                         root: token,
-                        level: gameActiveLevel,
+                        level: gameCurrentLevel,
                         root_english: ["Translation N/A"],
                         root_synonyms: []
                     };
@@ -478,8 +507,11 @@
             }
         }
 
+        // ==============================================
+        // GUI UPDATE + EVENTS
+        // ==============================================
         
-       function updateLevelSelectGui() {
+        function updateLevelSelectGui() {
 
             const buttons = document.querySelectorAll('#level-buttons button[data-source]');
             
@@ -489,7 +521,7 @@
                 const badgeSpan = btn.querySelector('.completed-badge');
 
                 const isCompleted = gameCompletedLevels.includes(levelNum);
-                const isActive = levelNum === gameActiveLevel;
+                const isActive = levelNum === gameCurrentLevel;
 
                 // Reset base border & background states
                 btn.classList.remove('border-cyan-400', 'border-emerald-500', 'border-slate-700', 'bg-slate-800', 'bg-emerald-950/30');
@@ -529,7 +561,7 @@
             document.getElementById('level-select-box').classList.add('hidden');
         }
 
-        
+
         function showLevelOverMessage() {
             // 1. Clear silos
             const bay = document.getElementById('weapons-bay');
@@ -538,13 +570,13 @@
             // 2. Set dynamic title (e.g., "LEVEL 3 OVER")
             const titleElem = document.getElementById('gameover-title');
             if (titleElem) {
-                titleElem.innerText = `LEVEL ${gameActiveLevel} OVER`;
+                titleElem.innerText = `LEVEL ${gameCurrentLevel} OVER`;
             }
 
             // 3. Hydrate score and reveal overlay
             document.getElementById('final-score').innerText = totalScore;
             document.getElementById('gameover-box').classList.remove('hidden');
-            debugLog("Level Over triggered for level:", gameActiveLevel);
+            debugLog("Level Over triggered for level:", gameCurrentLevel);
 
         }
 
@@ -554,11 +586,11 @@
             
         }
 
-        function updateHudLevelBadge() {
+        function setLevelInTopBar() {
             const levelValElem = document.getElementById('current-level-val');
             if (levelValElem) {
-                const foundKey = Object.keys(levelValues).find(k => parseInt(levelValues[k], 10) === gameActiveLevel);
-                levelValElem.innerText = levelNames[foundKey] || `LEVEL ${gameActiveLevel}`;
+                const foundKey = Object.keys(levelValues).find(k => parseInt(levelValues[k], 10) === gameCurrentLevel);
+                levelValElem.innerText = levelNames[foundKey] || `LEVEL ${gameCurrentLevel}`;
             }
 
         }
@@ -578,16 +610,9 @@
             showLevelSelectGui();
         });
 
-        function restartInvadersGame() {
-            totalScore = 0;
-            activeRocket = null;
-            loadedIndex = null;
-            particleExplosions = [];
-            document.getElementById('total-score-val').innerText = totalScore;
-            document.getElementById('gameover-box').classList.add('hidden');
-            fetchNextBatchAndPlay();
-        }
-
+        // ==============================================
+        // GAME GRAPHICS + PHYSICS 
+        // ==============================================
         
         function displayNextWord() {
 
@@ -703,6 +728,35 @@
             requestAnimationFrame(gameLoop);
         }
 
+        // Helper function for zero-lag overlapping SFX playback
+        function playSfx(key) {
+            if (sfx[key]) {
+                const sound = sfx[key].cloneNode(true);
+                sound.volume = sfx[key].volume;
+                sound.play().catch(err => {
+                    // Catches potential browser autoplay restriction policy blocks
+                    console.warn(`Audio playback pending user interaction: ${key}`);
+                });
+            }
+        }
+        
+        function playClapSound() {
+            playSfx('hit_01');
+        }
+
+        function playDisappointingSound() {
+            playSfx('miss_01');
+        }
+        
+        function triggerScreenShake(duration = 10) {
+            screenShakeTimer = duration;
+        }
+
+        function triggerDeflectionFlash(duration = 12) {
+            deflectionFlashTimer = duration;
+        }
+        
+    
         function createExplosion(x, y, color) {
             for (let i = 0; i < 20; i++) {
                 particleExplosions.push({
@@ -788,6 +842,9 @@
                                 wordPointer += 1 ;
                                 
                                 if (wordPointer >= batchWords.length) {
+                                    // @todo fix for word tracking 
+                                    // The call to insert into word_tracker should be issued 
+                                    // Here. We have played these words now! 
                                     fetchNextBatchAndPlay();
                                 } else {
                                     displayNextWord();
