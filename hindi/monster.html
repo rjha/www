@@ -165,10 +165,12 @@
         let choiceOptions = [];
         let loadedIndex = null;
         let isFetchingBatch = false;
+        // completed_level_assignment #1
         let gameCompletedLevels = [];
-        let gameSavedState = null;
         let gameStateInDatabase = false;
+        // select_level_assignment #1
         let gameSelectedLevel = 0;
+        // current_level_assignment #1
         let gameCurrentLevel = 0;
 
 
@@ -238,10 +240,10 @@
         async function selectLevel(levelKey) {
 
             const rawVal = levelValues[levelKey];
+            // select_level_assignment #2
             gameSelectedLevel = parseInt(rawVal, 10);
             debugLog("SELECT LEVEL CHOICE: ", gameSelectedLevel);
             hideLevelSelectGui();
-            // Resets score/pointers, hides gameover box, and starts batch
             await resetPageCounters();
             await fetchNextBatchAndPlay(); 
         }
@@ -273,6 +275,7 @@
                 }
 
                 debugLog("Game LEVEL RESET is success");
+                // select_level_assignment #3
                 gameSelectedLevel = gameCurrentLevel;
                 await resetPageCounters();
                 await fetchNextBatchAndPlay();
@@ -299,17 +302,21 @@
                 if (res.ok) {
                     const data = await res.json();
                     if (data && data.game_data && data.game_data.currentLevel) {
-                        gameSavedState = {
-                            lastPlayedLevel: parseInt(data.game_data.currentLevel, 10),
-                            finishedLevels: Array.isArray(data.game_data.finishedLevels) ? data.game_data.finishedLevels : []
-                        };
 
-                        gameSelectedLevel = gameSavedState.lastPlayedLevel;
-                        debugLog(
-                            "Game State from DB -> currentLevel:", gameSavedState.lastPlayedLevel, 
-                            "finishedLevels:", JSON.stringify(gameSavedState.finishedLevels)
-                        );
+                        // select level assignment #4
+                        gameSelectedLevel = parseInt(data.game_data.currentLevel, 10);
+                        // create a fresh copy in memory 
+                        // completed_level_assigment #2
+                        gameCompletedLevels = Array.isArray(data.game_data.finishedLevels) 
+                            ? [...data.game_data.finishedLevels] 
+                            : [];
+
                         gameStateInDatabase = true; 
+                        debugLog(
+                            "Game State from DB -> currentLevel:", gameSelectedLevel, 
+                            "finishedLevels:", JSON.stringify(gameCompletedLevels)
+                        );
+
                         return;
                     }
                 }
@@ -319,10 +326,15 @@
 
             debugLog("No Game State found in Database");
             gameStateInDatabase = false; 
-            return; // No valid saved state found
+            return; 
         }
 
-        async function saveGameState(currentLevel, finishedLevels = gameCompletedLevels) {
+        async function saveGameState(currentLevel, finishedLevels) {
+
+            if (!Array.isArray(finishedLevels)) {
+                console.error("STATE ERROR: finishedLevels should be an array");
+                return;
+            }
 
             try {
                 const res = await fetch('/boa/v1/game/state/save', {
@@ -382,8 +394,7 @@
                 gameLoopRunning = true;
                 requestAnimationFrame(gameLoop);
             }
-            
-            hideLevelSelectGui();
+
             // 2. Load assets & state
             await loadDictionary();
             await loadGameState();
@@ -392,8 +403,8 @@
             if (gameStateInDatabase) {
                 await resetPageCounters();
                 await fetchNextBatchAndPlay();
+                hideLevelSelectGui();
             } else {
-                gameSavedState = null;
                 showLevelSelectGui();
             }
 
@@ -406,36 +417,24 @@
             loadedIndex = null;
             particleExplosions = [];
             
-
-            debugLog("RESET PAGE: game selected Level: ", gameSelectedLevel);
-            // Level Resolution
-            if (gameSelectedLevel > 0) {
-                // Priority 1: Direct user selection from UI
-                // strip out active level from completed list
-                gameCurrentLevel = gameSelectedLevel;
-                debugLog(
-                    "TRY Removing: ", gameCurrentLevel, 
-                    "from finishedLevels:", JSON.stringify(gameCompletedLevels)
-                );
-                gameCompletedLevels = gameCompletedLevels.filter(lvl => lvl !== gameCurrentLevel);
-                await saveGameState(gameCurrentLevel, gameCompletedLevels);
-
-            } else if (gameSavedState && gameSavedState.lastPlayedLevel > 0) {
-                // Priority 2: Last played level loaded from DB
-                gameCurrentLevel = gameSavedState.lastPlayedLevel;
-            } else {
-                // Error Guard: No valid level. show level selection GUI.
+            if(gameSelectedLevel == 0) {
                 console.error("STATE ERROR: Unable to find GAME LEVEL");
-                showLevelSelectGui();
+                alert("GAME LEVEL NOT FOUND: ABORT");
                 return;
             }
+            
+            debugLog("RESET PAGE: game selected Level: ", gameSelectedLevel);
+            // current_level_assignment #2
+            gameCurrentLevel = gameSelectedLevel;
+            debugLog(
+                "TRY Removing: ", gameCurrentLevel, 
+                "from finishedLevels:", JSON.stringify(gameCompletedLevels)
+            );
 
-             // Game finished levels 
-            if (gameSavedState && Array.isArray(gameSavedState.finishedLevels)) {
-                gameCompletedLevels = [...gameSavedState.finishedLevels];
-            } else {
-                gameCompletedLevels = [];
-            }
+            const updatedGameLevels = gameCompletedLevels.filter(lvl => lvl !== gameCurrentLevel);
+            await saveGameState(gameCurrentLevel, updatedGameLevels);
+            // completed_level_assigment #3
+            gameCompletedLevels = updatedGameLevels;
 
             // --- UI & State Sync ---
             document.getElementById('total-score-val').innerText = totalScore;
@@ -487,8 +486,11 @@
 
                     // add active game level to completed levels 
                     if (!gameCompletedLevels.includes(gameCurrentLevel)) {
-                        gameCompletedLevels.push(gameCurrentLevel);
-                        await saveGameState(gameCurrentLevel, gameCompletedLevels);
+                        const nextCompletedLevels = [...gameCompletedLevels, gameCurrentLevel];
+                        await saveGameState(gameCurrentLevel, nextCompletedLevels);
+                        // completed_level_assignment #4
+                        gameCompletedLevels = nextCompletedLevels;
+
                         debugLog(
                             "Mark Level:", gameCurrentLevel, 
                             "as complete | Finished Levels:", JSON.stringify(gameCompletedLevels)
