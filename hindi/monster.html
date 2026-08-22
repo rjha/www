@@ -259,7 +259,7 @@
 
             try {
 
-                const res = await fetch('/boa/v1/game/level/reset', {
+                const response = await fetch('/boa/v1/game/level/reset', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -269,9 +269,11 @@
                     })
                 });
 
-                if (!res.ok) {
-                    const errText = await res.text();
-                    throw new Error(`GAME RESET failed (${res.status}): ${errText}`);
+                const res = await response.json();
+                if (res.status !== 'success') {
+                    console.error('API Error:', res.message);
+                    alert(`Error: ${res.message}`);
+                    return;
                 }
 
                 debugLog("Game LEVEL RESET is success");
@@ -290,7 +292,8 @@
         async function loadGameState() {
 
             try {
-                const res = await fetch('/boa/v1/game/state/get', {
+
+                const response = await fetch('/boa/v1/game/state/get', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -298,28 +301,34 @@
                         game_name: "MONSTER"
                     })
                 });
-
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data && data.game_data && data.game_data.currentLevel) {
-
-                        // select level assignment #4
-                        gameSelectedLevel = parseInt(data.game_data.currentLevel, 10);
-                        // create a fresh copy in memory 
-                        // completed_level_assigment #2
-                        gameCompletedLevels = Array.isArray(data.game_data.finishedLevels) 
-                            ? [...data.game_data.finishedLevels] 
-                            : [];
-
-                        gameStateInDatabase = true; 
-                        debugLog(
-                            "Game State from DB -> currentLevel:", gameSelectedLevel, 
-                            "finishedLevels:", JSON.stringify(gameCompletedLevels)
-                        );
-
-                        return;
-                    }
+                
+                const res = await response.json();
+                if (res.status !== 'success') {
+                    console.error('API Error:', res.message);
+                    alert(`Error: ${res.message}`);
+                    return;
                 }
+
+                const data = res.data;
+                if (data && data.game_data && data.game_data.currentLevel) {
+
+                    // select level assignment #4
+                    gameSelectedLevel = parseInt(data.game_data.currentLevel, 10);
+                    // create a fresh copy in memory 
+                    // completed_level_assigment #2
+                    gameCompletedLevels = Array.isArray(data.game_data.finishedLevels) 
+                        ? [...data.game_data.finishedLevels] 
+                        : [];
+
+                    gameStateInDatabase = true; 
+                    debugLog(
+                        "Game State from DB -> currentLevel:", gameSelectedLevel, 
+                        "finishedLevels:", JSON.stringify(gameCompletedLevels)
+                    );
+
+                    return;
+                }
+                
             } catch (err) {
                 console.error("Failed to load game state:", err);
             }
@@ -337,7 +346,8 @@
             }
 
             try {
-                const res = await fetch('/boa/v1/game/state/save', {
+
+                const response = await fetch('/boa/v1/game/state/save', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -350,15 +360,18 @@
                     })
                 });
 
-                if (!res.ok) {
-                    console.error("Failed to save game state. Status:", res.status);
-                } else {
-                    
-                    debugLog(
-                        "Game State to DB -> currentLevel:", currentLevel, 
-                        "finishedLevels:", JSON.stringify(finishedLevels)
-                    );
+                const res = await response.json();
+                if (res.status !== 'success') {
+                    console.error('API Error:', res.message);
+                    alert(`Error: ${res.message}`);
+                    return;
                 }
+
+                debugLog(
+                    "Game State to DB -> currentLevel:", currentLevel, 
+                    "finishedLevels:", JSON.stringify(finishedLevels)
+                );
+                
             } catch (err) {
                 console.error("Error calling /state/save API:", err);
             }
@@ -457,7 +470,7 @@
             
             try {
 
-                const res = await fetch('/boa/v1/game/words/next', {
+                const response = await fetch('/boa/v1/game/words/next', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -468,12 +481,14 @@
                     })
                 });
 
-                if (!res.ok) {
-                    const rawText = await res.text();
-                    throw new Error(`Server returned status ${res.status}: ${rawText}`);
+                const res = await response.json();
+                if (res.status !== 'success') {
+                    console.error('API Error:', res.message);
+                    alert(`Error: ${res.message}`);
+                    return;
                 }
                 
-                const data = await res.json(); 
+                const data = res.data; 
                 const rawTokens = data.tokens;
                 debugLog("raw token from fetch => ", {rawTokens});
                 // The next batch did not return any tokens 

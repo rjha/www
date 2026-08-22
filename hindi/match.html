@@ -252,36 +252,58 @@
             await fetchNextBatchAndPlay();
         }
 
-        // --- Step 2: API Integration & Game State ---
-        async function loadGameState() {
+        // #################################################
+        //  API Integration & Game State
+        // 
+        // #################################################
+
+       async function loadGameState() {
             try {
                 const response = await fetch('/boa/v1/game/state/get', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ session_uuid: sessionUuid, game_name: GAME_NAME })
                 });
-                if (response.ok) {
-                    const data = await response.json();
-                    if (data && data.game_data) {
-                        gameActiveLevel = parseInt(data.game_data.currentLevel, 10) || 1;
-                        matchScore = data.game_data.matchScore || 0;
-                        gameCompletedLevels = Array.isArray(data.game_data.finishedLevels) ? data.game_data.finishedLevels : [];
+
+                const res = await response.json();
+
+                // 1. Success (200 OK)
+                if (response.ok && res.status === 'success') {
+                    const state = res.data; 
+                    if (state && state.game_data) {
+                        gameActiveLevel = parseInt(state.game_data.currentLevel, 10) || 1;
+                        matchScore = state.game_data.matchScore || 0;
+                        gameCompletedLevels = Array.isArray(state.game_data.finishedLevels) 
+                            ? state.game_data.finishedLevels 
+                            : [];
                         
                         updateHeaderUI();
-                        debugLog("loaded game state, score:", matchScore, "level:", gameActiveLevel, "completedLevels:", gameCompletedLevels);
+                        debugLog("Loaded game state:", { matchScore, gameActiveLevel });
+                        return;
                     }
-                } else {
-                    // No game state 
-                    showLevelSelectGui();
                 }
+
+                // 2. Expected Client/Business Error (400 Bad Request - e.g., State Not Found)
+                if (response.status === 400) {
+                    debugLog("No state found for session/game, showing GUI:", res.message);
+                    showLevelSelectGui();
+                    return;
+                }
+
+                // 3. Unexpected Server Failure (500 or other 5xx errors)
+                console.error("Server failure loading state:", res.message);
+                alert("Server error loading saved progress. Please try refreshing or re-logging.");
+
             } catch (e) {
-                debugLog("No existing state found or failed to load state:", e);
+                // Network failures / fetch rejections
+                debugLog("Network or parsing error loading state:", e);
             }
         }
 
         async function saveGameState(currentLevel, currentScore, finishedLevels = gameCompletedLevels) {
             try {
-                await fetch('/boa/v1/game/state/save', {
+
+                const response = await fetch('/boa/v1/game/state/save', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -295,7 +317,19 @@
                     })
                 });
 
-                debugLog("Saved state successfully, score:", currentScore, "level:", currentLevel, "finishedLevels:", finishedLevels);
+                const res = await response.json();
+                if (res.status !== 'success') {
+                    console.error('API Error:', res.message);
+                    alert(`Error: ${res.message}`);
+                    return;
+                }
+
+                debugLog(
+                    "Game State to DB -> currentLevel:", currentLevel, 
+                    "score": currentScore,
+                    "finishedLevels:", JSON.stringify(finishedLevels)
+                );
+
             } catch (e) {
                 console.error("Error saving game state:", e);
             }
@@ -319,9 +353,15 @@
                     })
                 });
 
-                if (!response.ok) throw new Error("API word fetch failed");
-
-                const data = await response.json();
+                
+                const res = await response.json();
+                if (res.status !== 'success') {
+                    console.error('API Error:', res.message);
+                    alert(`Error: ${res.message}`);
+                    return;
+                }
+                
+                const data = res.data; 
                 activeBatchTokens = data.tokens || [];  
                 debugLog("Fetched new word batch from API:", activeBatchTokens);
 
@@ -354,7 +394,8 @@
             try {
 
                 document.getElementById('game-over-overlay').classList.add('hidden');
-                const res = await fetch('/boa/v1/game/level/reset', {
+
+                  const response = await fetch('/boa/v1/game/level/reset', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -364,12 +405,15 @@
                     })
                 });
 
-                if (!res.ok) {
-                    const errText = await res.text();
-                    throw new Error(`Game RESET failed (${res.status}): ${errText}`);
+                const res = await response.json();
+                if (res.status !== 'success') {
+                    console.error('API Error:', res.message);
+                    alert(`Error: ${res.message}`);
+                    return;
                 }
 
-                debugLog("Game LEVEL RESET is successful...");
+                debugLog("Game LEVEL RESET is success");
+
                 // Reset score and strip out active level from completed list
                 matchScore = 0;
                 gameCompletedLevels = gameCompletedLevels.filter(lvl => lvl !== gameActiveLevel);
