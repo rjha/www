@@ -39,8 +39,6 @@
         .glow-title {
             text-shadow: 0 0 15px rgba(6, 182, 212, 0.6);
         }
-
-        .hidden-fallback { display: none !important; }
     </style>
 </head>
 <body class="bg-slate-950 min-h-screen flex flex-col items-center justify-center p-4 relative overflow-x-hidden bg-grid-pattern">
@@ -54,201 +52,293 @@
         <!-- Arcade Header -->
         <div class="text-center mb-8">
             <h1 class="text-4xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 via-amber-300 to-cyan-400 tracking-wider uppercase glow-title italic leading-tight">
-            HINDI LEARNING ARCADE
+                HINDI LEARNING ARCADE
             </h1>
-            <hr>
-            <h2 class="text-5xl sm:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-yellow-400 tracking-wider uppercase glow-title italic">
-                READY PLAYER 1
+            <hr class="border-slate-800 my-2">
+            <h2 class="text-3xl sm:text-4xl font-black text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 via-teal-300 to-yellow-400 tracking-wider uppercase glow-title italic">
+                CHOOSE YOUR MISSION
             </h2>
             <p class="text-sm sm:text-base text-slate-300 font-bold mt-2 tracking-wide">
-                Pick your mission, enter your callsign & unleash your vocabulary!
+                Select a game to launch your vocabulary trainer!
             </p>
         </div>
 
-        <form id="launcher-form" onsubmit="handleLaunch(event)" class="space-y-6">
-            
-            <!-- Player Login Callsign -->
-            <div class="bg-slate-900/90 border-2 border-slate-800 rounded-2xl p-5 shadow-xl backdrop-blur-md">
-                <label class="block text-xs font-black text-cyan-400 uppercase tracking-widest mb-2 flex items-center gap-2">
-                    <span>🎮</span>Enter Your Login (MIN 6 LETTERS)
-                </label>
-                <input type="text" id="input-login-name" 
-                    required placeholder="PICK a UNIQUE LOGIN" 
-                    minlength="6"
-                    maxlength="16"
-                    oninput="formatLoginName(this)"
-                    class="w-full bg-slate-950 border-2 border-slate-700 rounded-xl p-3.5 text-lg text-white font-extrabold focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/30 transition placeholder-slate-600">
-            </div>
+        <!-- Game Selection Grid -->
+        <div class="space-y-6">
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
-            <!-- Game Selection Grid -->
-            <div>
-                <label class="block text-xs font-black text-cyan-400 uppercase tracking-widest mb-3 flex items-center gap-2">
-                    <span>🎯</span> CHOOSE YOUR GAME
-                </label>
-
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-
-                    <!-- Game 1: Space Invaders -->
-                    <div data-game="monster" data-url="monster.html" data-title="Space Invaders"
-                         onclick="selectGame(this)" 
-                         class="game-card selected cursor-pointer bg-slate-900 border-2 border-cyan-500 rounded-2xl overflow-hidden relative group shadow-lg">
-                        
-                        <!-- Badge -->
-                        <div class="absolute top-3 left-3 bg-cyan-500 text-slate-950 text-[10px] font-black px-2.5 py-0.5 rounded-full z-20 shadow-md">
-                            POPULAR
-                        </div>
-
-                        <!-- Card Image -->
-                        <div class="h-36 relative overflow-hidden bg-slate-950">
-                            <img src="assets/ufo_01.png" alt="Space Invaders" class="w-full h-full object-contain p-4 group-hover:scale-110 transition duration-300">
-                            <div class="card-overlay absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-80"></div>
-                        </div>
-
-                        <!-- Card Info -->
-                        <div class="p-4 border-t border-slate-800/80 bg-slate-900/90">
-                            <h3 class="text-xl font-black text-cyan-300 tracking-wide uppercase">Space Invaders</h3>
-                            <p class="text-xs text-slate-400 font-bold mt-1">Blast the UFO with correct word ammo!</p>
-                        </div>
+                <!-- Game 1: Space Invaders -->
+                <div data-game="MONSTER" data-url="monster.html" data-title="SPACE INVADERS"
+                     onclick="selectGame(this)" 
+                     class="game-card selected cursor-pointer bg-slate-900 border-2 border-cyan-500 rounded-2xl overflow-hidden relative group shadow-lg">
+                    
+                    <div class="absolute top-3 left-3 bg-cyan-500 text-slate-950 text-[10px] font-black px-2.5 py-0.5 rounded-full z-20 shadow-md">
+                        POPULAR
                     </div>
 
-                    <!-- Game 2: TILES MATCH -->
-                    <div data-game="tile_match" data-url="match.html" data-title="TILE MATCH"
-                         onclick="selectGame(this)" 
-                         class="game-card cursor-pointer bg-slate-900 border-2 border-slate-800 hover:border-slate-600 rounded-2xl overflow-hidden relative group shadow-lg opacity-85 hover:opacity-100">
-                        
-                        <!-- Badge -->
-                        <div class="absolute top-3 left-3 bg-yellow-400 text-slate-950 text-[10px] font-black px-2.5 py-0.5 rounded-full z-20 shadow-md">
-                            IDLE MUSINGS
-                        </div>
-
-                        <!-- Card Image -->
-                        <!-- https://opengameart.org/content/letter-tiles --> 
-                        <div class="h-36 relative overflow-hidden bg-slate-950">
-                            <img src="assets/letter_01.png" alt="Letter tile" class="w-full h-full object-contain p-4 group-hover:scale-110 transition duration-300">
-                            <div class="card-overlay absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-80"></div>
-                        </div>
-
-                        <!-- Card Info -->
-                        <div class="p-4 border-t border-slate-800/80 bg-slate-900/90">
-                            <h3 class="text-xl font-black text-yellow-400 tracking-wide uppercase">TILE MATCH</h3>
-                            <p class="text-xs text-slate-400 font-bold mt-1">Match The English and Hindi Tiles</p>
-                        </div>
+                    <div class="h-36 relative overflow-hidden bg-slate-950">
+                        <img src="assets/ufo_01.png" alt="Space Invaders" class="w-full h-full object-contain p-4 group-hover:scale-110 transition duration-300">
+                        <div class="card-overlay absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-80"></div>
                     </div>
 
+                    <div class="p-4 border-t border-slate-800/80 bg-slate-900/90">
+                        <h3 class="text-xl font-black text-cyan-300 tracking-wide uppercase">Space Invaders</h3>
+                        <p class="text-xs text-slate-400 font-bold mt-1">Blast the UFO with correct word ammo!</p>
+                    </div>
                 </div>
+
+                <!-- Game 2: TILE MATCH -->
+                <div data-game="TILE_MATCH" data-url="match.html" data-title="TILE MATCH"
+                     onclick="selectGame(this)" 
+                     class="game-card cursor-pointer bg-slate-900 border-2 border-slate-800 hover:border-slate-600 rounded-2xl overflow-hidden relative group shadow-lg opacity-85 hover:opacity-100">
+                    
+                    <div class="absolute top-3 left-3 bg-yellow-400 text-slate-950 text-[10px] font-black px-2.5 py-0.5 rounded-full z-20 shadow-md">
+                        IDLE MUSINGS
+                    </div>
+
+                    <div class="h-36 relative overflow-hidden bg-slate-950">
+                        <img src="assets/letter_01.png" alt="Letter tile" class="w-full h-full object-contain p-4 group-hover:scale-110 transition duration-300">
+                        <div class="card-overlay absolute inset-0 bg-gradient-to-t from-slate-900 via-transparent to-transparent opacity-80"></div>
+                    </div>
+
+                    <div class="p-4 border-t border-slate-800/80 bg-slate-900/90">
+                        <h3 class="text-xl font-black text-yellow-400 tracking-wide uppercase">TILE MATCH</h3>
+                        <p class="text-xs text-slate-400 font-bold mt-1">Match The English and Hindi Tiles</p>
+                    </div>
+                </div>
+
             </div>
 
-            <!-- Hidden Inputs to track choices -->
-            <input type="hidden" id="selected-game-name" value="monster">
+            <!-- Hidden Game Tracking -->
+            <input type="hidden" id="selected-game-name" value="MONSTER">
             <input type="hidden" id="selected-game-url" value="monster.html">
 
-            <!-- Error Notification Banner -->
-            <div id="login-error" class="hidden-fallback text-red-400 text-xs font-black bg-red-950/60 p-3 rounded-xl border-2 border-red-800/80 text-center tracking-wide"></div>
-
-            <!-- Big Action Button -->
-            <button type="submit" id="btn-launch" 
+            <!-- Continue Button (Triggers Login Modal) -->
+            <button type="button" id="btn-continue" onclick="openLoginModal()"
                     class="w-full bg-gradient-to-r from-cyan-400 via-teal-400 to-cyan-500 hover:from-cyan-300 hover:to-teal-300 text-slate-950 font-black text-xl py-4 rounded-2xl transition duration-200 cursor-pointer shadow-[0_0_20px_rgba(6,182,212,0.4)] hover:shadow-[0_0_30px_rgba(6,182,212,0.7)] uppercase tracking-wider transform hover:-translate-y-0.5 active:translate-y-0">
-                🚀 LAUNCH SPACE INVADERS
+                CONTINUE WITH SPACE INVADERS
             </button>
-        </form>
+        </div>
+    </div>
+
+    <!-- Login / Registration Overlay Modal -->
+    <div id="auth-box" class="hidden fixed inset-0 bg-black/85 backdrop-blur-sm flex flex-col items-center justify-center text-center p-4 z-50">
+        <div class="bg-slate-900 border-4 border-cyan-500 rounded-3xl p-8 max-w-md w-full shadow-2xl relative">
+            
+            <h1 id="auth-title" class="text-3xl font-black text-cyan-400 mb-1 tracking-wider uppercase">PLAYER LOGIN</h1>
+            <p id="auth-subtitle" class="text-xs text-slate-400 mb-6 font-semibold uppercase tracking-widest">Enter callsign to start session</p>
+            
+            <form onsubmit="handleAuthSubmit(event)" class="flex flex-col gap-4 text-left">
+                
+                <!-- Callsign Input -->
+                <div>
+                    <label class="block text-xs text-slate-400 font-bold uppercase tracking-wider mb-1 flex justify-between">
+                        <span>🎮 Login Handle (MIN 6 CHARS)</span>
+                    </label>
+                    <input type="text" id="input-login-name" required placeholder="ENTER CALLSIGN" 
+                           minlength="6" maxlength="16" oninput="formatLoginName(this)"
+                           class="w-full bg-slate-950 border-2 border-slate-700 focus:border-cyan-400 rounded-xl p-3 text-cyan-300 font-bold placeholder-slate-600 focus:outline-none transition uppercase">
+                </div>
+
+                <!-- Registration Full Name Field (Hidden until "Register" link is clicked) -->
+                <div id="reg-name-container" class="hidden">
+                    <label class="block text-xs text-slate-400 font-bold uppercase tracking-wider mb-1">Full Name / Display Name</label>
+                    <input type="text" id="input-full-name" placeholder="e.g. Rahul Sharma"
+                           class="w-full bg-slate-950 border-2 border-slate-700 focus:border-cyan-400 rounded-xl p-3 text-cyan-300 font-bold placeholder-slate-600 focus:outline-none transition">
+                </div>
+
+                <!-- Error Notification Banner -->
+                <p id="auth-error" class="hidden text-xs font-bold text-red-400 bg-red-950/60 border border-red-800 rounded-lg p-2.5 text-center tracking-wide"></p>
+
+                <!-- Actions -->
+                <div class="flex flex-col gap-3 mt-2">
+                    <button type="submit" id="btn-auth-action" 
+                            class="w-full bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-black py-3 rounded-xl border-b-4 border-cyan-600 active:border-b-0 uppercase tracking-wider transition cursor-pointer">
+                        🚀 LAUNCH MISSION
+                    </button>
+
+                    <button type="button" onclick="closeLoginModal()" 
+                            class="w-full bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold py-2.5 rounded-xl border border-slate-600 transition uppercase tracking-wider text-xs cursor-pointer">
+                        CANCEL
+                    </button>
+                </div>
+
+                <!-- Registration Toggle Link -->
+                <div class="text-center mt-2">
+                    <button type="button" id="btn-toggle-mode" onclick="toggleAuthMode()" class="text-xs text-cyan-400 hover:text-cyan-300 font-bold underline transition cursor-pointer">
+                        Need an account? Register here
+                    </button>
+                </div>
+            </form>
+        </div>
     </div>
 
     <script>
+        let isRegistrationMode = false;
 
         function selectGame(cardElement) {
-            // Remove selection class from all cards
             document.querySelectorAll('.game-card').forEach(card => {
-                card.classList.remove('selected');
-                card.classList.remove('border-cyan-500');
+                card.classList.remove('selected', 'border-cyan-500');
                 card.classList.add('border-slate-800');
             });
 
-            // Highlight chosen card
             cardElement.classList.add('selected');
             cardElement.classList.remove('border-slate-800');
 
-            // Save choice in hidden inputs
             const gameName = cardElement.dataset.game;
             const gameUrl = cardElement.dataset.url;
             const gameTitle = cardElement.dataset.title;
 
             document.getElementById('selected-game-name').value = gameName;
             document.getElementById('selected-game-url').value = gameUrl;
-
-            // Update Launch Button Text
-            document.getElementById('btn-launch').innerText = `🚀 LAUNCH ${gameTitle.toUpperCase()}`;
+            document.getElementById('btn-continue').innerText = `CONTINUE WITH ${gameTitle.toUpperCase()}`;
         }
 
         function formatLoginName(input) {
             input.value = input.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
         }
 
-        async function handleLaunch(e) {
-            e.preventDefault();
+        function openLoginModal() {
+            resetAuthForm();
+            document.getElementById('auth-box').classList.remove('hidden');
+            document.getElementById('input-login-name').focus();
+        }
+
+        function closeLoginModal() {
+            document.getElementById('auth-box').classList.add('hidden');
+        }
+
+        function toggleAuthMode() {
+            isRegistrationMode = !isRegistrationMode;
+            const nameContainer = document.getElementById('reg-name-container');
+            const authTitle = document.getElementById('auth-title');
+            const authSubtitle = document.getElementById('auth-subtitle');
+            const actionBtn = document.getElementById('btn-auth-action');
+            const toggleBtn = document.getElementById('btn-toggle-mode');
+            const fullNameInput = document.getElementById('input-full-name');
+            const errElem = document.getElementById('auth-error');
+
+            errElem.classList.add('hidden');
+
+            if (isRegistrationMode) {
+                authTitle.innerText = "CREATE CALLSIGN";
+                authSubtitle.innerText = "Register a new user handle";
+                actionBtn.innerText = "REGISTER & LAUNCH";
+                toggleBtn.innerText = "Already registered? Login here";
+                nameContainer.classList.remove('hidden');
+                fullNameInput.required = true;
+            } else {
+                authTitle.innerText = "PLAYER LOGIN";
+                authSubtitle.innerText = "Enter callsign to start session";
+                actionBtn.innerText = "🚀 LAUNCH MISSION";
+                toggleBtn.innerText = "Need an account? Register here";
+                nameContainer.classList.add('hidden');
+                fullNameInput.required = false;
+            }
+        }
+
+        function resetAuthForm() {
+            isRegistrationMode = false;
+            document.getElementById('input-login-name').value = '';
+            document.getElementById('input-full-name').value = '';
+            document.getElementById('reg-name-container').classList.add('hidden');
+            document.getElementById('input-full-name').required = false;
             
+            document.getElementById('auth-title').innerText = "PLAYER LOGIN";
+            document.getElementById('auth-subtitle').innerText = "Enter callsign to start session";
+            document.getElementById('btn-auth-action').innerText = "🚀 LAUNCH MISSION";
+            document.getElementById('btn-toggle-mode').innerText = "Need an account? Register here";
+            
+            const errElem = document.getElementById('auth-error');
+            errElem.innerText = '';
+            errElem.classList.add('hidden');
+        }
+
+        async function handleAuthSubmit(e) {
+            e.preventDefault();
+
             const loginInput = document.getElementById('input-login-name');
-            // Ensure stripping special characters/spaces and converting to uppercase
             const loginName = loginInput.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
             loginInput.value = loginName;
 
+            const fullName = document.getElementById('input-full-name').value.trim();
             const gameName = document.getElementById('selected-game-name').value;
             const targetUrl = document.getElementById('selected-game-url').value;
+            const errElem = document.getElementById('auth-error');
+            const actionBtn = document.getElementById('btn-auth-action');
 
-            const errElem = document.getElementById('login-error');
-            const btn = document.getElementById('btn-launch');
-
-            
-            // Validation checks
-            if (!loginName) {
-                errElem.innerText = "PLEASE ENTER A LOGIN!!!";
-                errElem.classList.remove('hidden-fallback');
+            if (!loginName || loginName.length < 6) {
+                showError("LOGIN MUST BE AT LEAST 6 CHARACTERS!");
                 return;
             }
-
-            if (loginName.length < 6) {
-                errElem.innerText = "LOGIN MUST BE AT LEAST 6 CHARACTERS !!!";
-                errElem.classList.remove('hidden-fallback');
-                return;
-            }
-
-            // Alphanumeric regex check
-            if (!/^[A-Z0-9]+$/.test(loginName)) {
-                errElem.innerText = "LOGIN CAN ONLY CONTAIN LETTERS AND NUMBERS!";
-                errElem.classList.remove('hidden-fallback');
-                return;
-            }
-
-
-            errElem.classList.add('hidden-fallback');
-            btn.disabled = true;
-            btn.innerText = "SELECT A GAME";
 
             try {
+                actionBtn.disabled = true;
 
-                // 1. Authenticate / Start Session via API
-                const res = await fetch(`/boa/v1/game/session/start`, {
+                // Mode A: User Registration
+                if (isRegistrationMode) {
+                    if (!fullName) {
+                        showError("PLEASE ENTER YOUR FULL NAME!");
+                        actionBtn.disabled = false;
+                        return;
+                    }
+
+                    actionBtn.innerText = "CREATING USER...";
+                    const regRes = await fetch('/boa/v1/game/user/add', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ name: fullName, login_name: loginName })
+                    });
+
+                    const regData = await regRes.json();
+                    if (regData.status !== 'success') {
+                        showError(regData.message || "FAILED TO REGISTER USER");
+                        actionBtn.disabled = false;
+                        actionBtn.innerText = "REGISTER & LAUNCH";
+                        return;
+                    }
+                }
+
+                // Mode B: Start Game Session
+                actionBtn.innerText = "LAUNCHING SESSION...";
+                const sessionRes = await fetch('/boa/v1/game/session/start', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ login_name: loginName })
                 });
 
-                if (!res.ok) {
-                    const errData = await res.json();
-                    throw new Error(errData.detail || "Failed to launch session.");
+                const sessionData = await sessionRes.json();
+
+                if (sessionRes.ok && sessionData.status === 'success') {
+                    const sessionUuid = sessionData.data.session_uuid;
+                    window.location.href = `${targetUrl}?session_uuid=${sessionUuid}&game=${gameName}`;
+                    return;
                 }
 
-                const data = await res.json();
-                const sessionUuid = data.session_uuid;
+                // User not found when attempting direct login -> Switch to Registration mode automatically
+                if (sessionRes.status === 400 && !isRegistrationMode) {
+                    toggleAuthMode();
+                    showError("CALLSIGN NOT FOUND. PLEASE ENTER YOUR NAME TO REGISTER.");
+                    actionBtn.disabled = false;
+                    return;
+                }
 
-                // 2. Redirect to specific game file with query params
-                window.location.href = `${targetUrl}?session_uuid=${sessionUuid}&game=${gameName}`;
+                showError(sessionData.message || "ERROR STARTING SESSION");
+                actionBtn.disabled = false;
+                actionBtn.innerText = isRegistrationMode ? "REGISTER & LAUNCH" : "🚀 LAUNCH MISSION";
 
             } catch (err) {
-                errElem.innerText = err.message.toUpperCase();
-                errElem.classList.remove('hidden-fallback');
-                btn.disabled = false;
-                btn.innerText = "🚀 RETRY LAUNCH";
+                console.error("Auth error:", err);
+                showError("NETWORK ERROR. COULD NOT REACH SERVER.");
+                actionBtn.disabled = false;
+                actionBtn.innerText = isRegistrationMode ? "REGISTER & LAUNCH" : "🚀 LAUNCH MISSION";
             }
+        }
+
+        function showError(msg) {
+            const errElem = document.getElementById('auth-error');
+            errElem.innerText = msg;
+            errElem.classList.remove('hidden');
         }
     </script>
 </body>
