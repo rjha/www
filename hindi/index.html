@@ -72,7 +72,11 @@
                 <label class="block text-xs font-black text-cyan-400 uppercase tracking-widest mb-2 flex items-center gap-2">
                     <span>🎮</span>Enter Your Login (MIN 6 LETTERS)
                 </label>
-                <input type="text" id="input-login-name" required placeholder="PICK a UNIQUE LOGIN" 
+                <input type="text" id="input-login-name" 
+                    required placeholder="PICK a UNIQUE LOGIN" 
+                    minlength="6"
+                    maxlength="16"
+                    oninput="formatLoginName(this)"
                     class="w-full bg-slate-950 border-2 border-slate-700 rounded-xl p-3.5 text-lg text-white font-extrabold focus:outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-500/30 transition placeholder-slate-600">
             </div>
 
@@ -175,21 +179,45 @@
             document.getElementById('btn-launch').innerText = `🚀 LAUNCH ${gameTitle.toUpperCase()}`;
         }
 
+        function formatLoginName(input) {
+            input.value = input.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+        }
+
         async function handleLaunch(e) {
             e.preventDefault();
             
-            const loginName = document.getElementById('input-login-name').value.trim();
+            const loginInput = document.getElementById('input-login-name');
+            // Ensure stripping special characters/spaces and converting to uppercase
+            const loginName = loginInput.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+            loginInput.value = loginName;
+
             const gameName = document.getElementById('selected-game-name').value;
             const targetUrl = document.getElementById('selected-game-url').value;
 
             const errElem = document.getElementById('login-error');
             const btn = document.getElementById('btn-launch');
 
+            
+            // Validation checks
             if (!loginName) {
-                errElem.innerText = "PLEASE ENTER A CALLSIGN TO CONTINUE!";
+                errElem.innerText = "PLEASE ENTER A LOGIN!!!";
                 errElem.classList.remove('hidden-fallback');
                 return;
             }
+
+            if (loginName.length < 6) {
+                errElem.innerText = "LOGIN MUST BE AT LEAST 6 CHARACTERS !!!";
+                errElem.classList.remove('hidden-fallback');
+                return;
+            }
+
+            // Alphanumeric regex check
+            if (!/^[A-Z0-9]+$/.test(loginName)) {
+                errElem.innerText = "LOGIN CAN ONLY CONTAIN LETTERS AND NUMBERS!";
+                errElem.classList.remove('hidden-fallback');
+                return;
+            }
+
 
             errElem.classList.add('hidden-fallback');
             btn.disabled = true;
