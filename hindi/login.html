@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign In - Hindi Arcade</title>
+    <script src="/assets/tailwind.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700;800;900&display=swap');
+        
+        body {
+            font-family: 'Chakra Petch', sans-serif;
+            background-color: #030712 !important;
+            color: #ffffff !important;
+        }
+
+        .bg-grid-pattern {
+            background-image: 
+                linear-gradient(to right, rgba(6, 182, 212, 0.12) 1px, transparent 1px),
+                linear-gradient(to bottom, rgba(6, 182, 212, 0.12) 1px, transparent 1px);
+            background-size: 36px 36px;
+        }
+    </style>
+</head>
+<body class="bg-slate-950 min-h-screen flex items-center justify-center p-4 bg-grid-pattern">
+
+    <div class="max-w-md w-full bg-slate-900 border-4 border-cyan-500 rounded-3xl p-8 shadow-2xl z-10">
+        
+        <h1 class="text-3xl font-black text-cyan-400 mb-6 tracking-wider uppercase text-center">SIGN IN</h1>
+
+        <form onsubmit="handleLoginSubmit(event)" class="flex flex-col gap-5 text-left">
+            
+            <!-- Login Handle Field -->
+            <div>
+                <label for="input-login-name" class="block text-xs text-slate-400 font-bold uppercase tracking-wider mb-2">
+                    🎮 LOGIN
+                </label>
+                <input type="text" id="input-login-name" required placeholder="ENTER LOGIN" 
+                       minlength="6" maxlength="16" oninput="formatLoginInput(this)"
+                       class="w-full bg-slate-950 border-2 border-slate-700 focus:border-cyan-400 rounded-xl p-3 text-cyan-300 font-bold placeholder-slate-600 focus:outline-none transition uppercase">
+                <span class="text-[12px] text-slate-500 mt-1 block">6-16 characters, letters and numbers only.</span>
+            </div>
+
+            <!-- Error Notification Banner -->
+            <p id="login-error" class="hidden text-xs font-bold text-red-400 bg-red-950/60 border border-red-800 rounded-lg p-2.5 text-center tracking-wide"></p>
+
+            <!-- Actions -->
+            <div class="flex flex-col gap-3 mt-2">
+                <button type="submit" id="btn-login-submit" 
+                        class="w-full bg-cyan-400 hover:bg-cyan-300 text-slate-950 font-black py-3 rounded-xl border-b-4 border-cyan-600 active:border-b-0 uppercase tracking-wider transition cursor-pointer">
+                    SIGN IN
+                </button>
+
+                <button type="button" onclick="navigateToRegister()" 
+                        class="w-full bg-slate-800 hover:bg-slate-700 text-yellow-400 font-bold py-3 rounded-xl border border-slate-700 transition uppercase tracking-wider text-xs cursor-pointer">
+                    NEW HERE? REGISTER
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function getGameParam() {
+            const params = new URLSearchParams(window.location.search);
+            return params.get('game') || 'MONSTER';
+        }
+
+        function formatLoginInput(input) {
+            input.value = input.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+        }
+
+        function navigateToRegister() {
+            const currentGame = getGameParam();
+            window.location.href = `register.html?game=${currentGame}`;
+        }
+
+        async function handleLoginSubmit(e) {
+            e.preventDefault();
+            const inputElem = document.getElementById('input-login-name');
+            const loginName = inputElem.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase();
+            inputElem.value = loginName;
+
+            const submitBtn = document.getElementById('btn-login-submit');
+            const currentGame = getGameParam();
+
+            if (loginName.length < 6 || loginName.length > 16) {
+                showError("LOGIN MUST BE BETWEEN 6 AND 16 CHARACTERS!");
+                return;
+            }
+
+            try {
+                submitBtn.disabled = true;
+                submitBtn.innerText = "AUTHENTICATING...";
+
+                const sessionRes = await fetch('/boa/v1/game/session/start', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ login_name: loginName })
+                });
+
+                const sessionData = await sessionRes.json();
+
+                if (sessionRes.ok && sessionData.status === 'success') {
+                    const sessionUuid = sessionData.data.session_uuid;
+
+                    localStorage.setItem('boa_session_uuid', sessionUuid);
+                    localStorage.setItem('boa_login_name', loginName);
+
+                    const gameUrlMap = {
+                        'MONSTER': 'monster.html',
+                        'TILE_MATCH': 'match.html'
+                    };
+                    const targetUrl = gameUrlMap[currentGame] || 'monster.html';
+
+                    window.location.href = `${targetUrl}?session_uuid=${sessionUuid}&game=${currentGame}`;
+                    return;
+                }
+
+                showError(sessionData.message || "LOGIN FAILED. PLEASE CHECK YOUR CALLSIGN.");
+                submitBtn.disabled = false;
+                submitBtn.innerText = "SIGN IN";
+
+            } catch (err) {
+                console.error("Login API Error:", err);
+                showError("NETWORK ERROR. COULD NOT REACH SERVER.");
+                submitBtn.disabled = false;
+                submitBtn.innerText = "SIGN IN";
+            }
+        }
+
+        function showError(msg) {
+            const errElem = document.getElementById('login-error');
+            errElem.innerText = msg;
+            errElem.classList.remove('hidden');
+        }
+    </script>
+</body>
+</html>
